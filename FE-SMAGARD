@@ -1,0 +1,40 @@
+--SMAGARD BY SMAGARD
+
+local Methods = loadstring(game:HttpGet("https://raw.githubusercontent.com/coolsk8rboy/The-John-Cena-Factory/main/JohnCenasMain.lua"))()
+
+Methods:SetWalkSpeed(75)
+
+Methods:NewAttack("Punch", "r", 12467357514, .3, 6)
+Methods:NewAttack("Throw", "f", 12469871083, .3, 3)
+
+Methods:OnKeyPress("q", function()
+    Methods:ApplyVelocityUpward(150)
+end)
+Methods:OnKeyPress("e", function()
+    Methods:ApplyVelocityFoward(15)
+end)
+
+Methods:SetIdleAnimation(12467350017, .3)
+
+Methods:SetWalkAnimation(12467338324, .1)
+
+Methods:BodyPartFlingOnTouch("Left Arm")
+Methods:BodyPartFlingOnTouch("Right Arm")
+
+
+Methods:SystemMessage([[
+Controls:
+
+R - Punch
+F - Throw
+Q - Fly Up
+E - Fly Forward
+
+]])
+
+
+Methods:PlaySound(9047105533, true)
+
+Methods:SetScriptCreator("SMAGARD#4225")
+
+Methods:RunScript()
