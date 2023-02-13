@@ -310,7 +310,7 @@ function execcommand(cmd)
 	elseif cmd == "headbring" or cmd == "hbring" then
 		local target = GetPlayer(args)
 		if var == "all" or var == "others" then return end
-		target.Character.Head.Position = CF().Position
+		target.Character.Head.Position = char["Head"].Position + char["Head"].CFrame.lookVector * 2
 		Notify("HeadBring", "Teleported Player: "..target.Name.."'s head to you")
 
 		--freeze
