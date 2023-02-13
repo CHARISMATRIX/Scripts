@@ -1,0 +1,377 @@
+--SMAGARD HUB CREATED BY SMAGARD
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("SMAGARD Hub", "BloodTheme")
+local plr = game:GetService("Players").LocalPlayer
+local char = plr.Character
+local mouse = plr:GetMouse()
+
+--MAIN
+local Main = Window:NewTab("Main")
+local MainSection1 = Main:NewSection("Main")
+
+MainSection1:NewLabel("Credits: SMAGARD")
+
+MainSection1:NewKeybind("Toggle UI", "Press RightCTRL to toggle the ui", Enum.KeyCode.RightControl, function()
+	Library:ToggleUI()
+end)
+
+--UNIVERSAL
+local Universal = Window:NewTab("Universal")
+local UniversalSection1 = Universal:NewSection("Universal")
+
+--ClickTP
+UniversalSection1:NewButton("Click TP", "Gives you a teleportation tool", function()
+	local tool = Instance.new("Tool")
+	tool.RequiresHandle = false
+	tool.Name = "Click Teleport"
+	tool.Activated:connect(function()
+		local pos = mouse.Hit+Vector3.new(0,2.5,0)
+		pos = CFrame.new(pos.X,pos.Y,pos.Z)
+		char.HumanoidRootPart.CFrame = pos
+	end)
+	tool.Parent = plr.Backpack
+end)
+--AutoClicker
+UniversalSection1:NewButton("Auto Clicker", "Clicks automatically for you", function()
+	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/JustEzpi/ROBLOX-Scripts/main/ROBLOX_AutoClicker"))()
+end)
+
+--Player
+local Player = Window:NewTab("Player")
+local PlayerSection1 = Player:NewSection("Player")
+
+--Respawn
+PlayerSection1:NewButton("Respawn", "Reloads your character", function()
+	if char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid"):ChangeState(15) end
+	char:ClearAllChildren()
+	local newChar = Instance.new("Model")
+	newChar.Parent = workspace
+	plr.Character = newChar
+	wait()
+	plr.Character = char
+	newChar:Destroy()
+end)
+--UnlockCameraZoom
+PlayerSection1:NewButton("MaxCameraZoom", "Sets your max Camera Zoom to infinite", function()
+	game.Players.LocalPlayer.CameraMaxZoomDistance = math.huge
+end)
+--WalkSpeed
+PlayerSection1:NewSlider("Speed", "Changes Your Walkspeed", 1000, 16, function(s)
+	char.Humanoid.WalkSpeed = s
+end)
+--JumpPower
+PlayerSection1:NewSlider("JumpPower", "Changes Your JumpPower", 500, 50, function(s)
+	char.Humanoid.JumpPower = s
+end)
+--R6
+PlayerSection1:NewButton("R6", "Turns your character to R6", function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/E9LkqrVb"))()
+end)
+
+--Scripts
+local Scripts = Window:NewTab("Scripts")
+local ScriptSection1 = Scripts:NewSection("Scripts")
+
+--InfiniteYield
+ScriptSection1:NewButton("InfiniteYield", "Loads InfiniteYield FE", function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+--Fates Admin
+ScriptSection1:NewButton("Fates Admin", "Loads Fates Admin FE", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/fatesc/fates-admin/main/main.lua"))();
+end)
+--CMD-X
+ScriptSection1:NewButton("CMD-X", "Loads CMD-X", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))()
+end)
+--RemoteSpy
+ScriptSection1:NewButton("Remote Spy", "Loads Remote Spy", function()
+	loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
+end)
+--FE Server Admin
+ScriptSection1:NewButton("Server Admin", "Loads FE Server Admin", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ONEReverseCard/My-Scripts/main/Netless%20Server%20Admin.md"))()
+end)
+--Sonic
+ScriptSection1:NewButton("Sonic", "Loads FE Sonic", function()
+	loadstring(game:HttpGetAsync("https://pastebin.com/raw/SyF5t70A"))()
+end)
+--Memeus
+ScriptSection1:NewButton("Memeus", "Loads FE Memeus", function()
+	loadstring(game:HttpGetAsync("https://pastebin.com/raw/2MSTmKBa"))()
+end)
+
+--Script Hubs
+local ScriptHubs = Window:NewTab("Script Hubs")
+local ScriptHubSection1 = ScriptHubs:NewSection("Script Hubs")
+
+--VG Hub
+ScriptHubSection1:NewButton("VG Hub", "Loads VG Hub", function()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/V.Ghub'))()
+end)
+--Pendulum Hub
+ScriptHubSection1:NewButton("Pendulum Hub", "Loads Pendulum Hub", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Tescalus/Pendulum-Hubs-Source/main/Pendulum%20Hub%20V5.lua"))()
+end)
+--Eclipse Hub
+ScriptHubSection1:NewButton("Eclipse Hub", "loads Eclipse Hub", function()
+	local a,b,c,d,e=loadstring,request or http_request or (http and http.request) or (syn and syn.request),assert,tostring,"https\58//api.eclipsehub.xyz/auth";c(a and b,"Executor not Supported")a(b({Url=e.."\?\107e\121\61"..d("nil"),Headers={["User-Agent"]="Eclipse"}}).Body)()
+end)
+
+--BABFT Autobuild
+ScriptHubSection1:NewButton("BABFT Autobuild", "Loads BABAFT Autobuild", function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/max2007killer/auto-build-not-limit/main/autobuild.txt"))()
+end)
+
+--Current Game
+if game.PlaceId == 537413528 then --Build a Boat
+	local BuildABoat = Window:NewTab("Build A Boat")
+	local BuildABoatSection1 = BuildABoat:NewSection("Auto Farms")
+	local BuildABoatSection2 = BuildABoat:NewSection("Teleports")
+	local BuildABoatSection3 = BuildABoat:NewSection("Misc")
+
+	--AutoFarm
+	function Farm()
+		game.workspace.Gravity = 0
+		char:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(-51.1823959, 80.6168747, -536.437805)
+		tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(30, Enum.EasingStyle.Linear)
+		tween =
+			tweenService:Create(
+				char:WaitForChild("HumanoidRootPart"),
+				tweenInfo,
+				{CFrame = CFrame.new(-60.5737877, 53.9498825, 8666.35059)}
+			)
+		tween:Play()
+		wait(30)
+		tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(0, Enum.EasingStyle.Linear)
+		tween =
+			tweenService:Create(
+				char:WaitForChild("HumanoidRootPart"),
+				tweenInfo,
+				{CFrame = CFrame.new(-55.5486526, -360.063782, 9489.0498)}
+			)
+		tween:Play()
+		game.workspace.Gravity = 196.2
+	end
+
+	BuildABoatSection1:NewLabel("AUTOFARM IS COMMING SOON")
+
+	BuildABoatSection1:NewButton("Farm Once", "Autofarms Once", function()
+		Farm()
+	end)
+
+	--Teleports
+	BuildABoatSection2:NewButton("White Team", "Teleport To White Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace").WhiteZone.CFrame * CFrame.new(0,5,0)
+	end)
+
+	BuildABoatSection2:NewButton("Black Team", "Teleport To Black Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace").BlackZone.CFrame * CFrame.new(0,5,0)
+	end)
+
+	BuildABoatSection2:NewButton("Red Team", "Teleport To Red Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["Really redZone"].CFrame * CFrame.new(0,5,0)
+	end)
+
+	BuildABoatSection2:NewButton("Blue Team", "Teleport To Blue Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["Really blueZone"].CFrame * CFrame.new(0,5,0)
+	end)
+
+	BuildABoatSection2:NewButton("Green Team", "Teleport To Green Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace").CamoZone.CFrame * CFrame.new(0,5,0)
+	end)
+
+	BuildABoatSection2:NewButton("Yellow Team", "Teleport To Yellow Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["New YellerZone"].CFrame * CFrame.new(0,5,0)
+	end)
+
+	BuildABoatSection2:NewButton("Magenta Team", "Teleport To Magenta Team", function()
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace").MagentaZone.CFrame * CFrame.new(0,5,0)
+	end)
+
+	--Water Godmode
+	BuildABoatSection3:NewButton("Water GodMode", "Makes you not take any damage from the water", function()
+		char:WaitForChild("WaterDetector"):remove()
+	end)
+
+	--Bypass Isolation
+	BuildABoatSection3:NewButton("Bypass Isolation", "Makes you be able to go through isolation mode", function()
+		if game:GetService("Workspace").WhiteZone:FindFirstChild("Lock") then
+			game:GetService("Workspace").WhiteZone:FindFirstChild("Lock").Part:Destroy()
+		end
+		if game:GetService("Workspace").BlackZone:FindFirstChild("Lock") then
+			game:GetService("Workspace").BlackZone:FindFirstChild("Lock").Part:Destroy()
+		end
+		if game:GetService("Workspace")["Really redZone"]:FindFirstChild("Lock") then
+			game:GetService("Workspace")["Really redZone"]:FindFirstChild("Lock").Part:Destroy()
+		end
+		if game:GetService("Workspace")["Really blueZone"]:FindFirstChild("Lock") then
+			game:GetService("Workspace")["Really blueZone"]:FindFirstChild("Lock").Part:Destroy()
+		end
+		if game:GetService("Workspace").CamoZone:FindFirstChild("Lock") then
+			game:GetService("Workspace").CamoZone:FindFirstChild("Lock").Part:Destroy()
+		end
+		if game:GetService("Workspace")["New YellerZone"]:FindFirstChild("Lock") then
+			game:GetService("Workspace")["New YellerZone"]:FindFirstChild("Lock").Part:Destroy()
+		end
+		if game:GetService("Workspace").MagentaZone:FindFirstChild("Lock") then
+			game:GetService("Workspace").MagentaZone:FindFirstChild("Lock").Part:Destroy()
+		end
+	end)
+
+elseif game.PlaceId == 3956818381 then --Ninja Legends
+	local NinjaLegends = Window:NewTab("Ninja Legends")
+	local NinjaLegendsSection1 = NinjaLegends:NewSection("Auto Farms")
+	local NinjaLegendsSection2 = NinjaLegends:NewSection("Misc")
+
+	--AutoSwing
+	NinjaLegendsSection1:NewToggle("AutoSwing", "Automatically Swings your blade", function(state)
+		getgenv().autoswing = state
+		while true do
+			if not getgenv().autoswing then return end
+			for _,v in pairs(plr.Backpack:GetChildren()) do
+				if v:FindFirstChild("ninjitsuGain") then
+					char.Humanoid:EquipTool(v)
+					break
+				end
+			end
+			plr.ninjaEvent:FireServer("swingKatana")
+			wait(0.1)
+		end
+	end)  
+	--AutoSell
+	NinjaLegendsSection1:NewToggle("AutoSell", "Automatically Sells your Ninjitsu", function(state)
+		getgenv().autosell = state
+		while true do
+			if getgenv().autoswing == false then return end
+			game:GetService("Workspace").sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = char.HumanoidRootPart.CFrame
+			wait(0.1)
+			game:GetService("Workspace").sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = CFrame.new(0,0,0)
+			wait(0.1)
+		end
+	end)
+	--AutoBuySwords
+	NinjaLegendsSection1:NewToggle("Auto buy swords", "Auto buys swords", function(state)
+		getgenv().autobuyswords = state
+		while true do
+			if not getgenv().autobuyswords then return end
+			local args = {
+				[1] = "buyAllSwords",
+				[2] = "Inner Peace Island"
+			} 
+			plr.ninjaEvent:FireServer(unpack(args))
+			wait(0.5)
+		end
+	end)
+	--AutoBuyBelts
+	NinjaLegendsSection1:NewToggle("Auto buy belts", "Auto buys belts", function(state)
+		getgenv().autobuybelts = state
+		while true do
+			if not getgenv().autobuybelts then return end
+			local args = {
+				[1] = "buyAllBelts",
+				[2] = "Inner Peace Island"
+			} 
+			plr.ninjaEvent:FireServer(unpack(args))
+			wait(0.5)
+		end
+	end)
+	--AutoBuySkills
+	NinjaLegendsSection1:NewToggle("Auto buy Skills", "Auto buys Skills", function(state)
+		getgenv().autobuyskills = state
+		while true do
+			if not getgenv().autobuyskills then return end
+			local args = {
+				[1] = "buyAllSkills",
+				[2] = "Inner Peace Island"
+			} 
+			plr.ninjaEvent:FireServer(unpack(args))
+			wait(0.5)
+		end
+	end)
+	--AutoBuyShurikens
+	NinjaLegendsSection1:NewToggle("Auto buy Shurikens", "Auto buys Shurikens", function(state)
+		getgenv().autobuyshurikens = state
+		while true do
+			if not getgenv().autobuyshurikens then return end
+			local args = {
+				[1] = "buyAllShurikens",
+				[2] = "Inner Peace Island"
+			} 
+			plr.ninjaEvent:FireServer(unpack(args))
+			wait(0.5)
+		end
+	end)
+	--AutoHoops
+	NinjaLegendsSection1:NewToggle("Auto Hoops", "Automatically Collects All Hoops", function(state)
+		getgenv().autohoops = state
+		while true do
+			if not getgenv().autohoops then return end
+			for _,v in pairs(game:GetService("Workspace").Hoops:GetChildren()) do
+				local args = {
+					[1] = "useHoop",
+					[2] = v
+				}
+
+				game:GetService("ReplicatedStorage").rEvents.hoopEvent:FireServer(unpack(args))
+				wait()
+			end
+		end
+	end)
+	--AutoCoins
+	NinjaLegendsSection1:NewToggle("Auto Coins", "Automatically Collects All Coins", function(state)
+		getgenv().autocoins = state
+		while true do
+			if not getgenv().autocoins then return end
+			for _, v in pairs(game:GetService("Workspace").spawnedCoins.Valley:GetChildren()) do
+				char.HumanoidRootPart.CFrame = v.CFrame
+				wait(.1)
+			end
+		end
+	end)
+	--UnlockAllIslands
+	NinjaLegendsSection2:NewButton("Unlock all islands", "Unlocks all islands", function()
+		local oldcframe = char.HumanoidRootPart.CFrame
+		for _,v in pairs(game:GetService("Workspace").islandUnlockParts:GetChildren()) do
+			char.HumanoidRootPart.CFrame = v.CFrame
+			wait(0.1)
+		end
+		wait(0.1)
+		char.HumanoidRootPart.CFrame = oldcframe
+	end)
+
+elseif game.PlaceId == 155615604 then --Prison Life
+	local PrisonLife = Window:NewTab("Prison Life")
+	local PrisonLifeSection1 = PrisonLife:NewSection("Guns")
+
+	--Give Gun
+	PrisonLifeSection1:NewDropdown("Give Gun", "Gives you a gun", {"M9", "Remington 870", "AK-47"}, function(currentOption)
+		local args = {
+			[1] = workspace.Prison_ITEMS.giver:FindFirstChild(currentOption).ITEMPICKUP
+		}
+
+		workspace.Remote.ItemHandler:InvokeServer(unpack(args))
+	end)
+	--Gun Mod
+	PrisonLifeSection1:NewDropdown("Gun Mod", "Changes The Guns Values", {"M9", "Remington 870", "AK-47"}, function(currentOption)
+		local module = nil
+		if plr.Backpack:FindFirstChild(currentOption) then
+			module = require(plr.Backpack[currentOption].GunStates)
+		elseif char:FindFirstChild(currentOption) then
+			module = require(char[currentOption].GunStates)
+		end
+		if module ~= nil then
+			module["MaxAmmo"] = math.huge
+			module["CurrentAmmo"] = math.huge
+			module["StoredAmmo"] = math.huge
+			module["FireRate"] = 0.000001
+			module["Spread"] = 0
+			module["Range"] = math.huge
+			module["Bullets"] = 10
+			module["ReloadTime"] = 0.000001
+			module["AutoFire"] = true
+		end
+	end)
+
+end
