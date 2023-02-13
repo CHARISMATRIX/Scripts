@@ -1,0 +1,441 @@
+--SMAGARD ADMIN BY SMAGARD
+
+local prefix = "+"
+
+local plrs = game:GetService("Players")
+local ws = game:GetService("Workspace")
+local rs = game:GetService("ReplicatedStorage")
+local uis = game:GetService("UserInputService")
+local ts = game:GetService("TeleportService")
+
+local plr = plrs.LocalPlayer
+local char = plr.Character
+local humrp = char:FindFirstChild("HumanoidRootPart")
+local hum = char:FindFirstChild("Humanoid")
+
+local CommandList = {
+	["cmds"] = "Shows the commands, Usage: cmds",
+	["iy"] = "Loads Infinite Yield, Usage: iy",
+	["rspy|remotespy"] = "Loads SimpleSpy, Usage: rspy|remotespy",
+	["smhub"] = "Loads SMAGARD Hub, Usage: smhub",
+	["rj|rejoin"] = "Rejoins the game, Usage: rj|rejoin",
+	["reset"] = "Resets your character, Usage: reset",
+	["walkspeed|speed|ws"] = "Changes your walkspeed, Usage: walkspeed|speed|ws {number}",
+	["jumppower|jp"] = "Changes your jumppower, Usage: jumppower|jp {number}",
+	["scripts"] = "Opens the script browser, Usage: scripts",
+	["goto|to"] = "Teleports you to a player, Usage: goto|to {player}",
+	["(un)view"] = "(un)Views a players camera, Usage: (un)view ({player})",
+	["maxzoom"] = "Sets your max camera zoom distance, Usage: maxzoom {number}",
+	["tptool|clicktp"] = "Gives you a tool you can teleport with, Usage: tptool|clicktp",
+	["spam"] = "Loops a command, Usage: spam {command} ({var})",
+	["unspam"] = "Stops all loops, Usage: unspam}",
+	["(un)notifications|notify"] = "Enables/Disables Notifications, Usage: (un)notifications|notify",
+	["(un)infinitejump|infjump"] = "Makes you (not) be able to jump infinitly, Usage: (un)infinitejump|infjump",
+	["headbring|hbring"] = "Teleports a players head to you [client], Usage: headbring|hbring {player}",
+	["(un)freeze"] = "(un)Anchors a players BaseParts [client], Usage: (un)freeze (player)",
+	["saveposition|savepos|spos"] = "Saves your current position, Usage: saveposition|savepos|spos",
+	["loadposition|loadpos|lpos"] = "Teleports you to your saved Position, Usage: loadposition|loadpos|lpos",
+	["(un)float|plattform|pf"] = "Creates/Deletes a invisible plattform under you, Usage: (un)float|plattform|pf",
+	["destroy"] = "Destroys SM Admin, Usage: destroy"
+}
+
+local spamming = {}
+
+local settings = {
+
+	infinitejump = false,
+	plattform = false,
+	NotificationsEnabled = true,
+	savedPosition = CFrame.new(0,0,0),
+	destroyed = false
+
+}
+
+local FocusLostEvent
+local PlayerChattedEvent
+local InputEndedEvent
+local JumpRequestEvent
+
+--CMDBAR
+local SMAdmin = Instance.new("ScreenGui")
+local CMDBar = Instance.new("Frame")
+local Command = Instance.new("TextBox")
+local TextLabel = Instance.new("TextLabel")
+
+--Properties:
+
+SMAdmin.Name = "SMAdmin"
+SMAdmin.ResetOnSpawn = false
+SMAdmin.Parent = plr:WaitForChild("PlayerGui")
+SMAdmin.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+CMDBar.Parent = SMAdmin
+CMDBar.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
+CMDBar.BackgroundTransparency = 0.100
+CMDBar.BorderColor3 = Color3.fromRGB(0, 255, 0)
+CMDBar.BorderSizePixel = 5
+CMDBar.Position = UDim2.new(0.0103359176, 0, 0.943890274, 0)
+CMDBar.Size = UDim2.new(0, 320, 0, 45)
+
+Command.Name = "Command"
+Command.Parent = CMDBar
+Command.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Command.BackgroundTransparency = 1.000
+Command.BorderSizePixel = 0
+Command.Position = UDim2.new(0.0187500007, 0, 0, 0)
+Command.Size = UDim2.new(0.959375024, 0, 1, 0)
+Command.Font = Enum.Font.SourceSansBold
+Command.PlaceholderText = "Command"
+Command.Text = ""
+Command.TextColor3 = Color3.fromRGB(255, 0, 4)
+Command.TextSize = 20.000
+Command.TextWrapped = true
+Command.TextXAlignment = Enum.TextXAlignment.Left
+Command.ClearTextOnFocus = false
+
+TextLabel.Parent = CMDBar
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0, 0, -0.75555557, 0)
+TextLabel.Size = UDim2.new(0, 136, 0, 34)
+TextLabel.Font = Enum.Font.SourceSansBold
+TextLabel.Text = "SM Admin"
+TextLabel.TextColor3 = Color3.fromRGB(13, 255, 0)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextWrapped = true
+
+function Notify(MSGTitle, MSGText)
+	if settings.NotificationsEnabled then
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = MSGTitle;
+			Text = MSGText;
+		})	
+	end
+end
+
+Notify("Loaded SM Admin", "Loaded")
+
+function resignvariables()
+	plr = plrs.LocalPlayer
+	char = plr.Character
+	humrp = char:FindFirstChild("HumanoidRootPart")
+	hum = char:FindFirstChild("Humanoid")
+end
+
+function GetPlayer(str)
+	local player
+	local selector = str[2]
+
+	if selector == "me" or selector == "" or selector == " " then
+		player = plr
+
+	elseif selector == "all" then
+		for i,v in pairs(plrs:GetPlayers()) do
+			execcommand(prefix..str[1].." "..v.Name)
+		end
+
+	elseif selector == "others" then
+		for i,v in pairs(plrs:GetPlayers()) do
+			if v.Name ~= plr.Name then
+				execcommand(prefix..str[1].." "..v.Name)
+			end
+		end
+
+
+	else
+		for i,v in pairs(plrs:GetPlayers()) do
+			if v.Name:lower():sub(1, #selector) == selector then
+				player = v
+			end
+		end
+	end
+	if selector ~= "all" or selector ~= "others" then
+		return player
+	end
+end
+
+function CF(pos)
+	if char then
+		if humrp then
+
+			if pos then
+				humrp.CFrame = pos
+			else
+				return humrp.CFrame
+			end
+
+		else
+			return nil
+		end
+	else
+		return nil
+	end
+end
+
+function execcommand(cmd)
+	resignvariables()
+	cmd = cmd:lower()
+	cmd = string.sub(cmd,2)
+	local args = string.split(cmd, " ")
+	local var
+	if args[2] then
+		var = args[2]
+	end
+
+	cmd = args[1]
+
+	--cmds
+	if cmd == "cmds" then
+		print("--------------------------------\nCOMMANDS: \n\nDOCUMENTAITON:\n() = Optional,\n| = Or\n\n\n")
+
+		for i,v in pairs(CommandList) do
+			print(prefix..i..":  "..v)
+		end
+
+		print("\n\n\n--------------------------------")
+		Notify("CMDS", "Commands were printed in the console")
+
+		--iy
+	elseif cmd == "iy" then
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+		Notify("Infinite Yield", "Loaded Infinite Yield")
+
+		--rspy
+	elseif cmd == "rspy" or cmd == "remotespy" then
+		loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
+		Notify("RSpy", "Loaded SimpleSpy")
+
+		--smhub
+	elseif cmd == "smhub" then
+		loadstring(game:HttpGet('https://pastebin.com/raw/NDchAmMS'))()
+		Notify("SMAGARD Hub", "Loaded SMAGARD Hub")
+
+		--rejoin
+	elseif cmd == "rj" or cmd == "rejoin" then
+		Notify("REJOIN", "Rejoining The Game")
+		ts:Teleport(game.PlaceId, plr)
+
+		--reset
+	elseif cmd == "reset" then
+		char:BreakJoints()
+		Notify("Reset", "Character resetted")
+
+		--walkspeed
+	elseif cmd == "walkspeed" or cmd == "speed" or cmd == "ws" then
+		hum.WalkSpeed = tonumber(var)
+		Notify("WalkSpeed", "Changed WalkSpeed to: "..var)
+
+		--jumppower
+	elseif cmd == "jumppower" or cmd == "jp" then
+		hum.JumpPower = tonumber(var)
+		Notify("JumpPower", "Changed jumppower to: "..var)
+
+		--script browser
+	elseif cmd == "scripts" then
+		loadstring(game:HttpGet("https://pastebin.com/raw/TmtE4qEF" ))()
+		Notify("Script Browser", "Opened The Script Browser")
+
+		--goto	
+	elseif cmd == "goto" or cmd == "to" then
+		local target = GetPlayer(args)
+		if var == "all" or var == "others" then return end
+		CF(target.Character.HumanoidRootPart.CFrame)
+		Notify("Teleport", "Teleported to: "..target.Name)
+
+		--(un)view
+	elseif cmd == "view" then
+		local target = GetPlayer(args)
+		if var == "all" or var == "others" then return end
+		ws.CurrentCamera.CameraSubject = target.Character.Humanoid		
+		Notify("View", "Now viewing: "..target.Name)
+	elseif cmd == "unview" then
+		Notify("UnView", "Stopped Viewing: "..ws.CurrentCamera.CameraSubject.Parent.Name)
+		ws.CurrentCamera.CameraSubject = hum
+
+		--maxzoom
+	elseif cmd == "maxzoom" then
+		plr.CameraMaxZoomDistance = tonumber(var)
+		Notify("MaxZoom", "Set CameraMaxZoomDistance to: "..tonumber(var))
+
+		--tptool
+	elseif cmd == "tptool" or cmd == "clicktp" then
+		local tool = Instance.new("Tool")
+		tool.RequiresHandle = false
+		tool.Name = "Click Teleport"
+		tool.Activated:connect(function()
+			local pos = plr:GetMouse().Hit+Vector3.new(0,2.5,0)
+			pos = CFrame.new(pos.X,pos.Y,pos.Z)
+			CF(pos)
+		end)
+		tool.Parent = plr.Backpack
+		Notify("TPTool", "Gave tptool")
+
+		--spam
+	elseif cmd == "spam" then
+		local var2
+		if args[3] then
+			var2 = args[3]
+		end
+		if var2 then
+			table.insert(spamming, var.." "..var2)
+		else
+			table.insert(spamming, var)
+		end
+		Notify("Spam", "Started Looping Command: "..var)
+	elseif cmd == "unspam" then
+		for i,v in ipairs(spamming) do
+			table.remove(spamming, i)
+		end
+		Notify("UnSpam", "Stopped All Loops")
+
+		--Notifications
+	elseif cmd == "notifications" or cmd == "notify" then
+		settings.NotificationsEnabled = true
+		Notify("Notify", "Enabled Notifications")
+	elseif cmd == "unnotifications" or cmd == "unnotify" then
+		Notify("UnNotify", "Disabled Notifications")
+		settings.NotificationsEnabled = false
+
+		--Infinite jump
+	elseif cmd == "infinitejump" or cmd == "infjump" then
+		settings.infinitejump = true
+		Notify("Enabled InfiniteJump")
+	elseif cmd == "uninfinitejump" or cmd == "uninfjump" then
+		settings.infinitejump = false
+		Notify("Disabled InfiniteJump")
+
+		--headbring
+	elseif cmd == "headbring" or cmd == "hbring" then
+		local target = GetPlayer(args)
+		if var == "all" or var == "others" then return end
+		if target.Character.Head:FindFirstChild("Neck") then
+			target.Character.Head.Neck:Destroy()
+		end
+		target.Character.Head.Anchored = true
+		target.Character.Head.CFrame = CF()
+		Notify("HeadBring", "Teleported Player: "..target.Name.."'s head to you")
+
+		--freeze
+	elseif cmd == "freeze" then
+		local target = GetPlayer(args)
+		if var == "all" or var == "others" then return end
+		for i,v in pairs(target.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.Anchored = true
+			end
+		end
+		Notify("Freeze", "Freezed Player: "..target.Name)
+	elseif cmd == "unfreeze" then
+		if var == "all" or var == "others" then return end
+		local target = GetPlayer(args)
+		for i,v in pairs(target.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.Anchored = false
+			end
+		end
+		Notify("UnFreeze", "Un Freezed Player: "..target.Name)
+
+		--saveposition
+	elseif cmd == "saveposition" or cmd == "savepos" or cmd == "spos" then
+		settings.savedPosition = CF()
+		Notify("SavePostition", "Saved your current position")
+
+		--loadposition
+	elseif cmd == "loadposition" or cmd == "loadpos" or cmd == "lpos" then
+		CF(settings.savedPosition)
+		Notify("LoadPosition", "Loaded your saved position")
+
+		--float
+	elseif cmd == "float" or cmd == "plattform" or cmd == "pf" then
+		if ws:FindFirstChild("SM Plattform") then return end
+		settings.plattform = true
+		local Plattform = Instance.new("Part")
+		Plattform.Name = "SM Plattform"
+		Plattform.Anchored = true
+		Plattform.Size = Vector3.new(2,0.2,1.5)
+		Plattform.Transparency = 1
+		Plattform.Parent = ws
+		Notify("Float", "Created Plattform")
+		task.spawn(function()
+			while settings.plattform do
+				wait()
+				Plattform.CFrame = CF() * CFrame.new(0,-3.1,0)
+			end
+		end)
+	elseif cmd == "unfloat" or cmd == "unplattform" or cmd == "unpf" then
+		if ws:FindFirstChild("SM Plattform") then
+			ws:FindFirstChild("SM Plattform"):Destroy()
+			settings.plattform = false
+			Notify("UnFloat", "Deleted Plattform")
+		end
+
+		--destroy
+	elseif cmd == "destroy" then
+		PlayerChattedEvent:Disconnect()
+		FocusLostEvent:Disconnect()
+		InputEndedEvent:Disconnect()
+		JumpRequestEvent:Disconnect()
+		SMAdmin:Destroy()
+
+		--unknown
+	else
+		Notify("CommandError", "Unknown Command: "..cmd..", use +cmds to see a list of commands!")
+	end
+end
+
+task.spawn(function()
+	while settings.destroyed == false do
+		task.wait()
+		for i,v in ipairs(spamming) do
+			if settings.NotificationsEnabled then
+				settings.NotificationsEnabled = false
+				execcommand(prefix..v)
+				settings.NotificationsEnabled = true
+			else
+				execcommand(prefix..v)
+			end
+		end
+	end
+end)
+
+
+PlayerChattedEvent = plr.Chatted:Connect(function(msg)
+	msg = msg:lower()
+	if string.sub(msg,1,3) == "/e " then
+		msg = string.sub(msg, 4)
+	end
+	if string.sub(msg, 1,1) == prefix then
+		execcommand(msg)
+	end
+end)
+
+FocusLostEvent = Command.FocusLost:Connect(function(enterPressed)
+	if enterPressed then
+
+		if string.sub(Command.Text, 1,1) == prefix then
+			execcommand(Command.Text)
+			Command.Text = ""
+		else
+			execcommand(prefix..Command.Text)
+			Command.Text = ""
+		end
+
+	end
+end)
+
+InputEndedEvent = uis.InputEnded:Connect(function(input, GameProccessedEvent)
+	if not GameProccessedEvent then
+		if input.KeyCode == Enum.KeyCode.Semicolon then
+			Command:CaptureFocus()
+
+		end
+	end
+end)
+
+JumpRequestEvent = uis.JumpRequest:Connect(function()
+	if settings.infinitejump then
+		hum:ChangeState(Enum.HumanoidStateType.Jumping)
+	end
+end)
