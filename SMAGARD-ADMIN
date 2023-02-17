@@ -32,6 +32,7 @@ local CommandList = {
 	["(un)notifications|notify"] = "Enables/Disables Notifications, Usage: (un)notifications|notify",
 	["(un)infinitejump|infjump"] = "Makes you (not) be able to jump infinitly, Usage: (un)infinitejump|infjump",
 	["headbring|hbring"] = "Teleports a players head to you [client], Usage: headbring|hbring {player}",
+	["bring"] = "Teleports a player to you [client], Usage: bring {player},
 	["(un)freeze"] = "(un)Anchors a players BaseParts [client], Usage: (un)freeze (player)",
 	["saveposition|savepos|spos"] = "Saves your current position, Usage: saveposition|savepos|spos",
 	["loadposition|loadpos|lpos"] = "Teleports you to your saved Position, Usage: loadposition|loadpos|lpos",
@@ -175,6 +176,7 @@ function CF(pos)
 end
 
 function execcommand(cmd)
+pcall function()
 	resignvariables()
 	cmd = cmd:lower()
 	cmd = string.sub(cmd,2)
@@ -315,6 +317,13 @@ function execcommand(cmd)
 		target.Character.Head.Anchored = true
 		target.Character.Head.Position = position
 		Notify("HeadBring", "Teleported Player: "..target.Name.."'s head to you")
+		
+	elseif cmd == "bring" then
+		local target = GetPlayer(args)
+		if var == "all" or var == "others" then return end
+		local direction = humrp.lookVector
+		local position = humrp.CFrame.p + direction * 5
+		target.Character.HumanoidRootPart.CFrame = CFrame.new(position)
 
 		--freeze
 	elseif cmd == "freeze" then
@@ -382,6 +391,7 @@ function execcommand(cmd)
 	else
 		Notify("CommandError", "Unknown Command: "..cmd..", use +cmds to see a list of commands!")
 	end
+end)
 end
 
 task.spawn(function()
