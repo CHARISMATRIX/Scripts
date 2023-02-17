@@ -312,6 +312,7 @@ function execcommand(cmd)
 		if var == "all" or var == "others" then return end
 		local direction = char["Head"].CFrame.lookVector
 		local position = char["Head"].CFrame.p + direction * 5
+		target.Character.Head.Anchored = true
 		target.Character.Head.Position = position
 		Notify("HeadBring", "Teleported Player: "..target.Name.."'s head to you")
 
