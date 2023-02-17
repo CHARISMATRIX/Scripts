@@ -313,15 +313,15 @@ function execcommand(cmd)
 
 			--spam
 		elseif cmd == "spam" or cmd == "loop" then
-			local var2
+			local var2 = ""
+			local var3 = ""
 			if args[3] then
 				var2 = args[3]
 			end
-			if var2 then
-				table.insert(spamming, var.." "..var2)
-			else
-				table.insert(spamming, var)
+			if args[4] then
+				var3 = args[4]
 			end
+			table.insert(spamming, var.." "..var2.." "..var3)
 			Notify("Spam", "Started Looping Command: "..var)
 		elseif cmd == "unspam" or cmd == "unloop" then
 			for i,v in ipairs(spamming) do
