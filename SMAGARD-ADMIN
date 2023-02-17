@@ -209,7 +209,7 @@ function execcommand(cmd)
 
 		--smhub
 	elseif cmd == "smhub" then
-		loadstring(game:HttpGet('https://pastebin.com/raw/NDchAmMS'))()
+		loadstring(game:HttpGet('https://github.com/CHARISMATRIX/Scripts/edit/main/SMAGARD-HUB'))()
 		Notify("SMAGARD Hub", "Loaded SMAGARD Hub")
 
 		--rejoin
