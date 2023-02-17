@@ -435,7 +435,7 @@ function execcommand(cmd)
 			if var == "all" or var == "others" then return end
 			target.Character["HumanoidRootPart"].Size = Vector3.new(tonumber(args[3]),tonumber(args[3]),tonumber(args[3]))
 			target.Character["HumanoidRootPart"].Transparency = 0.4
-			
+
 			--destroy
 		elseif cmd == "destroy" then
 			PlayerChattedEvent:Disconnect()
