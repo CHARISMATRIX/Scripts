@@ -396,7 +396,7 @@ task.spawn(function()
 				else
 					execcommand(prefix..v)
 				end
-			end
+			end)
 		end
 	end
 end)
