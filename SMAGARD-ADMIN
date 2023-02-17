@@ -39,6 +39,7 @@ local CommandList = {
 	["(un)float|plattform|pf"] = "Creates/Deletes a invisible plattform under you, Usage: (un)float|plattform|pf",
 	["destroy"] = "Destroys SM Admin, Usage: destroy",
 	["(un)music"] = "Plays/Stops a looped sound, Usage: music ({soundid})",
+	["hitbox"] = "Changes a players hitbox size, Usage: hitbox {player} {size}"
 }
 
 local spamming = {}
@@ -132,19 +133,23 @@ end
 function GetPlayer(str)
 	local player
 	local selector = str[2]
+	local str3 = ""
+	if str[3] then
+		str3 = str[3]
+	end
 
 	if selector == "me" or selector == "" or selector == " " then
 		player = plr
 
 	elseif selector == "all" then
 		for i,v in pairs(plrs:GetPlayers()) do
-			execcommand(prefix..str[1].." "..v.Name)
+			execcommand(prefix..str[1].." "..v.Name.." "..str3)
 		end
 
 	elseif selector == "others" then
 		for i,v in pairs(plrs:GetPlayers()) do
 			if v.Name ~= plr.Name then
-				execcommand(prefix..str[1].." "..v.Name)
+				execcommand(prefix..str[1].." "..v.Name.." "..str3)
 			end
 		end
 
@@ -416,7 +421,6 @@ function execcommand(cmd)
 			--music
 		elseif cmd == "music" then
 			if not GetFile("Music") then CreateFile("Music", "Sound", true) end
-			wait(.1)
 			GetFile("Music").SoundId = "rbxassetid://"..var
 			GetFile("Music").TimePosition = 0
 			GetFile("Music").Volume = 3
@@ -425,7 +429,13 @@ function execcommand(cmd)
 		elseif cmd == "unmusic" then
 			RemoveFile("Music", true)
 
-
+			--hitbox
+		elseif cmd == "hitbox" then
+			local target = GetPlayer(args)
+			if var == "all" or var == "others" then return end
+			target.Character["HumanoidRootPart"].Size = Vector3.new(tonumber(args[3]),tonumber(args[3]),tonumber(args[3]))
+			target.Character["HumanoidRootPart"].Transparency = 0.4
+			
 			--destroy
 		elseif cmd == "destroy" then
 			PlayerChattedEvent:Disconnect()
