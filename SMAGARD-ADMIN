@@ -388,12 +388,14 @@ task.spawn(function()
 	while settings.destroyed == false do
 		task.wait()
 		for i,v in ipairs(spamming) do
-			if settings.NotificationsEnabled then
-				settings.NotificationsEnabled = false
-				execcommand(prefix..v)
-				settings.NotificationsEnabled = true
-			else
-				execcommand(prefix..v)
+			pcall(function()
+				if settings.NotificationsEnabled then
+					settings.NotificationsEnabled = false
+					execcommand(prefix..v)
+					settings.NotificationsEnabled = true
+				else
+					execcommand(prefix..v)
+				end
 			end
 		end
 	end
