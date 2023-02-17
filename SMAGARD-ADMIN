@@ -416,6 +416,7 @@ function execcommand(cmd)
 			--music
 		elseif cmd == "music" then
 			if not GetFile("Music") then CreateFile("Music", "Sound", true) end
+			wait(.1)
 			GetFile("Music").SoundId = "rbxassetid://"..var
 			GetFile("Music").TimePosition = 0
 			GetFile("Music").Volume = 3
