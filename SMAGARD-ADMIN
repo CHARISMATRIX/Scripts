@@ -175,7 +175,6 @@ function GetFile(str)
 	if Files:FindFirstChild(str) then
 		return Files[str]
 	else
-		warn("SMAGARD-ADMIN: FILE NOT FOUND, "..str)
 		return nil
 	end
 end
@@ -347,6 +346,13 @@ function execcommand(cmd)
 			if var == "all" or var == "others" then return end
 			local direction = char["Head"].CFrame.lookVector
 			local position = char["Head"].CFrame.p + direction * 5
+
+			if target.Character:FindFirstChild("Torso") then
+				target.Character.Torso["Neck"]:Destroy()
+			elseif target.Character["Head"]:FindFirstChild("Neck") then
+				target.Character.Head["Neck"]:Destroy()
+			end
+
 			target.Character.Head.Anchored = true
 			target.Character.Head.Position = position
 			Notify("HeadBring", "Teleported Player: "..target.Name.."'s head to you")
@@ -354,7 +360,7 @@ function execcommand(cmd)
 		elseif cmd == "bring" then
 			local target = GetPlayer(args)
 			if var == "all" or var == "others" then return end
-			local direction = humrp.lookVector
+			local direction = humrp.CFrame.lookVector
 			local position = humrp.CFrame.p + direction * 5
 			target.Character.HumanoidRootPart.CFrame = CFrame.new(position)
 
@@ -409,14 +415,14 @@ function execcommand(cmd)
 
 			--music
 		elseif cmd == "music" then
-			if not GetFile("Music") then CreateFile("Music") end
+			if not GetFile("Music") then CreateFile("Music", "Sound", true) end
 			GetFile("Music").SoundId = var
 			GetFile("Music").TimePosition = 0
 			GetFile("Music").Volume = 3
 			GetFile("Music").Looped = true
 			GetFile("Music").Playing = true
 		elseif cmd == "unmusic" then
-			RemoveFile("Music")
+			RemoveFile("Music", true)
 
 
 			--destroy
@@ -426,6 +432,7 @@ function execcommand(cmd)
 			InputEndedEvent:Disconnect()
 			JumpRequestEvent:Disconnect()
 			SMAdmin:Destroy()
+			Files:Destroy()
 
 			--unknown
 		else
