@@ -1,0 +1,346 @@
+-- SMAGARD EXECUTOR
+
+-- Instances:
+
+local SMExecutor = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local PBExecutor = Instance.new("TextButton")
+local Executor = Instance.new("Frame")
+local Editor = Instance.new("ScrollingFrame")
+local Input = Instance.new("TextBox")
+local Display = Instance.new("TextLabel")
+local ExecuteBTN = Instance.new("TextButton")
+local ClearBTN = Instance.new("TextButton")
+local Scripts = Instance.new("Frame")
+local ScriptList = Instance.new("ScrollingFrame")
+local UIGridLayout = Instance.new("UIGridLayout")
+local PBScripts = Instance.new("TextButton")
+local AddScript = Instance.new("Frame")
+local ScriptCreator = Instance.new("Frame")
+local Name = Instance.new("TextBox")
+local Script = Instance.new("TextBox")
+local Submit = Instance.new("TextButton")
+local PBAddScript = Instance.new("TextButton")
+
+--Properties:
+
+SMExecutor.Name = "SMExecutor"
+SMExecutor.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+SMExecutor.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = SMExecutor
+MainFrame.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
+MainFrame.Position = UDim2.new(0.338501304, 0, 0.312967598, 0)
+MainFrame.Size = UDim2.new(0, 500, 0, 300)
+
+PBExecutor.Name = "PBExecutor"
+PBExecutor.Parent = MainFrame
+PBExecutor.BackgroundColor3 = Color3.fromRGB(79, 79, 79)
+PBExecutor.Size = UDim2.new(0, 93, 0, 33)
+PBExecutor.Font = Enum.Font.SourceSans
+PBExecutor.Text = "Executor"
+PBExecutor.TextColor3 = Color3.fromRGB(0, 255, 17)
+PBExecutor.TextSize = 25.000
+
+Executor.Name = "Executor"
+Executor.Parent = MainFrame
+Executor.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
+Executor.Position = UDim2.new(0, 0, 0.109999999, 0)
+Executor.Size = UDim2.new(0, 500, 0, 267)
+Executor.Visible = false
+
+Editor.Name = "Editor"
+Editor.Parent = Executor
+Editor.Active = true
+Editor.AnchorPoint = Vector2.new(0.0500000007, 0.100000001)
+Editor.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Editor.Position = UDim2.new(0.0859999955, 0, 0.110000014, 0)
+Editor.Size = UDim2.new(0, 450, 0, 240)
+Editor.CanvasSize = UDim2.new(0, 0, 1, 0)
+Editor.ScrollBarThickness = 10
+
+Input.Name = "Input"
+Input.Parent = Editor
+Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Input.BackgroundTransparency = 1.000
+Input.BorderSizePixel = 0
+Input.Size = UDim2.new(1, 0, 1, 0)
+Input.SizeConstraint = Enum.SizeConstraint.RelativeXX
+Input.ClearTextOnFocus = false
+Input.Font = Enum.Font.Ubuntu
+Input.MultiLine = true
+Input.Text = ""
+Input.TextColor3 = Color3.fromRGB(255, 255, 255)
+Input.TextSize = 20.000
+Input.TextTransparency = 1.000
+Input.TextWrapped = true
+Input.TextXAlignment = Enum.TextXAlignment.Left
+Input.TextYAlignment = Enum.TextYAlignment.Top
+
+Display.Name = "Display"
+Display.Parent = Editor
+Display.RichText = true
+Display.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Display.BackgroundTransparency = 1.000
+Display.BorderSizePixel = 0
+Display.Size = UDim2.new(1, 0, 1, 0)
+Display.Font = Enum.Font.Ubuntu
+Display.Text = ""
+Display.TextColor3 = Color3.fromRGB(255, 255, 255)
+Display.TextSize = 20.000
+Display.TextWrapped = true
+Display.TextXAlignment = Enum.TextXAlignment.Left
+Display.TextYAlignment = Enum.TextYAlignment.Top
+
+ExecuteBTN.Name = "ExecuteBTN"
+ExecuteBTN.Parent = Executor
+ExecuteBTN.BackgroundColor3 = Color3.fromRGB(102, 102, 102)
+ExecuteBTN.BorderSizePixel = 0
+ExecuteBTN.Position = UDim2.new(0, 0, 0.918988764, 0)
+ExecuteBTN.Size = UDim2.new(0, 90, 0, 20)
+ExecuteBTN.Font = Enum.Font.SourceSans
+ExecuteBTN.Text = "Execute"
+ExecuteBTN.TextColor3 = Color3.fromRGB(0, 255, 8)
+ExecuteBTN.TextSize = 25.000
+
+ClearBTN.Name = "ClearBTN"
+ClearBTN.Parent = Executor
+ClearBTN.BackgroundColor3 = Color3.fromRGB(102, 102, 102)
+ClearBTN.BorderSizePixel = 0
+ClearBTN.Position = UDim2.new(0, 100, 0.918988764, 0)
+ClearBTN.Size = UDim2.new(0, 90, 0, 20)
+ClearBTN.Font = Enum.Font.SourceSans
+ClearBTN.Text = "Clear"
+ClearBTN.TextColor3 = Color3.fromRGB(0, 255, 8)
+ClearBTN.TextSize = 25.000
+
+Scripts.Name = "Scripts"
+Scripts.Parent = MainFrame
+Scripts.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
+Scripts.Position = UDim2.new(0, 0, 0.109999999, 0)
+Scripts.Size = UDim2.new(0, 500, 0, 267)
+Scripts.Visible = false
+
+ScriptList.Name = "ScriptList"
+ScriptList.Parent = Scripts
+ScriptList.Active = true
+ScriptList.AnchorPoint = Vector2.new(0.0500000007, 0.100000001)
+ScriptList.BackgroundColor3 = Color3.fromRGB(62, 62, 62)
+ScriptList.Position = UDim2.new(0.0859999955, 0, 0.110000014, 0)
+ScriptList.Size = UDim2.new(0, 450, 0, 240)
+ScriptList.CanvasSize = UDim2.new(0, 0, 1, 0)
+ScriptList.ScrollBarThickness = 10
+
+UIGridLayout.Parent = ScriptList
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellSize = UDim2.new(0, 100, 0, 50)
+
+PBScripts.Name = "PBScripts"
+PBScripts.Parent = MainFrame
+PBScripts.BackgroundColor3 = Color3.fromRGB(79, 79, 79)
+PBScripts.Position = UDim2.new(0, 100, 0, 0)
+PBScripts.Size = UDim2.new(0, 93, 0, 33)
+PBScripts.Font = Enum.Font.SourceSans
+PBScripts.Text = "Scripts"
+PBScripts.TextColor3 = Color3.fromRGB(0, 255, 17)
+PBScripts.TextSize = 25.000
+
+AddScript.Name = "AddScript"
+AddScript.Parent = MainFrame
+AddScript.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
+AddScript.Position = UDim2.new(0, 0, 0.109999999, 0)
+AddScript.Size = UDim2.new(0, 500, 0, 267)
+AddScript.Visible = false
+
+ScriptCreator.Name = "ScriptCreator"
+ScriptCreator.Parent = AddScript
+ScriptCreator.AnchorPoint = Vector2.new(0.0500000007, 0.100000001)
+ScriptCreator.BackgroundColor3 = Color3.fromRGB(62, 62, 62)
+ScriptCreator.Position = UDim2.new(0.0860000029, 0, 0.109999999, 0)
+ScriptCreator.Size = UDim2.new(0, 450, 0, 240)
+
+Name.Name = "Name"
+Name.Parent = ScriptCreator
+Name.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Name.Position = UDim2.new(0.168888912, 0, 0.0833333358, 0)
+Name.Size = UDim2.new(0, 300, 0, 50)
+Name.Font = Enum.Font.SourceSans
+Name.PlaceholderText = "Name"
+Name.Text = ""
+Name.TextColor3 = Color3.fromRGB(255, 255, 255)
+Name.TextScaled = true
+Name.TextSize = 14.000
+Name.TextWrapped = true
+
+Script.Name = "Script"
+Script.Parent = ScriptCreator
+Script.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Script.Position = UDim2.new(0.168888912, 0, 0.349999994, 0)
+Script.Size = UDim2.new(0, 300, 0, 50)
+Script.Font = Enum.Font.SourceSans
+Script.PlaceholderText = "Script"
+Script.Text = ""
+Script.TextColor3 = Color3.fromRGB(255, 255, 255)
+Script.TextScaled = true
+Script.TextSize = 14.000
+Script.TextWrapped = true
+
+Submit.Name = "Submit"
+Submit.Parent = ScriptCreator
+Submit.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Submit.Position = UDim2.new(0.169, 0, 0.679166675, 0)
+Submit.Size = UDim2.new(0, 200, 0, 50)
+Submit.Font = Enum.Font.SourceSans
+Submit.Text = "Submit"
+Submit.TextColor3 = Color3.fromRGB(26, 255, 0)
+Submit.TextScaled = true
+Submit.TextSize = 14.000
+Submit.TextWrapped = true
+
+PBAddScript.Name = "PBAddScript"
+PBAddScript.Parent = MainFrame
+PBAddScript.BackgroundColor3 = Color3.fromRGB(79, 79, 79)
+PBAddScript.Position = UDim2.new(0, 200, 0, 0)
+PBAddScript.Size = UDim2.new(0, 93, 0, 33)
+PBAddScript.Font = Enum.Font.SourceSans
+PBAddScript.Text = "Add Script"
+PBAddScript.TextColor3 = Color3.fromRGB(0, 255, 17)
+PBAddScript.TextSize = 25.000
+
+
+local ScriptDict = {
+	["Infinite Yield"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()",
+	["CMD-X"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source'))()"
+}
+
+local Colors = {
+
+	[Color3.fromRGB(132, 214, 247)] = {
+		"Color3",
+		"Vector3",
+		"Vector2",
+		"CFrame",
+		"print"
+	},
+	[Color3.fromRGB(248, 109, 124)] = {
+		"return",
+		"if",
+		"then",
+		"else",
+		"local",
+		"function",
+		"end",
+		"for",
+		"in",
+		"while",
+		"do"
+	},
+	[Color3.fromRGB(255, 198, 0)] = {
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"0"
+	}
+
+}
+
+function SwitchSite(site)
+	for i,v in pairs(MainFrame:GetChildren()) do
+		if v:IsA("Frame") then
+			v.Visible = false
+		end
+	end
+	if MainFrame:FindFirstChild(site) then
+		MainFrame:FindFirstChild(site).Visible = true
+	end
+end
+
+function UpdateScripts()
+	for i,v in pairs(ScriptList:GetChildren()) do
+		if v:IsA("TextButton") then
+			v:Destroy()
+		end
+	end
+	for i,v in pairs(ScriptDict) do
+		local newBTN = Instance.new("TextButton")
+		newBTN.BackgroundColor3 = Color3.fromRGB(34, 255, 0)
+		newBTN.Size = UDim2.new(0, 200, 0, 50)
+		newBTN.Font = Enum.Font.Arcade
+		newBTN.TextColor3 = Color3.fromRGB(0, 0, 0)
+		newBTN.TextSize = 25.000
+		newBTN.Name = i
+		newBTN.Text = i
+		newBTN.Parent = ScriptList
+
+		newBTN.MouseButton1Down:Connect(function()
+			loadstring(table.find(ScriptDict,newBTN.Name))
+		end)
+
+	end
+end
+
+local ColorizePattern = '<font color="rgb(%d,%d,%d)">%s</font>'
+
+function Colorize(keyword, color)
+	return string.format(ColorizePattern, color.r*255,color.g*255,color.b*255, keyword)
+end
+
+function ProcessText(text)
+	for color,keywords in pairs(Colors) do
+		for i,keyword in pairs(keywords) do
+			text = string.gsub(text, keyword, Colorize(keyword, color))
+		end
+	end
+end
+
+function InputChanged()
+	local text = Input.Text
+	Display.Text = ProcessText(text)
+end
+
+SwitchSite("Executor")
+
+UpdateScripts()
+
+
+PBExecutor.MouseButton1Down:Connect(SwitchSite("Executor"))
+PBScripts.MouseButton1Down:Connect(SwitchSite("Scripts"))
+PBAddScript.MouseButton1Down:Connect(SwitchSite("AddScript"))
+
+ExecuteBTN.MouseButton1Down:Connect(function()
+	loadstring(Input.Text)()
+end)
+ClearBTN.MouseButton1Down:Connect(function()
+	Input.Text = ""
+	Display.Text = ""
+end)
+
+Input:GetPropertyChangedSignal("Text"):Connect(InputChanged)
+
+Input:GetPropertyChangedSignal("TextFits"):Connect(function()
+	while Input.TextFits == false do
+		Editor.CanvasSize = UDim2.new(0, 0, 0, Editor.CanvasSize.Y.Offset + 16)
+		Editor.CanvasPosition = Vector2.new(0, Editor.CanvasSize.Y.Offset - Editor.AbsoluteWindowSize.Y)
+	end
+end)
+
+Input:GetPropertyChangedSignal("TextBounds"):Connect(function()
+	if Editor.CanvasSize.Y.Offset > Input.TextBounds.Y + 16 then
+		Editor.CanvasSize = UDim2.new(0, 0, 0, Input.TextBounds.Y)
+		Editor.CanvasPosition = Vector2.new(0, Editor.CanvasSize.Y.Offset - Editor.AbsoluteWindowSize.Y)
+	end
+end)
+
+
+
+Submit.MouseButton1Down:Connect(function()
+	ScriptDict[Name] = Script
+	UpdateScripts()
+end)
