@@ -63,7 +63,7 @@ Editor.AnchorPoint = Vector2.new(0.0500000007, 0.100000001)
 Editor.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Editor.Position = UDim2.new(0.0859999955, 0, 0.110000014, 0)
 Editor.Size = UDim2.new(0, 450, 0, 240)
-Editor.CanvasSize = UDim2.new(0, 0, 500, 0)
+Editor.CanvasSize = UDim2.new(0, 0, 10, 0)
 Editor.ScrollBarThickness = 10
 
 Input.Name = "Input"
@@ -350,6 +350,9 @@ function LoadScripts()
 			newBTN.Text = string.gsub(v, "SMExecutor\\", "")
 			newBTN.Parent = ScriptList
 			newBTN.MouseButton1Down:Connect(function()
+				loadstring(readfile(v))()
+			end)
+			newBTN.MouseButton2Down:Connect(function()
 				Input.Text = readfile(v)
 			end)
 		end
