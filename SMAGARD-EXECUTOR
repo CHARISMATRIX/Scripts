@@ -55,7 +55,6 @@ Executor.Parent = MainFrame
 Executor.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
 Executor.Position = UDim2.new(0, 0, 0.109999999, 0)
 Executor.Size = UDim2.new(0, 500, 0, 267)
-Executor.Visible = false
 
 Editor.Name = "Editor"
 Editor.Parent = Executor
@@ -148,7 +147,7 @@ TextSize.Name = "TextSize"
 TextSize.Parent = Executor
 TextSize.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
 TextSize.BorderSizePixel = 0
-TextSize.Position = UDim2.new(0.170000002, 300, 0.922745347, 0)
+TextSize.Position = UDim2.new(0, 400, 0.918988764, 0)
 TextSize.Size = UDim2.new(0, 90, 0, 20)
 TextSize.Font = Enum.Font.SourceSans
 TextSize.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
@@ -195,7 +194,6 @@ AddScript.Parent = MainFrame
 AddScript.BackgroundColor3 = Color3.fromRGB(57, 57, 57)
 AddScript.Position = UDim2.new(0, 0, 0.109999999, 0)
 AddScript.Size = UDim2.new(0, 500, 0, 267)
-AddScript.Visible = false
 
 ScriptCreator.Name = "ScriptCreator"
 ScriptCreator.Parent = AddScript
@@ -331,19 +329,31 @@ local Colors = {
 local Syntax = true
 
 function CreateScript(name, code)
-	local newBTN = Instance.new("TextButton")
-	newBTN.BackgroundColor3 = Color3.fromRGB(34, 255, 0)
-	newBTN.Size = UDim2.new(0, 200, 0, 50)
-	newBTN.Font = Enum.Font.Arcade
-	newBTN.TextColor3 = Color3.fromRGB(0, 0, 0)
-	newBTN.TextScaled = true
-	newBTN.Name = name
-	newBTN.Text = name
-	newBTN.Parent = ScriptList
+	if not isfolder("SMExecutor") then
+		makefolder("SMExecutor")
+	end
+	if not isfile("SMExecutor/"..name) then
+		writefile("SMExecutor/"..name, code)
+	end
+end
 
-	newBTN.MouseButton1Down:Connect(function()
-		loadstring(code)()
-	end)
+function LoadScripts()
+	for i,v in pairs(listfiles("SMExecutor")) do
+		if not ScriptList:FindFirstChild(string.gsub(v, "SMExecutor\\", "")) then
+			local newBTN = Instance.new("TextButton")
+			newBTN.BackgroundColor3 = Color3.fromRGB(34, 255, 0)
+			newBTN.Size = UDim2.new(0, 200, 0, 50)
+			newBTN.Font = Enum.Font.Arcade
+			newBTN.TextColor3 = Color3.fromRGB(0, 0, 0)
+			newBTN.TextScaled = true
+			newBTN.Name = string.gsub(v, "SMExecutor\\", "")
+			newBTN.Text = string.gsub(v, "SMExecutor\\", "")
+			newBTN.Parent = ScriptList
+			newBTN.MouseButton1Down:Connect(function()
+				Input.Text = readfile(v)
+			end)
+		end
+	end
 end
 
 local ColorizePattern = '<font color="rgb(%d, %d, %d)">%s</font>'
@@ -378,11 +388,13 @@ CreateScript("SMAGARD Admin", "loadstring(game:HttpGet('https://raw.githubuserco
 CreateScript("VG Hub", "loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/V.Ghub'))()")
 CreateScript("Dex Explorer", "loadstring(game:HttpGet('https://paste.ee/r/DnETk'))()")
 
+LoadScripts()
 
 PBExecutor.MouseButton1Down:Connect(function()
 	Executor.Visible = true
 	Scripts.Visible = false
 	AddScript.Visible = false
+
 end)
 PBScripts.MouseButton1Down:Connect(function()
 	Executor.Visible = false
@@ -394,6 +406,7 @@ PBAddScript.MouseButton1Down:Connect(function()
 	Scripts.Visible = false
 	AddScript.Visible = true
 end)
+
 
 Input:GetPropertyChangedSignal("Text"):Connect(InputChanged)
 
@@ -440,6 +453,7 @@ end)
 
 Submit.MouseButton1Down:Connect(function()
 	CreateScript(Name.Text, Script.Text)
+	LoadScripts()
 end)
 
 Close.MouseButton1Down:Connect(function()
