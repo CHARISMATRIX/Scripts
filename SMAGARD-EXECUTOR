@@ -11,6 +11,7 @@ local Input = Instance.new("TextBox")
 local Display = Instance.new("TextLabel")
 local ExecuteBTN = Instance.new("TextButton")
 local ClearBTN = Instance.new("TextButton")
+local PresetBTN = Instance.new("TextButton")
 local Scripts = Instance.new("Frame")
 local ScriptList = Instance.new("ScrollingFrame")
 local UIGridLayout = Instance.new("UIGridLayout")
@@ -21,12 +22,16 @@ local Name = Instance.new("TextBox")
 local Script = Instance.new("TextBox")
 local Submit = Instance.new("TextButton")
 local PBAddScript = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
+local Minimize = Instance.new("TextButton")
+local Maximize = Instance.new("TextButton")
 
 --Properties:
 
 SMExecutor.Name = "SMExecutor"
 SMExecutor.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 SMExecutor.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SMExecutor.ResetOnSpawn = false
 
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = SMExecutor
@@ -57,7 +62,7 @@ Editor.AnchorPoint = Vector2.new(0.0500000007, 0.100000001)
 Editor.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Editor.Position = UDim2.new(0.0859999955, 0, 0.110000014, 0)
 Editor.Size = UDim2.new(0, 450, 0, 240)
-Editor.CanvasSize = UDim2.new(0, 0, 1, 0)
+Editor.CanvasSize = UDim2.new(0, 0, 500, 0)
 Editor.ScrollBarThickness = 10
 
 Input.Name = "Input"
@@ -114,6 +119,17 @@ ClearBTN.Font = Enum.Font.SourceSans
 ClearBTN.Text = "Clear"
 ClearBTN.TextColor3 = Color3.fromRGB(0, 255, 8)
 ClearBTN.TextSize = 25.000
+
+PresetBTN.Name = "PresetBTN"
+PresetBTN.Parent = Executor
+PresetBTN.BackgroundColor3 = Color3.fromRGB(102, 102, 102)
+PresetBTN.BorderSizePixel = 0
+PresetBTN.Position = UDim2.new(0, 200, 0.918988764, 0)
+PresetBTN.Size = UDim2.new(0, 90, 0, 20)
+PresetBTN.Font = Enum.Font.SourceSans
+PresetBTN.Text = "Preset"
+PresetBTN.TextColor3 = Color3.fromRGB(0, 255, 8)
+PresetBTN.TextSize = 25.000
 
 Scripts.Name = "Scripts"
 Scripts.Parent = MainFrame
@@ -208,11 +224,42 @@ PBAddScript.Text = "Add Script"
 PBAddScript.TextColor3 = Color3.fromRGB(0, 255, 17)
 PBAddScript.TextSize = 25.000
 
+Close.Name = "Close"
+Close.Parent = MainFrame
+Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Close.BackgroundTransparency = 1.000
+Close.Position = UDim2.new(0.950000048, 0, 0, 0)
+Close.Size = UDim2.new(0, 25, 0, 25)
+Close.Font = Enum.Font.Arcade
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextSize = 20.000
 
-local ScriptDict = {
-	["Infinite Yield"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()",
-	["CMD-X"] = "loadstring(game:HttpGet('https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source'))()"
-}
+Minimize.Name = "Minimize"
+Minimize.Parent = MainFrame
+Minimize.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Minimize.BackgroundTransparency = 1.000
+Minimize.Position = UDim2.new(0.899999976, 0, 0, 0)
+Minimize.Size = UDim2.new(0, 25, 0, 25)
+Minimize.Font = Enum.Font.Arcade
+Minimize.Text = "-"
+Minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+Minimize.TextSize = 20.000
+
+Maximize.Name = "Maximize"
+Maximize.Parent = SMExecutor
+Maximize.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Maximize.Position = UDim2.new(0.969672143, 0, 0.483790517, 0)
+Maximize.Size = UDim2.new(0, 25, 0, 25)
+Maximize.Visible = false
+Maximize.Font = Enum.Font.Arcade
+Maximize.Text = "+"
+Maximize.TextColor3 = Color3.fromRGB(255, 255, 255)
+Maximize.TextSize = 20.000
+
+MainFrame.Draggable = true
+MainFrame.Active = true
+MainFrame.Selectable = true
 
 local Colors = {
 
@@ -221,7 +268,18 @@ local Colors = {
 		"Vector3",
 		"Vector2",
 		"CFrame",
-		"print"
+		"Udim",
+		"Udim2",
+		"print",
+		"loadstring",
+		"game",
+		"workspace",
+		"pairs",
+		"string",
+		"table",
+		"tostring",
+		"tonumber",
+		"getfenv"
 	},
 	[Color3.fromRGB(248, 109, 124)] = {
 		"return",
@@ -232,87 +290,82 @@ local Colors = {
 		"function",
 		"end",
 		"for",
-		"in",
 		"while",
 		"do"
 	},
 	[Color3.fromRGB(255, 198, 0)] = {
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"0"
+		"true",
+		"false",
+		"getgenv"
 	}
-
 }
 
-function SwitchSite(site)
-	for i,v in pairs(MainFrame:GetChildren()) do
-		if v:IsA("Frame") then
-			v.Visible = false
-		end
-	end
-	if MainFrame:FindFirstChild(site) then
-		MainFrame:FindFirstChild(site).Visible = true
-	end
+function CreateScript(name, code)
+	local newBTN = Instance.new("TextButton")
+	newBTN.BackgroundColor3 = Color3.fromRGB(34, 255, 0)
+	newBTN.Size = UDim2.new(0, 200, 0, 50)
+	newBTN.Font = Enum.Font.Arcade
+	newBTN.TextColor3 = Color3.fromRGB(0, 0, 0)
+	newBTN.TextScaled = true
+	newBTN.Name = name
+	newBTN.Text = name
+	newBTN.Parent = ScriptList
+
+	newBTN.MouseButton1Down:Connect(function()
+		loadstring(code)()
+	end)
 end
 
-function UpdateScripts()
-	for i,v in pairs(ScriptList:GetChildren()) do
-		if v:IsA("TextButton") then
-			v:Destroy()
-		end
-	end
-	for i,v in pairs(ScriptDict) do
-		local newBTN = Instance.new("TextButton")
-		newBTN.BackgroundColor3 = Color3.fromRGB(34, 255, 0)
-		newBTN.Size = UDim2.new(0, 200, 0, 50)
-		newBTN.Font = Enum.Font.Arcade
-		newBTN.TextColor3 = Color3.fromRGB(0, 0, 0)
-		newBTN.TextSize = 25.000
-		newBTN.Name = i
-		newBTN.Text = i
-		newBTN.Parent = ScriptList
+local ColorizePattern = '<font color="rgb(%d, %d, %d)">%s</font>'
 
-		newBTN.MouseButton1Down:Connect(function()
-			loadstring(table.find(ScriptDict,newBTN.Name))
-		end)
-
-	end
+local function Colorize(keyword, color)
+	return string.format(ColorizePattern, color.r*255, color.g*255, color.b*255, keyword)
 end
 
-local ColorizePattern = '<font color="rgb(%d,%d,%d)">%s</font>'
-
-function Colorize(keyword, color)
-	return string.format(ColorizePattern, color.r*255,color.g*255,color.b*255, keyword)
-end
-
-function ProcessText(text)
-	for color,keywords in pairs(Colors) do
-		for i,keyword in pairs(keywords) do
+local function ProcessText(text)
+	for color, keywords in pairs(Colors) do
+		for _, keyword in pairs(keywords) do
 			text = string.gsub(text, keyword, Colorize(keyword, color))
 		end
 	end
+	return text
 end
 
-function InputChanged()
+local function InputChanged()
 	local text = Input.Text
 	Display.Text = ProcessText(text)
 end
 
-SwitchSite("Executor")
+Executor.Visible = true
+Scripts.Visible = false
+AddScript.Visible = false
 
-UpdateScripts()
+CreateScript("CMD-X", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source'))()")
+CreateScript("Infinite Yield", "loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()")
+CreateScript("Anti Lag", "loadstring(game:HttpGet('https://pastebin.com/raw/eVHmQQvQ'))()")
+CreateScript("SMAGARD Hub", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-HUB'))()")
+CreateScript("SMAGARD Admin", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-ADMIN'))()")
+CreateScript("VG Hub", "loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/V.Ghub'))()")
+CreateScript("Dex Explorer", "loadstring(game:HttpGet('https://paste.ee/r/DnETk'))()")
 
 
-PBExecutor.MouseButton1Down:Connect(SwitchSite("Executor"))
-PBScripts.MouseButton1Down:Connect(SwitchSite("Scripts"))
-PBAddScript.MouseButton1Down:Connect(SwitchSite("AddScript"))
+PBExecutor.MouseButton1Down:Connect(function()
+	Executor.Visible = true
+	Scripts.Visible = false
+	AddScript.Visible = false
+end)
+PBScripts.MouseButton1Down:Connect(function()
+	Executor.Visible = false
+	Scripts.Visible = true
+	AddScript.Visible = false
+end)
+PBAddScript.MouseButton1Down:Connect(function()
+	Executor.Visible = false
+	Scripts.Visible = false
+	AddScript.Visible = true
+end)
+
+Input:GetPropertyChangedSignal("Text"):Connect(InputChanged)
 
 ExecuteBTN.MouseButton1Down:Connect(function()
 	loadstring(Input.Text)()
@@ -321,26 +374,33 @@ ClearBTN.MouseButton1Down:Connect(function()
 	Input.Text = ""
 	Display.Text = ""
 end)
-
-Input:GetPropertyChangedSignal("Text"):Connect(InputChanged)
-
-Input:GetPropertyChangedSignal("TextFits"):Connect(function()
-	while Input.TextFits == false do
-		Editor.CanvasSize = UDim2.new(0, 0, 0, Editor.CanvasSize.Y.Offset + 16)
-		Editor.CanvasPosition = Vector2.new(0, Editor.CanvasSize.Y.Offset - Editor.AbsoluteWindowSize.Y)
-	end
+PresetBTN.MouseButton1Down:Connect(function()
+	Input.Text = [[
+local ws = game:GetService("Workspace")
+local rs = game:GetService("ReplicatedStorage")
+local plrs = game:GetService("Players")
+local plr = plrs.LocalPlayer
+local bp = plr.Backpack
+local char = plr.Character
+local hum = char:WaitForChild("Humanoid")
+local humrp = char:WaitForChild("HumanoidRootPart")
+]]
 end)
-
-Input:GetPropertyChangedSignal("TextBounds"):Connect(function()
-	if Editor.CanvasSize.Y.Offset > Input.TextBounds.Y + 16 then
-		Editor.CanvasSize = UDim2.new(0, 0, 0, Input.TextBounds.Y)
-		Editor.CanvasPosition = Vector2.new(0, Editor.CanvasSize.Y.Offset - Editor.AbsoluteWindowSize.Y)
-	end
-end)
-
-
 
 Submit.MouseButton1Down:Connect(function()
-	ScriptDict[Name] = Script
-	UpdateScripts()
+	CreateScript(Name.Text, Script.Text)
+end)
+
+Close.MouseButton1Down:Connect(function()
+	SMExecutor:Destroy()
+end)
+Minimize.MouseButton1Down:Connect(function()
+	Minimize.Visible = false
+	MainFrame.Visible = false
+	Maximize.Visible = true
+end)
+Maximize.MouseButton1Down:Connect(function()
+	Minimize.Visible = true
+	MainFrame.Visible = true
+	Maximize.Visible = false
 end)
