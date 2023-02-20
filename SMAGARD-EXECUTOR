@@ -12,6 +12,8 @@ local Display = Instance.new("TextLabel")
 local ExecuteBTN = Instance.new("TextButton")
 local ClearBTN = Instance.new("TextButton")
 local PresetBTN = Instance.new("TextButton")
+local SyntaxBTN = Instance.new("TextButton")
+local TextSize = Instance.new("TextBox")
 local Scripts = Instance.new("Frame")
 local ScriptList = Instance.new("ScrollingFrame")
 local UIGridLayout = Instance.new("UIGridLayout")
@@ -130,6 +132,32 @@ PresetBTN.Font = Enum.Font.SourceSans
 PresetBTN.Text = "Preset"
 PresetBTN.TextColor3 = Color3.fromRGB(0, 255, 8)
 PresetBTN.TextSize = 25.000
+
+SyntaxBTN.Name = "SyntaxBTN"
+SyntaxBTN.Parent = Executor
+SyntaxBTN.BackgroundColor3 = Color3.fromRGB(102, 102, 102)
+SyntaxBTN.BorderSizePixel = 0
+SyntaxBTN.Position = UDim2.new(0, 300, 0.918988764, 0)
+SyntaxBTN.Size = UDim2.new(0, 90, 0, 20)
+SyntaxBTN.Font = Enum.Font.SourceSans
+SyntaxBTN.Text = "Syntax OFF"
+SyntaxBTN.TextColor3 = Color3.fromRGB(0, 255, 8)
+SyntaxBTN.TextSize = 20.000
+
+TextSize.Name = "TextSize"
+TextSize.Parent = Executor
+TextSize.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+TextSize.BorderSizePixel = 0
+TextSize.Position = UDim2.new(0.170000002, 300, 0.922745347, 0)
+TextSize.Size = UDim2.new(0, 90, 0, 20)
+TextSize.Font = Enum.Font.SourceSans
+TextSize.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
+TextSize.PlaceholderText = "Text Size (20)"
+TextSize.Text = "20"
+TextSize.TextColor3 = Color3.fromRGB(4, 255, 0)
+TextSize.TextScaled = true
+TextSize.ClearTextOnFocus = false
+TextSize.TextWrapped = true
 
 Scripts.Name = "Scripts"
 Scripts.Parent = MainFrame
@@ -300,6 +328,8 @@ local Colors = {
 	}
 }
 
+local Syntax = true
+
 function CreateScript(name, code)
 	local newBTN = Instance.new("TextButton")
 	newBTN.BackgroundColor3 = Color3.fromRGB(34, 255, 0)
@@ -385,6 +415,27 @@ local char = plr.Character
 local hum = char:WaitForChild("Humanoid")
 local humrp = char:WaitForChild("HumanoidRootPart")
 ]]
+end)
+
+SyntaxBTN.MouseButton1Down:Connect(function()
+	if SyntaxBTN.Text == "Syntax OFF" then
+		SyntaxBTN.Text = "Syntax ON"
+		Display.TextTransparency = 1.000
+		Input.TextTransparency = 0.000
+		Syntax = false
+	else
+		SyntaxBTN.Text = "Syntax OFF"
+		Display.TextTransparency = 0.000
+		Input.TextTransparency = 1.000
+		Syntax = true
+	end
+end)
+
+TextSize:GetPropertyChangedSignal("Text"):Connect(function()
+	if tonumber(TextSize.Text) then
+		Input.TextSize = tonumber(TextSize.Text)
+		Display.TextSize = tonumber(TextSize.Text)
+	end
 end)
 
 Submit.MouseButton1Down:Connect(function()
