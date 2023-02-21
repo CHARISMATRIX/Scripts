@@ -1,0 +1,177 @@
+local plr = game:GetService("Players").LocalPlayer
+local char = plr.Character
+local hum = char:WaitForChild("Humanoid")
+local humrp = char:WaitForChild("HumanoidRootPart")
+local ws = game:GetService("Workspace")
+local rs = game:GetService("ReplicatedStorage")
+
+-- Instances:
+
+local TTBattlegrounds = Instance.new("ScreenGui")
+local MF = Instance.new("Frame")
+local StartStop = Instance.new("TextButton")
+local SetCharacter = Instance.new("TextButton")
+local Character = Instance.new("TextBox")
+
+--Properties:
+
+TTBattlegrounds.Name = "TTBattlegrounds"
+TTBattlegrounds.ResetOnSpawn = false
+TTBattlegrounds.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+TTBattlegrounds.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+MF.Name = "MF"
+MF.Parent = TTBattlegrounds
+MF.BackgroundColor3 = Color3.fromRGB(58, 58, 58)
+MF.Position = UDim2.new(0.401808798, 0, 0.397755623, 0)
+MF.Size = UDim2.new(0, 304, 0, 163)
+MF.Draggable = true
+MF.Active = true
+MF.Selectable = true
+
+StartStop.Name = "Start/Stop"
+StartStop.Parent = MF
+StartStop.BackgroundColor3 = Color3.fromRGB(38, 255, 0)
+StartStop.Position = UDim2.new(0.171052635, 0, 0.69325155, 0)
+StartStop.Size = UDim2.new(0, 200, 0, 50)
+StartStop.Font = Enum.Font.Arcade
+StartStop.Text = "Start"
+StartStop.TextColor3 = Color3.fromRGB(0, 0, 0)
+StartStop.TextScaled = true
+StartStop.TextSize = 14.000
+StartStop.TextWrapped = true
+
+SetCharacter.Name = "SetCharacter"
+SetCharacter.Parent = MF
+SetCharacter.BackgroundColor3 = Color3.fromRGB(0, 255, 42)
+SetCharacter.Position = UDim2.new(0.171052635, 0, 0.386503071, 0)
+SetCharacter.Size = UDim2.new(0, 200, 0, 50)
+SetCharacter.Font = Enum.Font.Arcade
+SetCharacter.Text = "Set"
+SetCharacter.TextColor3 = Color3.fromRGB(0, 0, 0)
+SetCharacter.TextScaled = true
+SetCharacter.TextSize = 14.000
+SetCharacter.TextWrapped = true
+
+Character.Name = "Character"
+Character.Parent = MF
+Character.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Character.Position = UDim2.new(0.171052635, 0, 0.0797545984, 0)
+Character.Size = UDim2.new(0, 200, 0, 50)
+Character.Font = Enum.Font.SciFi
+Character.PlaceholderText = "Character"
+Character.Text = "Robin"
+Character.TextColor3 = Color3.fromRGB(255, 0, 4)
+Character.TextScaled = true
+Character.TextSize = 14.000
+Character.TextWrapped = true
+
+
+local CHARACTERNAME = Character.Text
+
+getgenv().auugh = false
+
+function gulpgulp(stoopid, min, max)
+	local RANDOMX = math.random(min,max)
+	local RANDOMY = math.random(min,max)
+	local RANDOMZ = math.random(min,max)
+	local cf = CFrame.new(stoopid.Character:FindFirstChild("HumanoidRootPart").CFrame.p + Vector3.new(RANDOMX, RANDOMY, RANDOMZ), stoopid.Character:FindFirstChild("HumanoidRootPart").Position)
+	return cf
+end
+
+function vars()
+	plr = game:GetService("Players").LocalPlayer
+	char = plr.Character
+	hum = char:WaitForChild("Humanoid")
+	humrp = char:WaitForChild("HumanoidRootPart")
+	ws = game:GetService("Workspace")
+	rs = game:GetService("ReplicatedStorage")
+end
+
+function hoeyya()
+	vars()
+	while hum.Health ~= 0 do
+		vars()
+
+		wait()
+		for i,hs in pairs(game:GetService("Players"):GetPlayers()) do
+			pcall(function()
+				if not auugh then return end
+				vars()
+
+				if hs ~= plr and not hs.Character:FindFirstChildWhichIsA("ForceField") then
+                    ws.CurrentCamera.CameraSubject = hs.Character["Humanoid"]
+					repeat wait()
+
+
+						if not auugh then return end
+						if hum.Health == 0 then return end
+						humrp.CFrame = gulpgulp(hs, -15, 15)
+						hs.Character:FindFirstChild("HumanoidRootPart").Size = Vector3.new(60,60,60)
+						hs.Character:FindFirstChild("HumanoidRootPart").Transparency = 0.4
+						wait(.1)
+
+						for i,v in pairs(plr.Backpack:GetChildren()) do
+
+							if v:IsA("Tool") then
+								humrp.CFrame = gulpgulp(hs, -15, 15)
+								hum:EquipTool(v)
+								v:Activate()
+								wait(.1)
+							end
+
+						end
+
+
+
+					until hs.Character.Humanoid.Health == 0 or hs.Character:FindFirstChildWhichIsA("ForceField")
+				end
+
+			end)
+		end
+	end
+end
+
+vars()
+
+SetCharacter.MouseButton1Down:Connect(function()
+    vars()
+	CHARACTERNAME = Character.Text
+end)
+StartStop.MouseButton1Down:Connect(function()
+    vars()
+	if StartStop.Text == "Start" then
+		auugh = true
+		StartStop.Text = "Stop"
+	else
+		auugh = false
+		StartStop.Text = "Start"
+	end
+    char:BreakJoints()
+end)
+
+plr.CharacterAdded:Connect(function()
+
+
+	if not auugh then 
+		repeat wait() until auugh
+	end
+
+
+	repeat wait() until game.Players.LocalPlayer.Character
+	vars()
+
+
+	wait()
+	humrp.CFrame = game:GetService("Workspace").Spawn.CharacterSelectTouchParts[CHARACTERNAME].CFrame
+	wait()
+	vars()
+	hoeyya()
+
+	char.Head.Mesh.Parent = game.CoreGui
+	char.Head:ClearAllChildren()
+	game.CoreGui.Mesh.Parent = char.Head
+	char.Head.Parent = game.Lighting
+	game.Lighting.Head.Parent = char
+
+end)
