@@ -141,11 +141,12 @@ function library:NewWindow(WindowName)
 			Section.TextWrapped = true
 			Section.TextXAlignment = Enum.TextXAlignment.Left
 
-			SectionFrame.Parent = Section
+			SectionFrame.Parent = Tab
 			SectionFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			SectionFrame.BackgroundTransparency = 1.000
 			SectionFrame.Position = UDim2.new(0, 0, 1, 0)
 			SectionFrame.Size = UDim2.new(1, 0, 0, 0)
+			SectionFrame.Visible = false
 
 			UIListLayout.Parent = SectionFrame
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -257,9 +258,3 @@ function library:NewWindow(WindowName)
 	return WindowFuncs
 end
 return library
-
-
-
-
-
-
