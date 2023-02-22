@@ -146,6 +146,7 @@ function library:NewWindow(WindowName)
 			SectionFrame.BackgroundTransparency = 1.000
 			SectionFrame.Position = UDim2.new(0, 0, 1, 0)
 			SectionFrame.Size = UDim2.new(1, 0, 0, 0)
+			SectionFrame.AutomaticSize = Enum.AutomaticSize.Y
 			SectionFrame.Visible = false
 
 			UIListLayout.Parent = SectionFrame
