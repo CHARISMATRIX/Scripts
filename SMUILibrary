@@ -21,6 +21,9 @@ function library:NewWindow(WindowName)
 	TopMain.BorderSizePixel = 0
 	TopMain.Position = UDim2.new(0.248430148, 0, 0.302493781, 0)
 	TopMain.Size = UDim2.new(0, 600, 0, 20)
+	TopMain.Draggable = true
+	TopMain.Active = true
+	TopMain.Selectable = true
 
 	Container.Name = "Container"
 	Container.Parent = TopMain
@@ -67,14 +70,14 @@ function library:NewWindow(WindowName)
 	CloseButton.TextScaled = true
 	CloseButton.TextSize = 14.000
 	CloseButton.TextWrapped = true
-	
+
 	UIListLayout.Parent = TabList
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	
+
 	CloseButton.MouseButton1Down:Connect(function()
 		SMUILibrary:Destroy()
 	end)
-	
+
 	local WindowFuncs = {}
 
 	--NewTab
@@ -92,7 +95,7 @@ function library:NewWindow(WindowName)
 		Tab.Size = UDim2.new(1, 0, 1, 0)
 		Tab.ScrollBarThickness = 10
 
-		TabButton.Name = "TabButton"
+		TabButton.Name = TabName
 		TabButton.Parent = TabList
 		TabButton.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
 		TabButton.Position = UDim2.new(-0.863999963, 0, 0.15285714, 0)
@@ -109,7 +112,7 @@ function library:NewWindow(WindowName)
 		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 		TabButton.MouseButton1Down:Connect(function()
-			for i,v in pairs(Tabs) do
+			for i,v in pairs(Tabs:GetChildren()) do
 				if v ~= Tab then
 					v.Visible = false
 				end
@@ -254,3 +257,9 @@ function library:NewWindow(WindowName)
 	return WindowFuncs
 end
 return library
+
+
+
+
+
+
