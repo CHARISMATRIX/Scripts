@@ -125,36 +125,18 @@ function library:NewWindow(WindowName)
 
 		--NewSection
 		function TabFuncs:NewSection(SectionName)
-			local Section = Instance.new("TextButton")
-			local SectionFrame = Instance.new("Frame")
-			local UIListLayout = Instance.new("UIListLayout")
+			local Section = Instance.new("TextLabel")
 
-			Section.Name = "Section"
+			Section.Name = "Label"
 			Section.Parent = Tab
-			Section.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+			Section.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			Section.Position = UDim2.new(0.0357894748, 0, 0.619047642, 0)
 			Section.Size = UDim2.new(1, 0, 0, 35)
 			Section.Font = Enum.Font.SourceSans
-			Section.Text = ""
+			Section.Text = SectionName
 			Section.TextColor3 = Color3.fromRGB(255, 0, 4)
-			Section.TextScaled = true
 			Section.TextSize = 25.000
-			Section.TextWrapped = true
 			Section.TextXAlignment = Enum.TextXAlignment.Left
-
-			SectionFrame.Parent = Tab
-			SectionFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-			SectionFrame.BackgroundTransparency = 1.000
-			SectionFrame.Position = UDim2.new(0, 0, 1, 0)
-			SectionFrame.Size = UDim2.new(1, 0, 0, 0)
-			SectionFrame.AutomaticSize = Enum.AutomaticSize.Y
-			SectionFrame.Visible = false
-
-			UIListLayout.Parent = SectionFrame
-			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-			Section.MouseButton1Down:Connect(function()
-				SectionFrame.Visible = not SectionFrame.Visible
-			end)
 
 			local SectionFuncs = {}
 
@@ -165,7 +147,7 @@ function library:NewWindow(WindowName)
 				local Button = Instance.new("TextButton")
 
 				Button.Name = ButtonName
-				Button.Parent = SectionFrame
+				Button.Parent = Tab
 				Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 				Button.BorderSizePixel = 0
 				Button.Position = UDim2.new(-0.00631579757, 0, -0.00571417809, 0)
@@ -189,7 +171,7 @@ function library:NewWindow(WindowName)
 				local state = false
 
 				Toggle.Name = ToggleName
-				Toggle.Parent = SectionFrame
+				Toggle.Parent = Tab
 				Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 				Toggle.BorderSizePixel = 0
 				Toggle.Position = UDim2.new(-0.00631579757, 0, -0.00571417809, 0)
@@ -222,7 +204,7 @@ function library:NewWindow(WindowName)
 				local Input = Instance.new("TextBox")
 
 				Input.Name = "Input"
-				Input.Parent = SectionFrame
+				Input.Parent = Tab
 				Input.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 				Input.Position = UDim2.new(0.134736836, 0, 0.734331787, 0)
 				Input.Size = UDim2.new(1, 0, 0, 35)
@@ -242,7 +224,7 @@ function library:NewWindow(WindowName)
 				local Label = Instance.new("TextLabel")
 
 				Label.Name = "Label"
-				Label.Parent = SectionFrame
+				Label.Parent = Tab
 				Label.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 				Label.Position = UDim2.new(0.0357894748, 0, 0.619047642, 0)
 				Label.Size = UDim2.new(1, 0, 0, 35)
