@@ -14,6 +14,7 @@ function library:NewWindow(WindowName)
 	SMUILibrary.Name = "SMUILibrary"
 	SMUILibrary.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 	SMUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	SMUILibrary.ResetOnSpawn = false
 
 	TopMain.Name = "TopMain"
 	TopMain.Parent = SMUILibrary
@@ -117,6 +118,11 @@ function library:NewWindow(WindowName)
 					v.Visible = false
 				end
 			end
+			for i,v in pairs(TabList:GetChildren()) do
+				if v ~= TabButton then
+					v.TextColor3 = Color3.fromRGB(255, 0, 0)
+				end
+			end
 			Tab.Visible = true
 			TabButton.TextColor3 = Color3.fromRGB(0, 255, 0)
 		end)
@@ -129,7 +135,7 @@ function library:NewWindow(WindowName)
 
 			Section.Name = "Label"
 			Section.Parent = Tab
-			Section.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			Section.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 			Section.Position = UDim2.new(0.0357894748, 0, 0.619047642, 0)
 			Section.Size = UDim2.new(1, 0, 0, 35)
 			Section.Font = Enum.Font.SourceSans
