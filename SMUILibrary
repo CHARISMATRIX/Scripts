@@ -1,0 +1,256 @@
+local library = {}
+
+--NewWindow
+function library:NewWindow(WindowName)
+	local SMUILibrary = Instance.new("ScreenGui")
+	local TopMain = Instance.new("Frame")
+	local Container = Instance.new("Frame")
+	local TabList = Instance.new("ScrollingFrame")
+	local Tabs = Instance.new("Frame")
+	local Title = Instance.new("TextLabel")
+	local CloseButton = Instance.new("TextButton")
+	local UIListLayout = Instance.new("UIListLayout")
+
+	SMUILibrary.Name = "SMUILibrary"
+	SMUILibrary.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	SMUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	TopMain.Name = "TopMain"
+	TopMain.Parent = SMUILibrary
+	TopMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	TopMain.BorderSizePixel = 0
+	TopMain.Position = UDim2.new(0.248430148, 0, 0.302493781, 0)
+	TopMain.Size = UDim2.new(0, 600, 0, 20)
+
+	Container.Name = "Container"
+	Container.Parent = TopMain
+	Container.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	Container.BorderSizePixel = 0
+	Container.Position = UDim2.new(-0.000478804111, 0, 0.98179549, 0)
+	Container.Size = UDim2.new(0, 600, 0, 350)
+
+	TabList.Name = "TabList"
+	TabList.Parent = Container
+	TabList.Active = true
+	TabList.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
+	TabList.BorderSizePixel = 0
+	TabList.Size = UDim2.new(0, 125, 0, 350)
+	TabList.ScrollBarThickness = 10
+
+	Tabs.Name = "Tabs"
+	Tabs.Parent = Container
+	Tabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Tabs.BackgroundTransparency = 1.000
+	Tabs.BorderSizePixel = 0
+	Tabs.Position = UDim2.new(0.208333328, 0, 0, 0)
+	Tabs.Size = UDim2.new(0, 475, 0, 350)
+
+	Title.Name = "Title"
+	Title.Parent = TopMain
+	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Title.BackgroundTransparency = 1.000
+	Title.Size = UDim2.new(1, 0, 1, 0)
+	Title.Font = Enum.Font.SourceSans
+	Title.Text = WindowName
+	Title.TextColor3 = Color3.fromRGB(0, 255, 0)
+	Title.TextSize = 14.000
+	Title.TextXAlignment = Enum.TextXAlignment.Left
+
+	CloseButton.Name = "CloseButton"
+	CloseButton.Parent = TopMain
+	CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	CloseButton.Position = UDim2.new(1, 0, -1, 0)
+	CloseButton.Size = UDim2.new(0, 20, 0, 20)
+	CloseButton.Font = Enum.Font.Roboto
+	CloseButton.Text = "X"
+	CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+	CloseButton.TextScaled = true
+	CloseButton.TextSize = 14.000
+	CloseButton.TextWrapped = true
+	
+	UIListLayout.Parent = TabList
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	
+	CloseButton.MouseButton1Down:Connect(function()
+		SMUILibrary:Destroy()
+	end)
+	
+	local WindowFuncs = {}
+
+	--NewTab
+	function WindowFuncs:NewTab(TabName)
+		local Tab = Instance.new("ScrollingFrame")
+		local TabButton = Instance.new("TextButton")
+		local UIListLayout = Instance.new("UIListLayout")
+
+		Tab.Name = TabName
+		Tab.Parent = Tabs
+		Tab.Active = true
+		Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Tab.BackgroundTransparency = 1.000
+		Tab.BorderSizePixel = 0
+		Tab.Size = UDim2.new(1, 0, 1, 0)
+		Tab.ScrollBarThickness = 10
+
+		TabButton.Name = "TabButton"
+		TabButton.Parent = TabList
+		TabButton.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+		TabButton.Position = UDim2.new(-0.863999963, 0, 0.15285714, 0)
+		TabButton.Size = UDim2.new(1, 0, 0, 50)
+		TabButton.Font = Enum.Font.SourceSans
+		TabButton.Text = TabName
+		TabButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+		TabButton.TextScaled = true
+		TabButton.TextSize = 14.000
+		TabButton.TextWrapped = true
+		TabButton.TextXAlignment = Enum.TextXAlignment.Left
+
+		UIListLayout.Parent = Tab
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+		TabButton.MouseButton1Down:Connect(function()
+			for i,v in pairs(Tabs) do
+				if v ~= Tab then
+					v.Visible = false
+				end
+			end
+			Tab.Visible = true
+			TabButton.TextColor3 = Color3.fromRGB(0, 255, 0)
+		end)
+
+		local TabFuncs = {}
+
+		--NewSection
+		function TabFuncs:NewSection(SectionName)
+			local Section = Instance.new("TextButton")
+			local SectionFrame = Instance.new("Frame")
+			local UIListLayout = Instance.new("UIListLayout")
+
+			Section.Name = "Section"
+			Section.Parent = Tab
+			Section.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+			Section.Size = UDim2.new(1, 0, 0, 35)
+			Section.Font = Enum.Font.SourceSans
+			Section.Text = ""
+			Section.TextColor3 = Color3.fromRGB(255, 0, 4)
+			Section.TextScaled = true
+			Section.TextSize = 25.000
+			Section.TextWrapped = true
+			Section.TextXAlignment = Enum.TextXAlignment.Left
+
+			SectionFrame.Parent = Section
+			SectionFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SectionFrame.BackgroundTransparency = 1.000
+			SectionFrame.Position = UDim2.new(0, 0, 1, 0)
+			SectionFrame.Size = UDim2.new(1, 0, 0, 0)
+
+			UIListLayout.Parent = SectionFrame
+			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+			Section.MouseButton1Down:Connect(function()
+				SectionFrame.Visible = not SectionFrame.Visible
+			end)
+
+			local SectionFuncs = {}
+
+			--NewButton
+			function SectionFuncs:NewButton(ButtonName, callback)
+				local callback = callback or function() end
+
+				local Button = Instance.new("TextButton")
+
+				Button.Name = ButtonName
+				Button.Parent = SectionFrame
+				Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+				Button.BorderSizePixel = 0
+				Button.Position = UDim2.new(-0.00631579757, 0, -0.00571417809, 0)
+				Button.Size = UDim2.new(1, 0, 0, 35)
+				Button.Font = Enum.Font.SourceSans
+				Button.Text = ButtonName
+				Button.TextColor3 = Color3.fromRGB(0, 255, 0)
+				Button.TextSize = 25.000
+				Button.TextXAlignment = Enum.TextXAlignment.Left
+
+				Button.MouseButton1Down:Connect(function()
+					pcall(callback)
+				end)
+			end
+
+			--NewToggle
+			function SectionFuncs:NewToggle(ToggleName, callback)
+				local callback = callback or function() end
+
+				local Toggle = Instance.new("TextButton")
+				local state = false
+
+				Toggle.Name = ToggleName
+				Toggle.Parent = SectionFrame
+				Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+				Toggle.BorderSizePixel = 0
+				Toggle.Position = UDim2.new(-0.00631579757, 0, -0.00571417809, 0)
+				Toggle.Size = UDim2.new(1, 0, 0, 35)
+				Toggle.Font = Enum.Font.SourceSans
+				Toggle.Text = ToggleName..": OFF"
+				Toggle.TextColor3 = Color3.fromRGB(255, 0, 0)
+				Toggle.TextSize = 25.000
+				Toggle.TextXAlignment = Enum.TextXAlignment.Left
+
+				Toggle.MouseButton1Down:Connect(function()
+					state = not state
+					pcall(callback, state)
+					if state then
+						Toggle.TextColor3 = Color3.fromRGB(0, 255, 0)
+						Toggle.Text = ToggleName..": ON"
+					else
+						Toggle.TextColor3 = Color3.fromRGB(255, 0, 0)
+						Toggle.Text = ToggleName..": OFF"
+					end
+				end)
+
+			end
+
+			--NewInput
+			function SectionFuncs:NewInput(InputName, callback)
+				local callback = callback or function() end
+
+				local state = ""
+				local Input = Instance.new("TextBox")
+
+				Input.Name = "Input"
+				Input.Parent = SectionFrame
+				Input.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+				Input.Position = UDim2.new(0.134736836, 0, 0.734331787, 0)
+				Input.Size = UDim2.new(1, 0, 0, 35)
+				Input.Font = Enum.Font.SourceSans
+				Input.Text = ""
+				Input.TextColor3 = Color3.fromRGB(0, 0, 0)
+				Input.TextSize = 14.000
+
+				Input:GetPropertyChangedSignal("Text"):Connect(function()
+					state = Input.Text
+					pcall(callback, state)
+				end)
+			end
+
+			--NewLabel
+			function SectionFuncs:NewLabel(LabelName)
+				local Label = Instance.new("TextLabel")
+
+				Label.Name = "Label"
+				Label.Parent = SectionFrame
+				Label.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+				Label.Position = UDim2.new(0.0357894748, 0, 0.619047642, 0)
+				Label.Size = UDim2.new(1, 0, 0, 35)
+				Label.Font = Enum.Font.SourceSans
+				Label.Text = LabelName
+				Label.TextColor3 = Color3.fromRGB(255, 0, 4)
+				Label.TextSize = 25.000
+				Label.TextXAlignment = Enum.TextXAlignment.Left
+			end
+			return SectionFuncs
+		end
+		return TabFuncs
+	end
+	return WindowFuncs
+end
+return library
