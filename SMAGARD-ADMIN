@@ -139,6 +139,9 @@ function AddCommand(name, description, aliases, func, undofunc)
 
 	if undofunc then
 		commands["un"..name] = undofunc
+		for i,v in aliases do
+			commands[string.lower("un"..v)] = undofunc
+		end
 		CommandList["(un)"..name..e] = description
 	else
 		CommandList[name..e] = description
