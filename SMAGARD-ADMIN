@@ -480,7 +480,7 @@ uisscript = S.UserInputService.InputBegan:Connect(function(input, gp)
 
 	if key == Enum.KeyCode.Semicolon then
 		Command:CaptureFocus()
-		task.wait(.1)
+		task.wait(.25)
 		Command.Text = ""
 	end
 end)
