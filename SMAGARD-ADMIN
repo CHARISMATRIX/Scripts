@@ -160,6 +160,8 @@ function GetPlayer(name)
 		for i,v in pairs(S.Players:GetPlayers()) do
 			if v.Name:lower():sub(1, #name) == name then
 				return v
+			elseif v.DisplayName:lower():sub(1, #name) == name then
+				return v
 			end
 		end
 	end
