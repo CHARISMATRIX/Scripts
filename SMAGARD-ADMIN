@@ -260,6 +260,7 @@ end)
 AddCommand("plane", "Turns you into a airplane (REQUIRES EMIRATES MINI)", {"airplane"}, function(args)
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-PLANE'))()
 	Notify("Plane", "You are now an airplane")
+end)
 
 AddCommand("rejoin", "Rejoins the game", {"rj"}, function(args)
 	Notify("REJOIN", "Rejoining The Game")
