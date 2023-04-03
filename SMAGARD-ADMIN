@@ -73,7 +73,7 @@ local Files = Instance.new("Folder")
 
 SMAdmin.Name = "SMAdmin"
 SMAdmin.ResetOnSpawn = false
-SMAdmin.Parent = plr:WaitForChild("PlayerGui")
+SMAdmin.Parent = game:GetService("CoreGui")
 SMAdmin.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 CMDBar.Parent = SMAdmin
