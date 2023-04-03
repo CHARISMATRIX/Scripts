@@ -1,0 +1,198 @@
+local plrs = game:GetService("Players")
+local ws = game:GetService("Workspace")
+local uis = game:GetService("UserInputService")
+
+local plr = plrs.LocalPlayer
+local mouse = plr:GetMouse()
+local char = plr.Character
+
+local plane = char.PlaneModel
+local handle = plane.Handle
+
+local humrp = char.HumanoidRootPart
+local hum = char.Humanoid
+
+--SETTINGS
+local removelimbs = true
+local removecharscripts = true
+
+local speed = 10
+local qeincrease = 5
+
+local noclip = false
+
+if hum.RigType == Enum.HumanoidRigType.R15 then
+	char["UpperTorso"].CanCollide = false
+	char["LowerTorso"].CanCollide = false
+
+	if removelimbs then
+		char["LeftFoot"]:Destroy()
+		char["LeftLowerLeg"]:Destroy()
+		char["LeftUpperLeg"]:Destroy()
+
+		char["LeftHand"]:Destroy()
+		char["LeftLowerArm"]:Destroy()
+		char["LeftUpperArm"]:Destroy()
+		--Right
+
+		char["RightFoot"]:Destroy()
+		char["RightLowerLeg"]:Destroy()
+		char["RightUpperLeg"]:Destroy()
+
+		char["RightHand"]:Destroy()
+		char["RightLowerArm"]:Destroy()
+		char["RightUpperArm"]:Destroy()
+	end
+else
+	char["Torso"].CanCollide = false
+		
+	if removelimbs then
+		--Left
+		char["Left Arm"]:Destroy()
+		char["Left Leg"]:Destroy()
+		--Right
+
+		char["Right Arm"]:Destroy()
+		char["Right Leg"]:Destroy()
+	end
+end
+char["Head"].CanCollide = false
+
+if noclip then
+	humrp.CanCollide = false
+else
+	humrp.CanCollide = true
+end
+
+handle.AccessoryWeld.Part1 = humrp
+humrp.Transparency = .8
+humrp.Color = Color3.fromRGB(0, 255, 0)
+ws.CurrentCamera.CameraSubject = handle
+
+if removecharscripts then
+	for _,v in pairs(char:GetDescendants()) do
+		if v:IsA("Script") or v:IsA("LocalScript") or v:IsA("BillboardGui") or v:IsA("SurfaceGui") or v:IsA("Animator") then v:Destroy() end
+	end
+elseif removecharscripts == "Animations" then
+	if char:FindFirstChild("Animate") then char.Animate:Destroy() end
+	if hum:FindFirstChild("Animator") then hum.Animator:Destroy() end
+end
+
+local s1
+local s2
+
+local flightmode = false
+
+humrp.Anchored = true
+
+--GUI
+local SMPlane = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Input = Instance.new("TextBox")
+local UICorner_2 = Instance.new("UICorner")
+
+SMPlane.Name = "SM-Plane"
+SMPlane.Parent = game:GetService("CoreGui")
+SMPlane.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = SMPlane
+Frame.BackgroundColor3 = Color3.fromRGB(66, 66, 66)
+Frame.Position = UDim2.new(0.02, 0, 0.5, 0)
+Frame.Size = UDim2.new(0, 220, 0, 120)
+Frame.Draggable = true
+Frame.Active = true
+Frame.Selectable = true
+
+UICorner.CornerRadius = UDim.new(0.300000012, 0)
+UICorner.Parent = Frame
+
+Input.Name = "Input"
+Input.Parent = Frame
+Input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Input.Position = UDim2.new(0.0454545468, 0, 0.291666657, 0)
+Input.Size = UDim2.new(0, 200, 0, 50)
+Input.Font = Enum.Font.Arcade
+Input.PlaceholderText = "Speed"
+Input.Text = speed
+Input.TextColor3 = Color3.fromRGB(0, 0, 0)
+Input.TextScaled = true
+Input.TextSize = 14.000
+Input.TextWrapped = true
+
+UICorner_2.CornerRadius = UDim.new(0.300000012, 0)
+UICorner_2.Parent = Input
+
+--CONTROLS
+s1 = uis.InputBegan:Connect(function (input,gp)
+	if gp then return end
+
+	local key = input.KeyCode
+
+	--Fly
+	if key == Enum.KeyCode.F then
+		if not flightmode then
+			flightmode = true
+			humrp.Anchored = false
+			local bv = Instance.new("BodyVelocity", humrp)
+			bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+
+			task.spawn(function()
+				while flightmode do
+					bv.Velocity = mouse.Hit.lookVector * speed
+					humrp.CFrame = CFrame.new(humrp.Position, Vector3.new(mouse.Hit.Position.X, mouse.Hit.Position.Y, mouse.Hit.Position.Z))
+					task.wait()
+				end
+			end)
+		else
+			flightmode = false
+			humrp:FindFirstChildWhichIsA("BodyVelocity"):Destroy()
+			humrp.Anchored = true
+		end
+
+	--Walk
+	elseif key == Enum.KeyCode.T then
+		flightmode = false
+		if humrp:FindFirstChildWhichIsA("BodyVelocity") then humrp:FindFirstChildWhichIsA("BodyVelocity"):Destroy() end
+		humrp.Anchored = false
+
+	--Backwards
+	elseif key == Enum.KeyCode.R then
+		if tonumber(Input.Text) then
+			Input.Text *= -1
+		else
+			Input.Text = speed * -1
+		end
+
+	--IncreaseSpeed
+	elseif key == Enum.KeyCode.E then
+		if tonumber(Input.Text) then
+			Input.Text += qeincrease
+		else
+			Input.Text = speed + qeincrease
+		end
+			
+	--DecreaseSpeed
+	elseif key == Enum.KeyCode.Q then
+		if tonumber(Input.Text) then
+			Input.Text -= qeincrease
+		else
+			Input.Text = speed - qeincrease
+		end
+
+	end
+
+end)
+
+Input:GetPropertyChangedSignal("Text"):Connect(function()
+	if tonumber(Input.Text) then
+		speed = Input.Text
+	end
+end)
+
+s2 = plr.CharacterAdded:Connect(function ()
+	ws.Gravity = 196.2
+	SMPlane:Destroy()
+	s2:Disconnect()
+	s1:Disconnect()
+end)
