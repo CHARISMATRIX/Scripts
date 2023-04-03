@@ -17,23 +17,8 @@ local S = {
 local plr = S.Players.LocalPlayer
 local mouse = plr:GetMouse()
 
-local BodyPartNames = {
-	"HumanoidRootPart",
-	"Humanoid",
-	"Head"
-	--Add More
-}
-
-local BPs = {}
-
 function resignvars()
 	char = plr.Character
-	for i,v in ipairs(BodyPartNames) do
-		if not char:FindFirstChild(v) then continue end
-
-		BPs[v] = char:FindFirstChild(v)
-
-	end
 end
 
 resignvars()
@@ -204,9 +189,9 @@ end
 function CF(pos)
 	if not char then return end
 	if pos then
-		BPs.HumanoidRootPart.CFrame = pos
+		char.HumanoidRootPart.CFrame = pos
 	else
-		return BPs.HumanoidRootPart.CFrame
+		return char.HumanoidRootPart.CFrame
 	end
 end
 
@@ -273,12 +258,12 @@ AddCommand("reset", "Resets your character", {}, function(args)
 end)
 
 AddCommand("walkspeed", "Changes your walkspeed", {"speed", "ws"}, function(args)
-	BPs.Humanoid.WalkSpeed = tonumber(args[1])
+	char.Humanoid.WalkSpeed = tonumber(args[1])
 	Notify("WalkSpeed", "Changed WalkSpeed to: "..args[1])
 end)
 
 AddCommand("jumppower", "Changes your jumppower", {"jp"}, function(args)
-	BPs.Humanoid.JumpPower = tonumber(args[1])
+	char.Humanoid.JumpPower = tonumber(args[1])
 	Notify("JumpPower", "Changed JumpPower to: "..args[1])
 end)
 
@@ -294,7 +279,7 @@ AddCommand("view", "Views another players camera", {}, function(args)
 	Notify("View", "Now viewing: "..target.Name)
 end, function(args)
 	Notify("UnView", "Stopped Viewing: "..S.Workspace.CurrentCamera.CameraSubject.Parent.Name)
-	S.Workspace.CurrentCamera.CameraSubject = BPs.Humanoid
+	S.Workspace.CurrentCamera.CameraSubject = char.Humanoid
 end)
 
 AddCommand("maxzoom", "Sets Max Zoom Distance", {}, function(args)
@@ -340,8 +325,8 @@ end)
 
 AddCommand("cbring", "Brings another player [CLIENT]", {}, function(args)
 	local target = GetPlayer(args[1])
-	local direction = BPs.HumanoidRootPart.CFrame.lookVector
-	local position = BPs.HumanoidRootPart.CFrame.p + direction * 5
+	local direction = char.HumanoidRootPart.CFrame.lookVector
+	local position = char.HumanoidRootPart.CFrame.p + direction * 5
 	target.Character.HumanoidRootPart.CFrame = CFrame.new(position)
 end)
 
@@ -421,7 +406,7 @@ AddCommand("fling", "Flings someone", {}, function (args)
 	end
 	wait(.1)
 	local bv = Instance.new("BodyAngularVelocity")
-	bv.Parent = BPs.HumanoidRootPart
+	bv.Parent = char.HumanoidRootPart
 	bv.AngularVelocity = Vector3.new(0,99999,0)
 	bv.MaxTorque = Vector3.new(0,math.huge,0)
 	bv.P = math.huge
@@ -437,7 +422,7 @@ AddCommand("fling", "Flings someone", {}, function (args)
 	task.spawn(function ()
 		repeat
 			bv.AngularVelocity = Vector3.new(0,99999,0)
-			BPs.HumanoidRootPart.CFrame = thumrp.CFrame
+			char.HumanoidRootPart.CFrame = thumrp.CFrame
 			task.wait()
 		until not flinging
 	end)
@@ -534,6 +519,6 @@ end)
 
 jumprequestevent = S.UserInputService.JumpRequest:Connect(function()
 	if settings.infinitejump then
-		BPs.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+		char.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	end
 end)
