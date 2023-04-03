@@ -1,0 +1,286 @@
+local Services = {
+	Players = game:GetService("Players"),
+	Workspace = game:GetService("Workspace"),
+	ReplicatedStorage = game:GetService("ReplicatedStorage"),
+	RunService = game:GetService("RunService"),
+	UserInputService = game:GetService("UserInputService")
+}
+
+local plr = Services.Players.LocalPlayer
+local mouse = plr:GetMouse()
+
+local Colors = {
+	Default = Color3.fromRGB(255, 255, 255), 
+	Activated = Color3.fromRGB(0, 255, 0)
+}
+
+local TextColor = Color3.fromRGB(0,0,0)
+
+--SMKeystrokes
+
+local SMKeyStrokes = Instance.new("ScreenGui")
+local Settings = Instance.new("Frame")
+local Destroy = Instance.new("TextButton")
+local KEY = Instance.new("TextBox")
+local TRANSPARENCY = Instance.new("TextBox")
+local SIZEX = Instance.new("TextBox")
+local SIZEY = Instance.new("TextBox")
+local ADDKEY = Instance.new("TextButton")
+local ADDM1 = Instance.new("TextButton")
+local ADDM2 = Instance.new("TextButton")
+local TOGGLEMENU = Instance.new("TextButton")
+
+--Properties:
+
+SMKeyStrokes.Name = "SMKeyStrokes"
+SMKeyStrokes.Parent = game:GetService("CoreGui")
+SMKeyStrokes.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Settings.Name = "Settings"
+Settings.Parent = SMKeyStrokes
+Settings.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+Settings.Position = UDim2.new(0.306, 0, 0.311, 0)
+Settings.Size = UDim2.new(0, 500, 0, 250)
+Settings.Visible = false
+Settings.Active = true
+Settings.Selectable = true
+Settings.Draggable = true
+
+Destroy.Name = "Destroy"
+Destroy.Parent = Settings
+Destroy.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.BackgroundTransparency = 0.900
+Destroy.Position = UDim2.new(0.899999976, 0, 0, 0)
+Destroy.Size = UDim2.new(0, 50, 0, 50)
+Destroy.Font = Enum.Font.Arcade
+Destroy.Text = "DESTROY"
+Destroy.TextColor3 = Color3.fromRGB(255, 0, 0)
+Destroy.TextScaled = true
+Destroy.TextSize = 14.000
+Destroy.TextWrapped = true
+
+KEY.Name = "KEY"
+KEY.Parent = Settings
+KEY.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+KEY.Size = UDim2.new(0, 200, 0, 50)
+KEY.ClearTextOnFocus = false
+KEY.Font = Enum.Font.SourceSans
+KEY.PlaceholderText = "KEY"
+KEY.Text = ""
+KEY.TextColor3 = Color3.fromRGB(0, 0, 0)
+KEY.TextScaled = true
+KEY.TextSize = 14.000
+KEY.TextWrapped = true
+
+TRANSPARENCY.Name = "TRANSPARENCY"
+TRANSPARENCY.Parent = Settings
+TRANSPARENCY.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TRANSPARENCY.Position = UDim2.new(0, 0, 0.200000003, 0)
+TRANSPARENCY.Size = UDim2.new(0, 200, 0, 50)
+TRANSPARENCY.ClearTextOnFocus = false
+TRANSPARENCY.Font = Enum.Font.SourceSans
+TRANSPARENCY.PlaceholderText = "TRANSPARENCY"
+TRANSPARENCY.Text = ""
+TRANSPARENCY.TextColor3 = Color3.fromRGB(0, 0, 0)
+TRANSPARENCY.TextScaled = true
+TRANSPARENCY.TextSize = 14.000
+TRANSPARENCY.TextWrapped = true
+
+SIZEX.Name = "SIZEX"
+SIZEX.Parent = Settings
+SIZEX.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SIZEX.Position = UDim2.new(0, 0, 0.400000006, 0)
+SIZEX.Size = UDim2.new(0, 100, 0, 50)
+SIZEX.ClearTextOnFocus = false
+SIZEX.Font = Enum.Font.SourceSans
+SIZEX.PlaceholderText = "X (50)"
+SIZEX.Text = ""
+SIZEX.TextColor3 = Color3.fromRGB(0, 0, 0)
+SIZEX.TextScaled = true
+SIZEX.TextSize = 14.000
+SIZEX.TextWrapped = true
+
+SIZEY.Name = "SIZEY"
+SIZEY.Parent = Settings
+SIZEY.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SIZEY.Position = UDim2.new(0.200000003, 0, 0.400000006, 0)
+SIZEY.Size = UDim2.new(0, 100, 0, 50)
+SIZEY.ClearTextOnFocus = false
+SIZEY.Font = Enum.Font.SourceSans
+SIZEY.PlaceholderText = "Y (50)"
+SIZEY.Text = ""
+SIZEY.TextColor3 = Color3.fromRGB(0, 0, 0)
+SIZEY.TextScaled = true
+SIZEY.TextSize = 14.000
+SIZEY.TextWrapped = true
+
+ADDKEY.Name = "ADDKEY"
+ADDKEY.Parent = Settings
+ADDKEY.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ADDKEY.BackgroundTransparency = 0.800
+ADDKEY.Position = UDim2.new(0, 0, 0.600000024, 0)
+ADDKEY.Size = UDim2.new(0, 200, 0, 50)
+ADDKEY.Font = Enum.Font.SourceSans
+ADDKEY.Text = "ADD KEY"
+ADDKEY.TextColor3 = Color3.fromRGB(0, 0, 0)
+ADDKEY.TextScaled = true
+ADDKEY.TextSize = 14.000
+ADDKEY.TextWrapped = true
+
+ADDM1.Name = "ADDM1"
+ADDM1.Parent = Settings
+ADDM1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ADDM1.BackgroundTransparency = 0.800
+ADDM1.Position = UDim2.new(0, 0, 0.800000012, 0)
+ADDM1.Size = UDim2.new(0, 100, 0, 50)
+ADDM1.Font = Enum.Font.SourceSans
+ADDM1.Text = "ADD M1"
+ADDM1.TextColor3 = Color3.fromRGB(0, 0, 0)
+ADDM1.TextScaled = true
+ADDM1.TextSize = 14.000
+ADDM1.TextWrapped = true
+
+ADDM2.Name = "ADDM2"
+ADDM2.Parent = Settings
+ADDM2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ADDM2.BackgroundTransparency = 0.800
+ADDM2.Position = UDim2.new(0.200000003, 0, 0.800000012, 0)
+ADDM2.Size = UDim2.new(0, 100, 0, 50)
+ADDM2.Font = Enum.Font.SourceSans
+ADDM2.Text = "ADD M2"
+ADDM2.TextColor3 = Color3.fromRGB(0, 0, 0)
+ADDM2.TextScaled = true
+ADDM2.TextSize = 14.000
+ADDM2.TextWrapped = true
+
+TOGGLEMENU.Name = "TOGGLEMENU"
+TOGGLEMENU.Parent = SMKeyStrokes
+TOGGLEMENU.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TOGGLEMENU.Position = UDim2.new(0.961330235, 0, 0.468827933, 0)
+TOGGLEMENU.Size = UDim2.new(0, 50, 0, 50)
+TOGGLEMENU.Font = Enum.Font.SourceSans
+TOGGLEMENU.Text = "SETTINGS"
+TOGGLEMENU.TextColor3 = Color3.fromRGB(255, 255, 255)
+TOGGLEMENU.TextScaled = true
+TOGGLEMENU.TextSize = 14.000
+TOGGLEMENU.TextWrapped = true
+
+local Keys = {
+
+}
+local MouseBTNs = {
+
+}
+
+--CHECKING FOR BUTTONPRESS
+uisscript = Services.UserInputService.InputBegan:Connect(function(input, gp)
+	for i,label in ipairs(Keys) do
+		if input.KeyCode == Enum.KeyCode[label.Name] then
+			label.BackgroundColor3 = Colors.Activated
+		end
+	end
+	for i,label in ipairs(MouseBTNs) do
+		if input.UserInputType == Enum.UserInputType[label.Name] then
+			label.BackgroundColor3 = Colors.Activated
+		end
+	end
+
+end)
+
+--CHECKING FOR BUTTON RELEASE
+uisscript2 = Services.UserInputService.InputEnded:Connect(function(input, gp)
+	for i,label in ipairs(Keys) do
+		if input.KeyCode == Enum.KeyCode[label.Name] then
+			label.BackgroundColor3 = Colors.Default
+		end
+	end
+	for i,label in ipairs(MouseBTNs) do
+		if input.UserInputType == Enum.UserInputType[label.Name] then
+			label.BackgroundColor3 = Colors.Default
+		end
+	end
+
+end)
+
+--MENU TOGGLE
+TOGGLEMENU.MouseButton1Down:Connect(function()
+	Settings.Visible = not Settings.Visible
+end)
+
+--ADD A BUTTON
+ADDKEY.MouseButton1Down:Connect(function()
+	local Label = Instance.new("TextLabel")
+
+	Label.Name = KEY.Text
+	Label.Text = KEY.Text
+	Label.Parent = SMKeyStrokes
+	Label.BackgroundColor3 = Colors.Default
+	Label.BackgroundTransparency = tonumber(TRANSPARENCY.Text)
+	Label.Position = UDim2.new(0.292343378, 0, 0.457605988, 0)
+	Label.Selectable = true
+	Label.Size = UDim2.new(0, tonumber(SIZEX.Text), 0, tonumber(SIZEY.Text))
+	Label.Font = Enum.Font.Arcade
+	Label.TextColor3 = TextColor
+	Label.TextScaled = true
+	Label.TextSize = 14.000
+	Label.TextWrapped = true
+	Label.Active = true
+	Label.Selectable = true
+	Label.Draggable = true
+
+	table.insert(Keys, Label)
+end)
+
+--ADD A M1 BUTTON
+ADDM1.MouseButton1Down:Connect(function()
+	local Label = Instance.new("TextLabel")
+
+	Label.Name = "MouseButton1"
+	Label.Text = "M1"
+	Label.Parent = SMKeyStrokes
+	Label.BackgroundColor3 = Colors.Default
+	Label.BackgroundTransparency = tonumber(TRANSPARENCY.Text)
+	Label.Position = UDim2.new(0.292343378, 0, 0.457605988, 0)
+	Label.Selectable = true
+	Label.Size = UDim2.new(0, tonumber(SIZEX.Text), 0, tonumber(SIZEY.Text))
+	Label.Font = Enum.Font.Arcade
+	Label.TextColor3 = TextColor
+	Label.TextScaled = true
+	Label.TextSize = 14.000
+	Label.TextWrapped = true
+	Label.Active = true
+	Label.Selectable = true
+	Label.Draggable = true
+
+	table.insert(MouseBTNs, Label)
+end)
+
+--ADD A M2 BUTTON
+ADDM2.MouseButton1Down:Connect(function()
+	local Label = Instance.new("TextLabel")
+
+	Label.Name = "MouseButton2"
+	Label.Text = "M2"
+	Label.Parent = SMKeyStrokes
+	Label.BackgroundColor3 = Colors.Default
+	Label.BackgroundTransparency = tonumber(TRANSPARENCY.Text)
+	Label.Position = UDim2.new(0.292343378, 0, 0.457605988, 0)
+	Label.Selectable = true
+	Label.Size = UDim2.new(0, tonumber(SIZEX.Text), 0, tonumber(SIZEY.Text))
+	Label.Font = Enum.Font.Arcade
+	Label.TextColor3 = TextColor
+	Label.TextScaled = true
+	Label.TextSize = 14.000
+	Label.TextWrapped = true
+	Label.Active = true
+	Label.Selectable = true
+	Label.Draggable = true
+
+	table.insert(MouseBTNs, Label)
+end)
+
+Destroy.MouseButton1Down:Connect(function()
+	uisscript:Disconnect()
+	uisscript2:Disconnect()
+	SMKeyStrokes:Destroy()
+end)
