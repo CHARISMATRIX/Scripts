@@ -332,7 +332,7 @@ end, function(args)
 end)
 
 AddCommand("cbring", "Brings another player [CLIENT]", {}, function(args)
-	local target = GetPlayer(args[2])
+	local target = GetPlayer(args[1])
 	local direction = BPs.HumanoidRootPart.CFrame.lookVector
 	local position = BPs.HumanoidRootPart.CFrame.p + direction * 5
 	target.Character.HumanoidRootPart.CFrame = CFrame.new(position)
@@ -348,7 +348,7 @@ AddCommand("freeze", "Freezes a player [CLIENT]", {}, function(args)
 	end
 	Notify("Freeze", "Freezed Player: "..target.Name)
 end, function(args)
-	local target = GetPlayer(args)
+	local target = GetPlayer(args[1])
 	for i,v in pairs(target.Character:GetDescendants()) do
 		if v:IsA("BasePart") then
 			v.Anchored = false
@@ -385,7 +385,7 @@ end)
 
 AddCommand("music", "Plays a looped sound id", {}, function(args)
 	if not GetFile("Music") then CreateFile("Music", "Sound", true) end
-	GetFile("Music").SoundId = "rbxassetid://"..args[2]
+	GetFile("Music").SoundId = "rbxassetid://"..args[1]
 	GetFile("Music").TimePosition = 0
 	GetFile("Music").Volume = 3
 	GetFile("Music").Looped = true
@@ -395,9 +395,48 @@ end, function(args)
 end)
 
 AddCommand("hitbox", "Changes another players humanoidrootpart size", {}, function(args)
-	local target = GetPlayer(args[2])
-	target.Character["HumanoidRootPart"].Size = Vector3.new(tonumber(args[3]),tonumber(args[3]),tonumber(args[3]))
+	local target = GetPlayer(args[1])
+	target.Character["HumanoidRootPart"].Size = Vector3.new(tonumber(args[2]),tonumber(args[2]),tonumber(args[2]))
 	target.Character["HumanoidRootPart"].Transparency = 0.4
+end)
+
+AddCommand("fling", "Flings someone", {}, function (args)
+	local target = GetPlayer(args[1])
+	if not target then return end
+
+	local tchar = target.Character
+	local thumrp = tchar.HumanoidRootPart
+
+	for _, child in pairs(char:GetDescendants()) do
+		if child:IsA("BasePart") then
+			child.CustomPhysicalProperties = PhysicalProperties.new(math.huge, 0.3, 0.5)
+		end
+	end
+	wait(.1)
+	local bv = Instance.new("BodyAngularVelocity")
+	bv.Parent = BPs.HumanoidRootPart
+	bv.AngularVelocity = Vector3.new(0,99999,0)
+	bv.MaxTorque = Vector3.new(0,math.huge,0)
+	bv.P = math.huge
+	local Char = char:GetChildren()
+	for i, v in next, Char do
+		if v:IsA("BasePart") then
+			v.CanCollide = false
+			v.Massless = true
+			v.Velocity = Vector3.new(0, 0, 0)
+		end
+	end
+	local flinging = true
+	task.spawn(function ()
+		repeat
+			bv.AngularVelocity = Vector3.new(0,99999,0)
+			BPs.HumanoidRootPart.CFrame = thumrp.CFrame
+			task.wait()
+		until not flinging
+	end)
+	task.wait(2)
+	flinging = false
+	char:BreakJoints()
 end)
 
 AddCommand("all", "Executes a command for everyone", {}, function(args)
@@ -421,6 +460,8 @@ AddCommand("others", "Executes a command for everyone but you", {}, function(arg
 	end
 end)
 
+
+
 AddCommand("destroy", "Destroys the whole gui", {}, function(args)
 	chatevent:Disconnect()
 	focuslostevent:Disconnect()
@@ -429,6 +470,7 @@ AddCommand("destroy", "Destroys the whole gui", {}, function(args)
 	SMAdmin:Destroy()
 	Files:Destroy()
 end)
+
 
 
 task.spawn(function()
