@@ -284,7 +284,7 @@ AddCommand("goto", "Teleports you to another player", {"to"}, function(args)
 end)
 
 AddCommand("view", "Views another players camera", {}, function(args)
-	local target = GetPlayer(args)
+	local target = GetPlayer(args[1])
 	S.Workspace.CurrentCamera.CameraSubject = target.Character.Humanoid		
 	Notify("View", "Now viewing: "..target.Name)
 end, function(args)
@@ -293,7 +293,7 @@ end, function(args)
 end)
 
 AddCommand("maxzoom", "Sets Max Zoom Distance", {}, function(args)
-	plr.CameraMaxZoomDistance = tonumber(args[2])
+	plr.CameraMaxZoomDistance = tonumber(args[1])
 	Notify("MaxZoom", "Set CameraMaxZoomDistance to: "..tonumber(args[2]))
 end)
 
@@ -442,12 +442,12 @@ AddCommand("fling", "Flings someone", {}, function (args)
 end)
 
 AddCommand("all", "Executes a command for everyone", {}, function(args)
-	local a3 = ""
-	if args[3] then
-		a3 = args[3]
+	local a2 = ""
+	if args[2] then
+		a2 = args[2]
 	end
 	for i,v in pairs(S.Players:GetPlayers()) do
-		execcommand(prefix..args[1]..v.Name..a3)
+		execcommand(prefix..args[1]..v.Name..a2)
 	end
 end)
 
