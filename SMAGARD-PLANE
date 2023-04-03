@@ -17,7 +17,7 @@ local removelimbs = true
 local removecharscripts = true
 
 local speed = 10
-local qeincrease = 5
+local qeincrease = 10
 
 local noclip = false
 
