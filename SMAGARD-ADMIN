@@ -257,6 +257,10 @@ AddCommand("smhub", "Loads SMAGARD Hub", {}, function(args)
 	Notify("SMAGARD Hub", "Loaded SMAGARD Hub")
 end)
 
+AddCommand("plane", "Turns you into a airplane (REQUIRES EMIRATES MINI)", {"airplane"}, function(args)
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-PLANE'))()
+	Notify("Plane", "You are now an airplane")
+
 AddCommand("rejoin", "Rejoins the game", {"rj"}, function(args)
 	Notify("REJOIN", "Rejoining The Game")
 	S.TeleportService:Teleport(game.PlaceId, plr)
