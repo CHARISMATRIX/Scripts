@@ -1,0 +1,123 @@
+local ScriptHub = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Items = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local Search = Instance.new("TextBox")
+local Title = Instance.new("TextLabel")
+local Destroy = Instance.new("ImageButton")
+
+--Properties:
+
+ScriptHub.Name = "ScriptHub"
+ScriptHub.Parent = game:GetService("CoreGui")
+ScriptHub.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScriptHub
+MainFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+MainFrame.Position = UDim2.new(0.388535053, 0, 0.323943675, 0)
+MainFrame.Size = UDim2.new(0, 350, 0, 225)
+MainFrame.Draggable = true
+MainFrame.Active = true
+MainFrame.Selectable = true
+
+Items.Name = "Items"
+Items.Parent = MainFrame
+Items.Active = true
+Items.BackgroundColor3 = Color3.fromRGB(104, 104, 104)
+Items.Position = UDim2.new(0.139999986, 0, 0.199999973, 0)
+Items.Size = UDim2.new(0, 250, 0, 145)
+Items.ScrollBarThickness = 8
+
+UIListLayout.Parent = Items
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+Search.Name = "Search"
+Search.Parent = MainFrame
+Search.Active = false
+Search.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Search.BackgroundTransparency = 0.900
+Search.Position = UDim2.new(0.140000001, 0, 0, 0)
+Search.Selectable = false
+Search.Size = UDim2.new(0, 250, 0, 45)
+Search.Font = Enum.Font.SourceSans
+Search.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+Search.PlaceholderText = "Search"
+Search.Text = ""
+Search.TextColor3 = Color3.fromRGB(255, 0, 0)
+Search.TextScaled = true
+Search.TextSize = 14.000
+Search.TextWrapped = true
+
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.000
+Title.Position = UDim2.new(0.140000001, 0, -0.0977777764, 0)
+Title.Size = UDim2.new(0, 250, 0, 22)
+Title.Font = Enum.Font.SourceSans
+Title.Text = "SMAGARD-Scripts"
+Title.TextColor3 = Color3.fromRGB(0, 255, 0)
+Title.TextScaled = true
+Title.TextSize = 14.000
+Title.TextWrapped = true
+
+UICorner.CornerRadius = UDim.new(0.300000012, 0)
+UICorner.Parent = MainFrame
+
+Destroy.Name = "Destroy"
+Destroy.Parent = MainFrame
+Destroy.Position = UDim2.new(0, 0, 0.422222227, 0)
+Destroy.Size = UDim2.new(0, 45, 0, 45)
+Destroy.Image = "rbxassetid://416746463"
+
+function CreateScript(name, code)
+	local btn = Instance.new("TextButton")
+
+	btn.BackgroundColor3 = Color3.fromRGB(3, 188, 255)
+	btn.Size = UDim2.new(1, 0, 0, 30)
+	btn.Font = Enum.Font.Arcade
+	btn.TextSize = 20.000
+	btn.TextXAlignment = Enum.TextXAlignment.Left
+	btn.Name = name
+	btn.Text = name
+	btn.Parent = Items
+
+	btn.MouseButton1Down:Connect(function()
+		loadstring(code)()
+	end)
+	btn.MouseButton2Down:Connect(function()
+		setclipboard(code)
+	end)
+end
+
+CreateScript("Hub", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-HUB'))()")
+CreateScript("Admin", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-ADMIN'))()")
+CreateScript("FE", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/FE-SMAGARD'))()")
+CreateScript("Keystrokes", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-KEYSTROKES'))()")
+CreateScript("Plane", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMAGARD-PLANE'))()")
+
+Destroy.MouseButton1Down:Connect(function()
+	ScriptHub:Destroy()
+end)
+
+function UpdateResults()
+	local search = string.lower(Search.Text)
+	for i, v in	 pairs(Items:GetChildren()) do
+		if v:IsA("GuiButton") then
+			if search ~= "" then
+				local item = string.lower(v.Text)
+				if string.find(item, search) then
+					v.Visible = true
+				else
+					v.Visible = false
+				end
+			else
+				v.Visible = true
+			end
+		end
+	end
+end
+
+Search:GetPropertyChangedSignal("Text"):Connect(UpdateResults)
