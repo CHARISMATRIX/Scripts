@@ -31,7 +31,7 @@ local Maximize = Instance.new("TextButton")
 --Properties:
 
 SMExecutor.Name = "SMExecutor"
-SMExecutor.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+SMExecutor.Parent = game:GetService("CoreGui")
 SMExecutor.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 SMExecutor.ResetOnSpawn = false
 
