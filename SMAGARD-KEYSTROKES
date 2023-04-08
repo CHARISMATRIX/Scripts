@@ -33,8 +33,9 @@ local TOGGLEMENU = Instance.new("TextButton")
 --Properties:
 
 SMKeyStrokes.Name = "SMKeyStrokes"
-SMKeyStrokes.Parent = game:GetService("CoreGui")
+SMKeyStrokes.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 SMKeyStrokes.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SMKeyStrokes.ResetOnSpawn = false
 
 Settings.Name = "Settings"
 Settings.Parent = SMKeyStrokes
