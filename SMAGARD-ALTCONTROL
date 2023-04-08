@@ -1,0 +1,270 @@
+local rs = game:GetService("ReplicatedStorage")
+local plrs = game:GetService("Players")
+
+local plr = plrs.LocalPlayer
+local char = plr.Character
+
+local chatEvents = rs:WaitForChild("DefaultChatSystemChatEvents")
+local messageDoneFiltering = chatEvents:WaitForChild("OnMessageDoneFiltering")
+
+local prefix = "+"
+
+local commands = {}
+
+local settings = {
+	notifyglobal = false
+}
+
+local cscript
+
+function addcmd(name, aliases, func, undofunc)
+	name = string.lower(name)
+	commands[name] = func
+
+	for i,v in aliases do
+		commands[string.lower(v)] = func
+	end
+
+	if undofunc then
+		commands["un"..name] = undofunc
+		for i,v in aliases do
+			commands["un"..string.lower(v)] = undofunc
+		end
+	end
+end
+
+function execcommand(message)
+	pcall(function()
+		char = plr.Character
+		local args = message:split(" ")
+
+		local prefixcmd = args[1]
+		local cmd = string.lower(prefixcmd:split(prefix)[2])
+
+		if commands[cmd] then
+
+			local commandargs = {}
+
+			for i = 2, #args, 1 do --Put arguments in commandargs table
+				table.insert(commandargs, args[i])
+			end
+
+			pcall(commands[cmd](commandargs)) --Call function while sending all the other arguments
+		end
+
+	end)
+end
+
+function GetPlayer(name)
+	name = string.lower(name)
+	if name == "me" or name == "" or name == " " or not name then
+		return plrs:FindFirstChild(controller)
+
+	elseif name == "random" then
+		return plrs:GetPlayers()[math.random(1, #plrs:GetPlayers())]
+
+	else
+		for i,v in pairs(plrs:GetPlayers()) do
+			if v.Name:lower():sub(1, #name) == name then
+				return v
+			elseif v.DisplayName:lower():sub(1, #name) == name then
+				return v
+			end
+		end
+	end
+
+	return nil
+end
+
+function Notify(msg)
+	local args = {
+	[1] = "/w "..controller.." "..msg,
+	[2] = "All"
+	}
+	if settings.notifyglobal then
+		args[1] = msg
+	end
+	rs:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+end
+
+Notify("Script Ran")
+
+--commands
+addcmd("freeze", {}, function(args)
+	for _,bp in pairs(char:GetChildren()) do
+		if not bp:IsA("BasePart") then continue end
+		bp.Anchored = true
+	end
+end, function(args)
+	for _,bp in pairs(char:GetChildren()) do
+		if not bp:IsA("BasePart") then continue end
+		bp.Anchored = false
+	end
+end)
+
+addcmd("kick", {}, function(args)
+	local kickmsg = table.concat(args, " ")
+	plr:Kick(kickmsg)
+end)
+
+addcmd("kill", {}, function(args)
+	char:BreakJoints()
+end)
+
+addcmd("damage", {}, function(args)
+	char.Humanoid.Health -= tonumber(args[1])
+	Notify("Removed "..args[1].."HP from player, current health: "..char.Humanoid.Health)
+end)
+
+addcmd("bring", {}, function(args)
+	char.HumanoidRootPart.CFrame = plrs[controller].Character.HumanoidRootPart.CFrame
+end)
+
+addcmd("goto", {"to"}, function(args)
+	local t = GetPlayer(args[1])
+	char.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame
+end)
+
+addcmd("follow", {"walkto"}, function(args)
+	local t = GetPlayer(args[1])
+	settings.follow = true
+	task.spawn(function ()
+		while task.wait() and t and t.Character and t.Character.Humanoid.Health > 1 and char and char.Humanoid.Health > 1 and settings.follow do
+			char.Humanoid:MoveTo(t.Character.HumanoidRootPart.Position)
+		end
+		settings.follow = false
+	end)
+end, function(args)
+	settings.follow = false
+end)
+
+addcmd("message", {"msg"}, function(args)
+	Instance.new("Message", game:GetService("CoreGui")).Text = table.concat(args, " ")
+end, function(args)
+	game:GetService("CoreGui"):FindFirstChildWhichIsA("Message"):Destroy()
+end)
+
+addcmd("say", {}, function(args)
+	local msg = table.concat(args, " ")
+	local args = {
+    [1] = msg,
+    [2] = "All"
+	}
+	rs:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+end)
+
+addcmd("fpscap", {"maxfps"}, function(args)
+	setfpscap(tonumber(args[1]))
+end)
+
+addcmd("2drender", {"2d"}, function(args)
+	game:GetService("RunService"):Set3dRenderingEnabled(false)
+end, function(args)
+	game:GetService("RunService"):Set3dRenderingEnabled(true)
+end)
+
+addcmd("removescripts", {"deletescripts", "rmscripts", "delscripts"}, function(args)
+	for i,v in pairs(char:GetDescendants()) do
+		if v:IsA("Script") or v:IsA("LocalScript") or v:IsA("BillboardGui") or v:IsA("SurfaceGui") or v:IsA("Animator") then v:Destroy() end
+	end
+	Notify("Removed all scripts from Character")
+end)
+
+addcmd("jump", {}, function(args)
+	char.Humanoid.Jump = true
+end)
+addcmd("sit", {}, function(args)
+	char.Humanoid.Sit = true
+end)
+
+addcmd("run", {"execute", "exec", "script"}, function(args)
+	loadstring(table.concat(args, " "))()
+end)
+
+addcmd("bindlife", {"lifebind","healthbind"}, function(args)
+	local t = GetPlayer(args[1])
+	Notify("Life bound with "..t.Name)
+	t.Character.Humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+		char.Humanoid.Health = t.Character.Humanoid.Health
+	end)
+end)
+
+addcmd("notifyglobal", {"globalnotify"}, function(args)
+	settings.notifyglobal = true
+	Notify("All notifications will now be sent to the global chat")
+end, function(args)
+	settings.notifyglobal = false
+	Notify("All notifications will now be sent to the private chat")
+end)
+
+addcmd("stand", {}, function(args)
+	local t = GetPlayer(args[1])
+	settings.stand = true
+	game:GetService("Workspace").Gravity = 0
+	execcommand(prefix.."bindlife "..t.Name)
+	task.spawn(function()
+		while task.wait() and t and t.Character and t.Character.Humanoid.Health > 1 and char and char.Humanoid.Health > 1 and settings.stand do
+			char.HumanoidRootPart.CFrame = t.Character.HumanoidRootPart.CFrame * CFrame.new(2,.5,2)
+		end
+		settings.stand = false
+		game:GetService("Workspace").Gravity = 196.2
+	end)
+end, function(args)
+	settings.stand = false
+	game:GetService("Workspace").Gravity = 196.2
+end)
+
+addcmd("fling", {"yeet"}, function(args)
+	local target = GetPlayer(args[1])
+	if not target then return end
+
+	local tchar = target.Character
+	local thumrp = tchar.HumanoidRootPart
+
+	for _, child in pairs(char:GetDescendants()) do
+		if child:IsA("BasePart") then
+			child.CustomPhysicalProperties = PhysicalProperties.new(math.huge, 0.3, 0.5)
+		end
+	end
+	wait(.1)
+	local bv = Instance.new("BodyAngularVelocity")
+	bv.Parent = char.HumanoidRootPart
+	bv.AngularVelocity = Vector3.new(0,99999,0)
+	bv.MaxTorque = Vector3.new(0,math.huge,0)
+	bv.P = math.huge
+	local Char = char:GetChildren()
+	for i, v in next, Char do
+		if v:IsA("BasePart") then
+			v.CanCollide = false
+			v.Massless = true
+			v.Velocity = Vector3.new(0, 0, 0)
+		end
+	end
+	local flinging = true
+	task.spawn(function ()
+		repeat
+			bv.AngularVelocity = Vector3.new(0,99999,0)
+			char.HumanoidRootPart.CFrame = thumrp.CFrame
+			task.wait()
+		until not flinging
+	end)
+	task.wait(2)
+	flinging = false
+	char:BreakJoints()
+	Notify("Flung "..target.Name)
+end)
+
+addcmd("destroy", {"stopadmin"}, function(args)
+	cscript:Disconnect()
+	Notify("Destroyed")
+end)
+
+cscript = messageDoneFiltering.OnClientEvent:Connect(function(msg)
+	local speaker = plrs:FindFirstChild(msg.FromSpeaker) 
+	if speaker == plrs[controller] then  
+		msg = msg.Message or ""
+		execcommand(msg)
+	end
+end)
+
+if plr.Name == controller then cscript:Disconnect() end
