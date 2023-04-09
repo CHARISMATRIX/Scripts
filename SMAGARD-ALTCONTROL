@@ -254,6 +254,12 @@ addcmd("fling", {"yeet"}, function(args)
 	Notify("Flung "..target.Name)
 end)
 
+addcmd("cmds", {"commands","help"}, function(args)
+	for i,v in commands do
+		print(prefix..i)
+	end
+end)
+
 addcmd("destroy", {"stopadmin"}, function(args)
 	cscript:Disconnect()
 	Notify("Destroyed")
