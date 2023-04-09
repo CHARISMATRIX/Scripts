@@ -12,6 +12,7 @@ local prefix = "+"
 local commands = {}
 
 local settings = {
+	notify = true,
 	notifyglobal = false
 }
 
@@ -77,6 +78,7 @@ function GetPlayer(name)
 end
 
 function Notify(msg)
+	if not settings.notify then return end
 	local args = {
 	[1] = "/w "..controller.." "..msg,
 	[2] = "All"
@@ -195,6 +197,13 @@ addcmd("notifyglobal", {"globalnotify"}, function(args)
 end, function(args)
 	settings.notifyglobal = false
 	Notify("All notifications will now be sent to the private chat")
+end)
+
+addcmd("notify", {"notifications"}, function(args)
+	settings.notify = true
+	Notify("Notifications have been enabled")
+end, function(args)
+	settings.notify = false
 end)
 
 addcmd("stand", {}, function(args)
