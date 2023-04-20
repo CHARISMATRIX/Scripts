@@ -365,4 +365,66 @@ elseif game.PlaceId == 155615604 then --Prison Life
 		end
 	end)
 
+elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
+	Tabs.EverySecondKi = win:Tab("Every Second +1 Ki")
+
+	--Autokill
+	Tabs.EverySecondKi:Toggle("Autokill", false, function(s)
+		getgenv().autokill = s
+
+		while autokill and task.wait(.05) do
+			if not autokill then return end
+
+			for _,model in pairs(workspace:WaitForChild("World"):GetChildren()) do
+				if not autokill then return end
+
+				if not model:IsA("Model") or not tonumber(model.Name) then continue end
+
+				for _, part in pairs(model:GetChildren()) do
+					if not autokill then return end
+
+					if not part:IsA("Part") then continue end
+
+					local args = {
+						[1] = part,
+						[2] = true,
+						[3] = part.CFrame
+					}
+					game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Player"):WaitForChild("DmgHandle"):FireServer(unpack(args))
+				end
+			end
+		end
+	end)
+
+	--Autocollect
+	Tabs.EverySecondKi:Toggle("Autocollect", false, function(s)
+		getgenv().autocollect = s
+
+		while autocollect and task.wait(.05) do
+			if not autocollect then return end
+			for _,object in pairs(workspace:GetChildren()) do
+				if not autocollect then return end
+
+				if not object:IsA("MeshPart") or not string.find(object.Name, "draw") then continue end
+
+				firetouchinterest(plr.Character.Head, object, 0)
+
+			end
+		end
+	end)
+
+	--Auto Rebirth
+	Tabs.EverySecondKi:Toggle("Auto Rebirth", false, function(s)
+		getgenv().autorebirth = s
+		while autorebirth and task.wait(.5) do
+			if not autorebirth then return end
+			game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Player"):WaitForChild("RebirthEvent"):FireServer()
+		end
+	end)
+	
+	--Hide Collections
+	Tabs.EverySecondKi:Button("Hide Collections", function()
+		plr.PlayerGui.EffectRefersh:Destroy()
+	end)
+
 end
