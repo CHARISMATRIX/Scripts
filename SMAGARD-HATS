@@ -275,6 +275,9 @@ local mouse = plr:GetMouse()
 
 local char = plr.Character or plr.CharacterAdded:Wait()
 
+plr.CharacterAdded:Connect(function(newchar)
+	char = newchar
+end)
 
 --Functions
 function ReloadHatItems()
