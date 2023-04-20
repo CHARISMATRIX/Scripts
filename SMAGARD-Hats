@@ -1,0 +1,466 @@
+--SMAGARD-Hats
+
+
+--Gui
+
+local SMAGARDHats = Instance.new("ScreenGui")
+local TopBar = Instance.new("Frame")
+local Close = Instance.new("TextButton")
+local Destroy = Instance.new("TextButton")
+local MainFrame = Instance.new("Frame")
+local PageButtons = Instance.new("Frame")
+local Modify = Instance.new("TextButton")
+local UIListLayout = Instance.new("UIListLayout")
+local Add = Instance.new("TextButton")
+local Modifier = Instance.new("Frame")
+local HatSelector = Instance.new("TextButton")
+local HatItems = Instance.new("ScrollingFrame")
+local UIListLayout_2 = Instance.new("UIListLayout")
+local HatName = Instance.new("TextBox")
+local HatMesh = Instance.new("TextBox")
+local RemoveMesh = Instance.new("TextButton")
+local RemoveHat = Instance.new("TextButton")
+local Adder = Instance.new("Frame")
+local HatID = Instance.new("TextBox")
+local AddHat = Instance.new("TextButton")
+local BodyPartSelector = Instance.new("TextButton")
+local BodyPartItems = Instance.new("ScrollingFrame")
+local UIListLayout_3 = Instance.new("UIListLayout")
+local Title = Instance.new("TextLabel")
+
+
+SMAGARDHats.Name = "SMAGARD-Hats"
+SMAGARDHats.Parent = game:GetService("CoreGui")
+SMAGARDHats.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+TopBar.Name = "TopBar"
+TopBar.Parent = SMAGARDHats
+TopBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TopBar.Position = UDim2.new(0.382879376, 0, 0.48550722, 0)
+TopBar.Size = UDim2.new(0, 300, 0, 20)
+
+Close.Name = "Close"
+Close.Parent = TopBar
+Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Close.BackgroundTransparency = 0.800
+Close.Position = UDim2.new(0.933333337, 0, 0, 0)
+Close.Size = UDim2.new(0, 20, 1, 0)
+Close.Font = Enum.Font.SourceSans
+Close.Text = "-"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextScaled = true
+Close.TextSize = 14.000
+Close.TextWrapped = true
+
+Destroy.Name = "Destroy"
+Destroy.Parent = TopBar
+Destroy.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.BackgroundTransparency = 0.800
+Destroy.Position = UDim2.new(0.866666675, 0, 0, 0)
+Destroy.Size = UDim2.new(0, 20, 1, 0)
+Destroy.Font = Enum.Font.SourceSans
+Destroy.Text = "x"
+Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.TextScaled = true
+Destroy.TextSize = 14.000
+Destroy.TextWrapped = true
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = TopBar
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.Position = UDim2.new(0, 0, 1.00000155, 0)
+MainFrame.Size = UDim2.new(1, 0, 4.00000143, 100)
+
+PageButtons.Name = "PageButtons"
+PageButtons.Parent = MainFrame
+PageButtons.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+PageButtons.Position = UDim2.new(0, 0, -0.00555555476, 0)
+PageButtons.Size = UDim2.new(1, 0, 0, 15)
+
+Modify.Name = "Modify"
+Modify.Parent = PageButtons
+Modify.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Modify.Position = UDim2.new(0, 0, -7.4505806e-08, 0)
+Modify.Size = UDim2.new(0, 75, 1, 0)
+Modify.Font = Enum.Font.SourceSans
+Modify.Text = "Modify"
+Modify.TextColor3 = Color3.fromRGB(0, 0, 0)
+Modify.TextSize = 14.000
+
+UIListLayout.Parent = PageButtons
+UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+Add.Name = "Add"
+Add.Parent = PageButtons
+Add.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Add.Position = UDim2.new(0, 0, -7.4505806e-08, 0)
+Add.Size = UDim2.new(0, 75, 1, 0)
+Add.Font = Enum.Font.SourceSans
+Add.Text = "Add"
+Add.TextColor3 = Color3.fromRGB(0, 0, 0)
+Add.TextSize = 14.000
+
+Modifier.Name = "Modifier"
+Modifier.Parent = MainFrame
+Modifier.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Modifier.BackgroundTransparency = 0.800
+Modifier.Position = UDim2.new(0, 0, 0.0999998152, 0)
+Modifier.Size = UDim2.new(1, 0, 0.899999976, 0)
+
+HatSelector.Name = "HatSelector"
+HatSelector.Parent = Modifier
+HatSelector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HatSelector.Position = UDim2.new(0, 0, 0.0493827164, 0)
+HatSelector.Size = UDim2.new(0, 150, 0, 15)
+HatSelector.Font = Enum.Font.SourceSans
+HatSelector.Text = "Hat"
+HatSelector.TextColor3 = Color3.fromRGB(0, 0, 0)
+HatSelector.TextSize = 14.000
+
+HatItems.Name = "HatItems"
+HatItems.Parent = HatSelector
+HatItems.Active = true
+HatItems.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HatItems.BackgroundTransparency = 0.800
+HatItems.Position = UDim2.new(0, 0, 1, 0)
+HatItems.Size = UDim2.new(1, 0, 2.5999999, 100)
+HatItems.Visible = false
+HatItems.AutomaticCanvasSize = Enum.AutomaticSize.Y
+HatItems.ScrollBarThickness = 5
+
+UIListLayout_2.Parent = HatItems
+UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+
+
+
+HatName.Name = "HatName"
+HatName.Parent = Modifier
+HatName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HatName.Position = UDim2.new(0.5, 0, 0.300000012, 0)
+HatName.Size = UDim2.new(0, 150, 0, 50)
+HatName.Font = Enum.Font.SourceSans
+HatName.PlaceholderText = "Hat Name"
+HatName.Text = ""
+HatName.TextColor3 = Color3.fromRGB(0, 0, 0)
+HatName.TextScaled = true
+HatName.TextSize = 14.000
+HatName.TextWrapped = true
+HatName.ClearTextOnFocus = false
+
+HatMesh.Name = "HatMesh"
+HatMesh.Parent = Modifier
+HatMesh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HatMesh.Position = UDim2.new(0, 0, 0.300000012, 0)
+HatMesh.Size = UDim2.new(0, 150, 0, 50)
+HatMesh.Font = Enum.Font.SourceSans
+HatMesh.PlaceholderText = "Hat Mesh ID"
+HatMesh.Text = ""
+HatMesh.TextColor3 = Color3.fromRGB(0, 0, 0)
+HatMesh.TextScaled = true
+HatMesh.TextSize = 14.000
+HatMesh.TextWrapped = true
+HatMesh.ClearTextOnFocus = false
+
+RemoveMesh.Name = "RemoveMesh"
+RemoveMesh.Parent = Modifier
+RemoveMesh.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+RemoveMesh.BackgroundTransparency = 0.500
+RemoveMesh.Position = UDim2.new(0, 0, 0.604938149, 0)
+RemoveMesh.Size = UDim2.new(0, 148, 0, 50)
+RemoveMesh.Font = Enum.Font.SourceSans
+RemoveMesh.Text = "Remove Mesh"
+RemoveMesh.TextColor3 = Color3.fromRGB(0, 0, 0)
+RemoveMesh.TextScaled = true
+RemoveMesh.TextSize = 14.000
+RemoveMesh.TextWrapped = true
+
+RemoveHat.Name = "RemoveHat"
+RemoveHat.Parent = Modifier
+RemoveHat.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+RemoveHat.BackgroundTransparency = 0.500
+RemoveHat.Position = UDim2.new(0.50666666, 0, 0.604938149, 0)
+RemoveHat.Size = UDim2.new(0, 148, 0, 50)
+RemoveHat.Font = Enum.Font.SourceSans
+RemoveHat.Text = "Remove Hat"
+RemoveHat.TextColor3 = Color3.fromRGB(0, 0, 0)
+RemoveHat.TextScaled = true
+RemoveHat.TextSize = 14.000
+RemoveHat.TextWrapped = true
+
+Adder.Name = "Adder"
+Adder.Parent = MainFrame
+Adder.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Adder.BackgroundTransparency = 0.800
+Adder.Position = UDim2.new(0, 0, 0.0999998152, 0)
+Adder.Size = UDim2.new(1, 0, 0.899999976, 0)
+Adder.Visible = false
+
+HatID.Name = "HatID"
+HatID.Parent = Adder
+HatID.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+HatID.Position = UDim2.new(0.166666672, 0, 0.290123403, 0)
+HatID.Size = UDim2.new(0, 200, 0, 50)
+HatID.Font = Enum.Font.SourceSans
+HatID.PlaceholderText = "Hat ID"
+HatID.Text = ""
+HatID.TextColor3 = Color3.fromRGB(0, 0, 0)
+HatID.TextScaled = true
+HatID.TextSize = 14.000
+HatID.TextWrapped = true
+HatID.ClearTextOnFocus = false
+
+AddHat.Name = "AddHat"
+AddHat.Parent = Adder
+AddHat.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+AddHat.Position = UDim2.new(0.166666672, 0, 0.598765314, 0)
+AddHat.Size = UDim2.new(0, 200, 0, 50)
+AddHat.Font = Enum.Font.SourceSans
+AddHat.Text = "Add"
+AddHat.TextColor3 = Color3.fromRGB(0, 0, 0)
+AddHat.TextScaled = true
+AddHat.TextSize = 14.000
+AddHat.TextWrapped = true
+
+BodyPartSelector.Name = "BodyPartSelector"
+BodyPartSelector.Parent = Adder
+BodyPartSelector.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+BodyPartSelector.Position = UDim2.new(0, 0, 0.0493827164, 0)
+BodyPartSelector.Size = UDim2.new(0, 150, 0, 15)
+BodyPartSelector.Font = Enum.Font.SourceSans
+BodyPartSelector.Text = "Body Part"
+BodyPartSelector.TextColor3 = Color3.fromRGB(0, 0, 0)
+BodyPartSelector.TextSize = 14.000
+
+BodyPartItems.Name = "BodyPartItems"
+BodyPartItems.Parent = BodyPartSelector
+BodyPartItems.Active = true
+BodyPartItems.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+BodyPartItems.BackgroundTransparency = 0.800
+BodyPartItems.Position = UDim2.new(0, 0, 1, 0)
+BodyPartItems.Size = UDim2.new(1, 0, 2.5999999, 100)
+BodyPartItems.Visible = false
+
+UIListLayout_3.Parent = BodyPartItems
+UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+
+Title.Name = "Title"
+Title.Parent = TopBar
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.000
+Title.Size = UDim2.new(0.5, 0, 1, 0)
+Title.Font = Enum.Font.SourceSans
+Title.Text = "SMAGARD-Hats"
+Title.TextColor3 = Color3.fromRGB(0, 255, 0)
+Title.TextScaled = true
+Title.TextSize = 14.000
+Title.TextWrapped = true
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+--Variables
+local eventcripts = {}
+
+function gs(service)
+	return game:GetService(service)
+end
+
+function DisconnectScripts()
+	for _,scr in eventscripts do
+		scr:Disconnect()
+	end
+end
+
+local plr = gs("Players").LocalPlayer
+local mouse = plr:GetMouse()
+
+local char = plr.Character or plr.CharacterAdded:Wait()
+
+
+--Functions
+function ReloadHatItems()
+	for i,v in pairs(HatItems:GetChildren()) do
+		if v:IsA("TextButton") then v:Destroy() end
+	end
+	for i,v in pairs(char:GetChildren()) do
+		if not v:IsA("Accessory") then continue end
+
+		local btn = Instance.new("TextButton")
+
+		btn.Name = v.Name
+		btn.Text = v.Name
+		btn.BackgroundTransparency = 0.200
+		btn.Size = UDim2.new(1, 0, 0, 25)
+		btn.Font = Enum.Font.SourceSans
+		btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+		btn.TextSize = 14.000
+		btn.TextXAlignment = Enum.TextXAlignment.Left
+		btn.Parent = HatItems
+
+		btn.MouseButton1Down:Connect(function()
+			HatItems.Visible = false
+
+			HatMesh.Visible = true
+			RemoveMesh.Visible = true
+
+			HatSelector.Text = btn.Name
+
+			HatName.Text = btn.Name
+			if v.Handle:FindFirstChildWhichIsA("SpecialMesh") then
+				HatMesh.Text = v.Handle:FindFirstChildWhichIsA("SpecialMesh").MeshId
+			end
+		end)
+	end
+end
+
+function ReloadBodyPartItems()
+	for i,v in pairs(HatItems:GetChildren()) do
+		if v:IsA("TextButton") then v:Destroy() end
+	end
+	for i,v in pairs(char:GetChildren()) do
+		if not v:IsA("BasePart") then continue end
+
+		local btn = Instance.new("TextButton")
+
+		btn.Name = v.Name
+		btn.Text = v.Name
+		btn.BackgroundTransparency = 0.200
+		btn.Size = UDim2.new(1, 0, 0, 25)
+		btn.Font = Enum.Font.SourceSans
+		btn.TextColor3 = Color3.fromRGB(0, 0, 0)
+		btn.TextSize = 14.000
+		btn.TextXAlignment = Enum.TextXAlignment.Left
+		btn.Parent = BodyPartItems
+
+		btn.MouseButton1Down:Connect(function()
+			BodyPartItems.Visible = false
+
+			HatID.Visible = true
+			AddHat.Visible = true
+
+			BodyPartSelector.Text = btn.Name
+		end)
+	end
+end
+
+function GetSelectedHat()
+	return char:FindFirstChild(HatSelector.Text)
+end
+
+function GetSelectedBodyPart()
+	return char:FindFirstChild(BodyPartSelector.Text)
+end
+
+--TopBar
+TopBar.Draggable = true
+TopBar.Selectable = true
+TopBar.Active = true
+
+Close.MouseButton1Down:Connect(function()
+	MainFrame.Visible = not MainFrame.Visible
+end)
+
+Destroy.MouseButton1Down:Connect(function()
+	SMAGARDHats:Destroy()
+end)
+
+--Page Buttons
+Modify.MouseButton1Down:Connect(function()
+	Modifier.Visible = true
+	Adder.Visible = false
+end)
+
+Add.MouseButton1Down:Connect(function()
+	Modifier.Visible = false
+	Adder.Visible = true
+end)
+
+--Pages
+
+--Modifier
+
+--Selector
+HatSelector.MouseButton1Down:Connect(function()
+	HatItems.Visible = not HatItems.Visible
+
+	HatMesh.Visible = not HatMesh.Visible
+	RemoveMesh.Visible = not RemoveMesh.Visible
+
+	if HatItems.Visible then
+		ReloadHatItems()
+	end
+end)
+
+--HatName
+HatName.FocusLost:Connect(function()
+	GetSelectedHat().Name = HatName.Text
+	HatSelector.Text = HatName.Text
+end)
+
+--HatMesh
+HatMesh.FocusLost:Connect(function()
+	if not GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh") then return end
+	if string.find(HatMesh.Text, "rbxassetid://") then
+		GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh").MeshId = HatMesh.Text
+	else
+		GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh").MeshId = "rbxassetid://"..HatMesh.Text
+	end
+end)
+
+--RemoveMesh
+RemoveMesh.MouseButton1Down:Connect(function()
+	if not GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh") then return end
+	GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh"):Destroy()
+end)
+
+RemoveMesh.MouseButton2Down:Connect(function()
+	if not GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh") then return end
+	if string.find(HatMesh.Text, "rbxassetid://") then
+		GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh").TextureId = HatMesh.Text
+	else
+		GetSelectedHat().Handle:FindFirstChildWhichIsA("SpecialMesh").TextureId = "rbxassetid://"..HatMesh.Text
+	end
+end)
+
+--RemoveHat
+RemoveHat.MouseButton1Down:Connect(function()
+	GetSelectedHat():Destroy()
+	HatSelector.Text = "Hat"
+	HatMesh.Text = ""
+	HatName.Text = ""
+end)
+
+
+--Adder
+
+--Selector
+BodyPartSelector.MouseButton1Down:Connect(function()
+	BodyPartItems.Visible = not BodyPartItems.Visible
+
+	HatID.Visible = not HatID.Visible
+	AddHat.Visible = not AddHat.Visible
+
+	if BodyPartItems.Visible then
+		ReloadBodyPartItems()
+	end
+end)
+
+--AddHat
+AddHat.MouseButton1Down:Connect(function()
+	local hat
+
+	if string.find(HatID.Text, "rbxassetid://") then
+		hat = game:GetObjects(HatID.Text)[1]
+	else
+		hat = game:GetObjects("rbxassetid://"..HatID.Text)[1]
+	end
+
+	local handle = hat:FindFirstChild("Handle")
+
+	if not hat or not handle then return end
+
+	hat.Parent = char
+
+	local weld = Instance.new("Weld", handle)
+	weld.Part0 = handle
+	weld.Part1 = GetSelectedBodyPart()
+end)
