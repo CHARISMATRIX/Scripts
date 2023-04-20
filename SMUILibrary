@@ -12,7 +12,7 @@ function library:NewWindow(WindowName)
 	local UIListLayout = Instance.new("UIListLayout")
 
 	SMUILibrary.Name = "SMUILibrary"
-	SMUILibrary.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	SMUILibrary.Parent = game:GetService("CoreGui")
 	SMUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	SMUILibrary.ResetOnSpawn = false
 
