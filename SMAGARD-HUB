@@ -133,7 +133,7 @@ end)
 
 --Current Game
 if game.PlaceId == 537413528 then --Build a Boat
-	Tabs.BABFT = win:Tab("Build A Boat")
+	Tabs.currgame = win:Tab("Build A Boat")
 
 	--AutoFarm
 	function Farm()
@@ -159,46 +159,46 @@ if game.PlaceId == 537413528 then --Build a Boat
 		game:GetService("Workspace").Gravity = 196.2
 	end
 
-	Tabs.BABFT:Button("Farm Once", function()
+	Tabs.currgame:Button("Farm Once", function()
 		Farm()
 	end)
 
 	--Teleports
-	Tabs.BABFT:Button("White Team", function()
+	Tabs.currgame:Button("White Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace").WhiteZone.CFrame * CFrame.new(0,5,0)
 	end)
 
-	Tabs.BABFT:Button("Black Team", function()
+	Tabs.currgame:Button("Black Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace").BlackZone.CFrame * CFrame.new(0,5,0)
 	end)
 
-	Tabs.BABFT:Button("Red Team", function()
+	Tabs.currgame:Button("Red Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["Really redZone"].CFrame * CFrame.new(0,5,0)
 	end)
 
-	Tabs.BABFT:Button("Blue Team", function()
+	Tabs.currgame:Button("Blue Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["Really blueZone"].CFrame * CFrame.new(0,5,0)
 	end)
 
-	Tabs.BABFT:Button("Green Team", function()
+	Tabs.currgame:Button("Green Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace").CamoZone.CFrame * CFrame.new(0,5,0)
 	end)
 
-	Tabs.BABFT:Button("Yellow Team", function()
+	Tabs.currgame:Button("Yellow Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["New YellerZone"].CFrame * CFrame.new(0,5,0)
 	end)
 
-	Tabs.BABFT:Button("Magenta Team", function()
+	Tabs.currgame:Button("Magenta Team", function()
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace").MagentaZone.CFrame * CFrame.new(0,5,0)
 	end)
 
 	--Water Godmode
-	Tabs.BABFT:Button("Water GodMode", function()
+	Tabs.currgame:Button("Water GodMode", function()
 		char:WaitForChild("WaterDetector"):remove()
 	end)
 
 	--Bypass Isolation
-	Tabs.BABFT:Button("Bypass Isolation", function()
+	Tabs.currgame:Button("Bypass Isolation", function()
 		if game:GetService("Workspace").WhiteZone:FindFirstChild("Lock") then
 			game:GetService("Workspace").WhiteZone:FindFirstChild("Lock").Part:Destroy()
 		end
@@ -223,10 +223,10 @@ if game.PlaceId == 537413528 then --Build a Boat
 	end)
 
 elseif game.PlaceId == 3956818381 then --Ninja Legends
-	Tabs.NinjaLegends = win:Tab("Ninja Legends")
+	Tabs.currgame = win:Tab("Ninja Legends")
 
 	--AutoSwing
-	Tabs.NinjaLegends:Toggle("AutoSwing", function(state)
+	Tabs.currgame:Toggle("AutoSwing", function(state)
 		getgenv().autoswing = state
 		while wait(.1) and getgenv().autoswing do
 			if not getgenv().autoswing then return end
@@ -240,7 +240,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)  
 	--AutoSell
-	Tabs.NinjaLegends:Toggle("AutoSell",false, function(state)
+	Tabs.currgame:Toggle("AutoSell",false, function(state)
 		getgenv().autosell = state
 		while wait(.1) and getgenv().autosell do
 			if getgenv().autosell == false then return end
@@ -250,7 +250,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--AutoBuySwords
-	Tabs.NinjaLegends:Toggle("Auto buy swords",false, function(state)
+	Tabs.currgame:Toggle("Auto buy swords",false, function(state)
 		getgenv().autobuyswords = state
 		while wait(.5) and getgenv().autobuyswords do
 			if not getgenv().autobuyswords then return end
@@ -262,7 +262,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--AutoBuyBelts
-	Tabs.NinjaLegends:Toggle("Auto buy belts",false, function(state)
+	Tabs.currgame:Toggle("Auto buy belts",false, function(state)
 		getgenv().autobuybelts = state
 		while wait(.5) and getgenv().autobuybelts do
 			if not getgenv().autobuybelts then return end
@@ -274,7 +274,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--AutoBuySkills
-	Tabs.NinjaLegends:Toggle("Auto buy Skills",false, function(state)
+	Tabs.currgame:Toggle("Auto buy Skills",false, function(state)
 		getgenv().autobuyskills = state
 		while wait(.5) and getgenv().autobuyskills do
 			if not getgenv().autobuyskills then return end
@@ -286,7 +286,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--AutoBuyShurikens
-	Tabs.NinjaLegends:Toggle("Auto buy Shurikens",false, function(state)
+	Tabs.currgame:Toggle("Auto buy Shurikens",false, function(state)
 		getgenv().autobuyshurikens = state
 		while wait(.5) and getgenv().autobuyshurikens do
 			if not getgenv().autobuyshurikens then return end
@@ -298,7 +298,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--AutoHoops
-	Tabs.NinjaLegends:Toggle("Auto Hoops",false, function(state)
+	Tabs.currgame:Toggle("Auto Hoops",false, function(state)
 		getgenv().autohoops = state
 		while wait() and getgenv().autohoops do
 			if not getgenv().autohoops then return end
@@ -313,7 +313,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--AutoCoins
-	Tabs.NinjaLegends:Toggle("Auto Coins",false, function(state)
+	Tabs.currgame:Toggle("Auto Coins",false, function(state)
 		getgenv().autocoins = state
 		while wait(.1) and getgenv().autocoins do
 			if not getgenv().autocoins then return end
@@ -323,7 +323,7 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		end
 	end)
 	--UnlockAllIslands
-	Tabs.NinjaLegends:Button("Unlock all islands", function()
+	Tabs.currgame:Button("Unlock all islands", function()
 		local oldcframe = char.HumanoidRootPart.CFrame
 		for _,v in pairs(game:GetService("Workspace").islandUnlockParts:GetChildren()) do
 			char.HumanoidRootPart.CFrame = v.CFrame
@@ -334,10 +334,10 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 	end)
 
 elseif game.PlaceId == 155615604 then --Prison Life
-	Tabs.PrisonLife = win:Tab("Prison Life")
+	Tabs.currgame = win:Tab("Prison Life")
 
 	--Give Gun
-	Tabs.PrisonLife:Dropdown("Give Gun", {"M9", "Remington 870", "AK-47"}, function(currentOption)
+	Tabs.currgame:Dropdown("Give Gun", {"M9", "Remington 870", "AK-47"}, function(currentOption)
 		local args = {
 			[1] = game:GetService("Workspace").Prison_ITEMS.giver:FindFirstChild(currentOption).ITEMPICKUP
 		}
@@ -345,7 +345,7 @@ elseif game.PlaceId == 155615604 then --Prison Life
 		game:GetService("Workspace").Remote.ItemHandler:InvokeServer(unpack(args))
 	end)
 	--Gun Mod
-	Tabs.PrisonLife:Dropdown("Gun Mod", {"M9", "Remington 870", "AK-47"}, function(currentOption)
+	Tabs.currgame:Dropdown("Gun Mod", {"M9", "Remington 870", "AK-47"}, function(currentOption)
 		local module = nil
 		if plr.Backpack:FindFirstChild(currentOption) then
 			module = require(plr.Backpack[currentOption].GunStates)
@@ -366,10 +366,10 @@ elseif game.PlaceId == 155615604 then --Prison Life
 	end)
 
 elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
-	Tabs.EverySecondKi = win:Tab("Every Second +1 Ki")
+	Tabs.currgame = win:Tab("Every Second +1 Ki")
 
 	--Autokill
-	Tabs.EverySecondKi:Toggle("Autokill", false, function(s)
+	Tabs.currgame:Toggle("Autokill", false, function(s)
 		getgenv().autokill = s
 
 		while autokill and task.wait(.05) do
@@ -397,7 +397,7 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 	end)
 
 	--Autocollect
-	Tabs.EverySecondKi:Toggle("Autocollect", false, function(s)
+	Tabs.currgame:Toggle("Autocollect", false, function(s)
 		getgenv().autocollect = s
 
 		while autocollect and task.wait(.05) do
@@ -414,7 +414,7 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 	end)
 
 	--Auto Rebirth
-	Tabs.EverySecondKi:Toggle("Auto Rebirth", false, function(s)
+	Tabs.currgame:Toggle("Auto Rebirth", false, function(s)
 		getgenv().autorebirth = s
 		while autorebirth and task.wait(.5) do
 			if not autorebirth then return end
@@ -423,15 +423,15 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 	end)
 	
 	--Hide Collections
-	Tabs.EverySecondKi:Button("Hide Collections", function()
+	Tabs.currgame:Button("Hide Collections", function()
 		plr.PlayerGui.EffectRefersh:Destroy()
 	end)
 
 elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 	
-	Tabs.WallPunchSim = win:Tab("Wall Punch Simulator")
+	Tabs.currgame = win:Tab("Wall Punch Simulator")
 
-	Tabs.WallPunchSim:Textbox("Amount Of Coins", true, function(v)
+	Tabs.currgame:Textbox("Amount Of Coins", true, function(v)
 		local args = {
     		[1] = game:GetService("Players").LocalPlayer,
     		[2] = tonumber(v)
@@ -440,7 +440,7 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 		game:GetService("ReplicatedStorage"):WaitForChild("NL"):FireServer(unpack(args))
 	end)
 
-	Tabs.WallPunchSim:Textbox("Amount Of Power", true, function(v)
+	Tabs.currgame:Textbox("Amount Of Power", true, function(v)
 		local args = {
     		[1] = game:GetService("Players").LocalPlayer,
     		[2] = tonumber(v)
@@ -449,53 +449,53 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 		game:GetService("ReplicatedStorage"):WaitForChild("GP"):FireServer(unpack(args))
 	end)
 
-	Tabs.WallPunchSim:Textbox("Extra Multiplier", true, function(v)
+	Tabs.currgame:Textbox("Extra Multiplier", true, function(v)
 		game:GetService("Players").LocalPlayer.ExtraMultiplier.Value = tonumber(v)		
 	end)
 
-	Tabs.WallPunchSim:Toggle("Autoclick", false, function(v)
+	Tabs.currgame:Toggle("Autoclick", false, function(v)
 		game:GetService("Players").LocalPlayer.AutoClick.Value = v
 	end)
 
 elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 	
-	Tabs.LBBattlegrounds = win:Tab("Lucky Block Battlegrounds")
+	Tabs.currgame = win:Tab("Lucky Block Battlegrounds")
 
-	Tabs.LBBattlegrounds:Slider("Amount Of Blocks", 1,30,1, function(v)
+	Tabs.currgame:Slider("Amount Of Blocks", 1,30,1, function(v)
 		getgenv().blockamount = tonumber(v)
 	end)
 
-	Tabs.LBBattlegrounds:Button("Spawn Default", function()
+	Tabs.currgame:Button("Spawn Default", function()
 		for i=1,getgenv().blockamount,1 do
 			game:GetService("ReplicatedStorage"):WaitForChild("SpawnLuckyBlock"):FireServer()
 		end
 	end)
 
-	Tabs.LBBattlegrounds:Button("Spawn Super", function()
+	Tabs.currgame:Button("Spawn Super", function()
 		for i=1,getgenv().blockamount,1 do
 			game:GetService("ReplicatedStorage"):WaitForChild("SpawnSuperBlock"):FireServer()
 		end
 	end)
 
-	Tabs.LBBattlegrounds:Button("Spawn Diamond", function()
+	Tabs.currgame:Button("Spawn Diamond", function()
 		for i=1,getgenv().blockamount,1 do
 			game:GetService("ReplicatedStorage"):WaitForChild("SpawnDiamondBlock"):FireServer()
 		end
 	end)
 
-	Tabs.LBBattlegrounds:Button("Spawn Rainbow", function()
+	Tabs.currgame:Button("Spawn Rainbow", function()
 		for i=1,getgenv().blockamount,1 do
 			game:GetService("ReplicatedStorage"):WaitForChild("SpawnRainbowBlock"):FireServer()
 		end
 	end)
 
-	Tabs.LBBattlegrounds:Button("Spawn Galaxy", function()
+	Tabs.currgame:Button("Spawn Galaxy", function()
 		for i=1,getgenv().blockamount,1 do
 			game:GetService("ReplicatedStorage"):WaitForChild("SpawnGalaxyBlock"):FireServer()
 		end
 	end)
 
-	Tabs.LBBattlegrounds:Button("Droppable Items", function()
+	Tabs.currgame:Button("Droppable Items", function()
 		for i,v in pairs(plr.Backpack:GetChildren()) do
 			if v:IsA("BackpackItem") then v.CanBeDropped = true end
 		end
@@ -504,7 +504,7 @@ elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 		end
 	end)
 
-	Tabs.LBBattlegrounds:Button("Drop Items", function()
+	Tabs.currgame:Button("Drop Items", function()
 		for i,v in pairs(plr.Backpack:GetChildren()) do
 			if v:IsA("BackpackItem") then v.Parent = char end
 		end
@@ -512,6 +512,52 @@ elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 		for i,v in pairs(char:GetChildren()) do
 			if v:IsA("BackpackItem") then v.Parent = game:GetService("Workspace") end
 		end
+	end)
+
+elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
+
+	Tabs.currgame = win:Tab("Undertale Multiversal Killer")
+
+	Tabs.currgame:Button("Give OOf", function()
+		local pos = char.HumanoidRootPart.CFrame
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[491].CFrame
+		task.wait(.2)
+		char.HumanoidRootPart.CFrame = pos
+	end)
+
+	Tabs.currgame:Button("Give Sans Stick", function()
+		local pos = char.HumanoidRootPart.CFrame
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[371].CFrame
+		task.wait(.2)
+		char.HumanoidRootPart.CFrame = pos
+	end)
+
+	Tabs.currgame:Button("Give Sans Stick", function()
+		local pos = char.HumanoidRootPart.CFrame
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[371].CFrame
+		task.wait(.2)
+		char.HumanoidRootPart.CFrame = pos
+	end)
+
+	Tabs.currgame:Button("Give Boombox", function()
+		local pos = char.HumanoidRootPart.CFrame
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[66].Giver.CFrame
+		task.wait(.2)
+		char.HumanoidRootPart.CFrame = pos
+	end)
+
+	Tabs.currgame:Button("Give Light", function()
+		local pos = char.HumanoidRootPart.CFrame
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[64].Giver.CFrame
+		task.wait(.2)
+		char.HumanoidRootPart.CFrame = pos
+	end)
+
+	Tabs.currgame:Button("Give Fire", function()
+		local pos = char.HumanoidRootPart.CFrame
+		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[69].Giver.CFrame
+		task.wait(.2)
+		char.HumanoidRootPart.CFrame = pos
 	end)
 
 end
