@@ -532,13 +532,6 @@ elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
 		char.HumanoidRootPart.CFrame = pos
 	end)
 
-	Tabs.currgame:Button("Give Sans Stick", function()
-		local pos = char.HumanoidRootPart.CFrame
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[371].CFrame
-		task.wait(.2)
-		char.HumanoidRootPart.CFrame = pos
-	end)
-
 	Tabs.currgame:Button("Give Boombox", function()
 		local pos = char.HumanoidRootPart.CFrame
 		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[66].Giver.CFrame
