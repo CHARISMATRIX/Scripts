@@ -497,10 +497,10 @@ elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 
 	Tabs.LBBattlegrounds:Button("Droppable Items", function()
 		for i,v in pairs(plr.Backpack:GetChildren()) do
-			if v:IsA("BackpackItem") then v.Droppable = true end
+			if v:IsA("BackpackItem") then v.CanBeDropped = true end
 		end
 		for i,v in pairs(char:GetChildren()) do
-			if v:IsA("BackpackItem") then v.Droppable = true end
+			if v:IsA("BackpackItem") then v.CanBeDropped = true end
 		end
 	end)
 
