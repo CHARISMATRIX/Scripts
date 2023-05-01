@@ -427,4 +427,25 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 		plr.PlayerGui.EffectRefersh:Destroy()
 	end)
 
+elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
+	
+	Tabs.WallPunchSim = win:Tab("Wall Punch Simulator")
+
+	Tabs.WallPunchSim:Textbox("Amount Of Coins", true, function(v)
+		local args = {
+    		[1] = game:GetService("Players").LocalPlayer,
+    		[2] = tonumber(v)
+		}
+
+		game:GetService("ReplicatedStorage"):WaitForChild("NL"):FireServer(unpack(args))
+	end)
+
+	Tabs.WallPunchSim:Textbox("Amount Of Power", true, function(v)
+		local args = {
+    		[1] = game:GetService("Players").LocalPlayer,
+    		[2] = tonumber(v)
+		}
+
+		game:GetService("ReplicatedStorage"):WaitForChild("GP"):FireServer(unpack(args))
+	end)
 end
