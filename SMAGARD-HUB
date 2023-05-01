@@ -457,7 +457,7 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 		game:GetService("Players").LocalPlayer.AutoClick.Value = v
 	end)
 
-elseif game.PlaceId == 662417684 then
+elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 	
 	Tabs.LBBattlegrounds = win:Tab("Lucky Block Battlegrounds")
 
@@ -492,6 +492,15 @@ elseif game.PlaceId == 662417684 then
 	Tabs.LBBattlegrounds:Button("Spawn Galaxy", function()
 		for i=1,getgenv().blockamount,1 do
 			game:GetService("ReplicatedStorage"):WaitForChild("SpawnGalaxyBlock"):FireServer()
+		end
+	end)
+
+	Tabs.LBBattlegrounds:Button("Droppable Items", function()
+		for i,v in pairs(plr.Backpack:GetChildren()) do
+			if v:IsA("BackpackItem") then v.Droppable = true end
+		end
+		for i,v in pairs(char:GetChildren()) do
+			if v:IsA("BackpackItem") then v.Droppable = true end
 		end
 	end)
 
