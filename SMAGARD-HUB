@@ -456,4 +456,43 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 	Tabs.WallPunchSim:Toggle("Autoclick", false, function(v)
 		game:GetService("Players").LocalPlayer.AutoClick.Value = v
 	end)
+
+elseif game.PlaceId == 662417684 then
+	
+	Tabs.LBBattlegrounds = win:Tab("Lucky Block Battlegrounds")
+
+	Tabs.LBBattlegrounds:Slider("Amount Of Blocks", 1,30,1, function(v)
+		getgenv().blockamount = tonumber(v)
+	end)
+
+	Tabs.LBBattlegrounds:Button("Spawn Default", function()
+		for i=1,getgenv().blockamount,1 do
+			game:GetService("ReplicatedStorage"):WaitForChild("SpawnLuckyBlock"):FireServer()
+		end
+	end)
+
+	Tabs.LBBattlegrounds:Button("Spawn Super", function()
+		for i=1,getgenv().blockamount,1 do
+			game:GetService("ReplicatedStorage"):WaitForChild("SpawnSuperBlock"):FireServer()
+		end
+	end)
+
+	Tabs.LBBattlegrounds:Button("Spawn Diamond", function()
+		for i=1,getgenv().blockamount,1 do
+			game:GetService("ReplicatedStorage"):WaitForChild("SpawnDiamondBlock"):FireServer()
+		end
+	end)
+
+	Tabs.LBBattlegrounds:Button("Spawn Rainbow", function()
+		for i=1,getgenv().blockamount,1 do
+			game:GetService("ReplicatedStorage"):WaitForChild("SpawnRainbowBlock"):FireServer()
+		end
+	end)
+
+	Tabs.LBBattlegrounds:Button("Spawn Galaxy", function()
+		for i=1,getgenv().blockamount,1 do
+			game:GetService("ReplicatedStorage"):WaitForChild("SpawnGalaxyBlock"):FireServer()
+		end
+	end)
+
 end
