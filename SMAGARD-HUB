@@ -54,7 +54,7 @@ Tabs.Player:Button("Respawn", function()
 	if char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid"):ChangeState(15) end
 	char:ClearAllChildren()
 	local newChar = Instance.new("Model")
-	newChar.Parent = workspace
+	newChar.Parent = game:GetService("Workspace")
 	plr.Character = newChar
 	wait()
 	plr.Character = char
@@ -137,7 +137,7 @@ if game.PlaceId == 537413528 then --Build a Boat
 
 	--AutoFarm
 	function Farm()
-		game.workspace.Gravity = 0
+		game:GetService("Workspace").Gravity = 0
 		char:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(-51.1823959, 80.6168747, -536.437805)
 		local tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(30, Enum.EasingStyle.Linear)
 		local tween =
@@ -156,7 +156,7 @@ if game.PlaceId == 537413528 then --Build a Boat
 				{CFrame = CFrame.new(-55.5486526, -360.063782, 9489.0498)}
 			)
 		tween:Play()
-		game.workspace.Gravity = 196.2
+		game:GetService("Workspace").Gravity = 196.2
 	end
 
 	Tabs.BABFT:Button("Farm Once", function()
@@ -339,10 +339,10 @@ elseif game.PlaceId == 155615604 then --Prison Life
 	--Give Gun
 	Tabs.PrisonLife:Dropdown("Give Gun", {"M9", "Remington 870", "AK-47"}, function(currentOption)
 		local args = {
-			[1] = workspace.Prison_ITEMS.giver:FindFirstChild(currentOption).ITEMPICKUP
+			[1] = game:GetService("Workspace").Prison_ITEMS.giver:FindFirstChild(currentOption).ITEMPICKUP
 		}
 
-		workspace.Remote.ItemHandler:InvokeServer(unpack(args))
+		game:GetService("Workspace").Remote.ItemHandler:InvokeServer(unpack(args))
 	end)
 	--Gun Mod
 	Tabs.PrisonLife:Dropdown("Gun Mod", {"M9", "Remington 870", "AK-47"}, function(currentOption)
@@ -375,7 +375,7 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 		while autokill and task.wait(.05) do
 			if not autokill then return end
 
-			for _,model in pairs(workspace:WaitForChild("World"):GetChildren()) do
+			for _,model in pairs(game:GetService("Workspace"):WaitForChild("World"):GetChildren()) do
 				if not autokill then return end
 
 				if not model:IsA("Model") or not tonumber(model.Name) then continue end
@@ -402,7 +402,7 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 
 		while autocollect and task.wait(.05) do
 			if not autocollect then return end
-			for _,object in pairs(workspace:GetChildren()) do
+			for _,object in pairs(game:GetService("Workspace"):GetChildren()) do
 				if not autocollect then return end
 
 				if not object:IsA("MeshPart") or not string.find(object.Name, "draw") then continue end
@@ -501,6 +501,16 @@ elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 		end
 		for i,v in pairs(char:GetChildren()) do
 			if v:IsA("BackpackItem") then v.CanBeDropped = true end
+		end
+	end)
+
+	Tabs.LBBattlegrounds:Button("Drop Items", function()
+		for i,v in pairs(plr.Backpack:GetChildren()) do
+			if v:IsA("BackpackItem") then v.Parent = char end
+		end
+		task.wait()
+		for i,v in pairs(char:GetChildren()) do
+			if v:IsA("BackpackItem") then v.Parent = game:GetService("Workspace") end
 		end
 	end)
 
