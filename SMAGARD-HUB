@@ -80,6 +80,9 @@ eventscr.UpdateChar = plr.CharacterAdded:Connect(function(newchar)
 	char = newchar
 	humrp = newchar.HumanoidRootPart
 	hum = FFCI(newchar, "Humanoid")
+	pgui = plr.PlayerGui
+	bp = plr.Backpack
+	pscr = plr.PlayerScripts
 end)
 
 --Script Here
@@ -156,6 +159,26 @@ Tabs.Player:Slider("JumpPower", 50,500,50, function(s)
 	if not hum.UseJumpPower then hum.UseJumpPower = true end
 	hum.JumpPower = s
 end)
+
+Tabs.Player:Button("Droppable Items", function()
+	for i,v in pairs(GD(bp)) do
+		if v:IsA("BackpackItem") then v.CanBeDropped = true end
+	end
+	for i,v in pairs(GD(char)) do
+		if v:IsA("BackpackItem") then v.CanBeDropped = true end
+	end
+end)
+
+Tabs.Player:Button("Drop Items", function()
+	for i,v in pairs(GD(bp)) do
+		if v:IsA("BackpackItem") then v.Parent = char end
+	end
+	task.wait()
+	for i,v in pairs(GD(char)) do
+		if v:IsA("BackpackItem") then v.Parent = ws end
+	end
+end)
+
 --R6
 Tabs.Player:Button("R6", function()
 	lstr(HTTP("https://pastebin.com/raw/E9LkqrVb"))()
@@ -579,25 +602,6 @@ elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 		end
 	end)
 
-	Tabs.currgame:Button("Droppable Items", function()
-		for i,v in pairs(GD(bp)) do
-			if v:IsA("BackpackItem") then v.CanBeDropped = true end
-		end
-		for i,v in pairs(GD(char)) do
-			if v:IsA("BackpackItem") then v.CanBeDropped = true end
-		end
-	end)
-
-	Tabs.currgame:Button("Drop Items", function()
-		for i,v in pairs(GD(bp)) do
-			if v:IsA("BackpackItem") then v.Parent = char end
-		end
-		task.wait()
-		for i,v in pairs(GD(char)) do
-			if v:IsA("BackpackItem") then v.Parent = ws end
-		end
-	end)
-
 elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
 
 	Tabs.currgame = win:Tab("Undertale Multiversal Killer")
@@ -612,7 +616,45 @@ elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
 			g.CFrame = humrp.CFrame
 			task.wait(.05)
 			g.CFrame = pos
+			g.CanCollide = true
 		end
 	end)
 
+	Tabs.currgame:Toggle("Spam Drop Items", false, function(s)
+		getgenv().spamdrop = s
+		while task.wait() and spamdrop do
+			for _, v in pairs(GC(ws)) do
+				if not v.Name == "Model" or not FFC(v, "Giver") then continue end
+				local g = v.Giver
+				local pos = g.CFrame
+				g.CanCollide = false
+				task.wait()
+				g.CFrame = humrp.CFrame
+				task.wait(.05)
+				g.CFrame = pos
+				g.CanCollide = true
+			end
+			task.wait(.1)
+			for i,v in pairs(GD(bp)) do
+				if v:IsA("BackpackItem") then v.Parent = char end
+			end
+			task.wait()
+			for i,v in pairs(GD(char)) do
+				if v:IsA("BackpackItem") then v.Parent = ws end
+			end
+		end
+	end)
+
+	Tabs.currgame:Button("TP Leaks", function()
+		humrp.CFrame = CF(-272, 79, -80)
+	end)
+	Tabs.currgame:Button("TP Admin Items", function()
+		humrp.CFrame = CF(53, 102, 73)
+	end)
+	Tabs.currgame:Button("TP Spawn", function()
+		humrp.CFrame = CF(-54, 63, -91)
+	end)
+	Tabs.currgame:Button("TP Grillby's", function()
+		humrp.CFrame = CF(204, -17, 42)
+	end)
 end
