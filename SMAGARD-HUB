@@ -60,6 +60,7 @@ local rf = GS("ReplicatedFirst")
 local rsv = GS("RunService")
 local cgui = GS("CoreGui")
 local ln = GS("Lighting")
+local uis = GS("UserInputService")
 
 local plr = plrs.LocalPlayer
 local plrn = plr.Name
@@ -137,6 +138,14 @@ end)
 --UnlockCameraZoom
 Tabs.Player:Button("MaxCameraZoom", function()
 	plr.CameraMaxZoomDistance = math.huge
+end)
+Tabs.Player:Button("Force Third Person", function()
+	plr.CameraMaxZoomDistance = math.huge
+	plr.CameraMinZoomDistance = 0
+	plr.CameraMode = Enum.CameraMode.Classic
+	plr.DevEnableMouseLock = true
+	uis.MouseIconEnabled = true
+	uis.MouseBehavior = Enum.MouseBehavior.Default
 end)
 --WalkSpeed
 Tabs.Player:Slider("Speed", 16,1000,16, function(s)
