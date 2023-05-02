@@ -73,6 +73,9 @@ local humrp = char.HumanoidRootPart
 local hum = FFCI(char, "Humanoid")
 
 eventscr.UpdateChar = plr.CharacterAdded:Connect(function(newchar)
+	repeat
+		task.wait(.1)
+	until plr.Character
 	char = newchar
 	humrp = newchar.HumanoidRootPart
 	hum = FFCI(newchar, "Humanoid")
@@ -93,6 +96,7 @@ Tabs.Main = win:Tab("Main")
 
 Tabs.Main:Label("Credits: SMAGARD")
 Tabs.Main:Button("Destroy UI", function()
+	DisconnectEvents()
 	FFC(cgui, "ui"):Destroy()
 end)
 
