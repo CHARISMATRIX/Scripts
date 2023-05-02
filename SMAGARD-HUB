@@ -1,18 +1,88 @@
 --SMAGARD HUB CREATED BY SMAGARD
 
 --Variables
-local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt")()
 
-local plr = game:GetService("Players").LocalPlayer
-local char = plr.Character or plr.CharacterAdded:Wait()
+local eventscr = {}
+
+local lstr = loadstring
+local CF = CFrame.new
+local ANGLES = CFrame.Angles
+local VT = Vector3.new
+local UD2 = UDim2.new
+local IT = Instance.new
+local C3 = Color3.new
+local BRICKC = BrickColor.new
+local RAD = math.rad
+local MRANDOM = math.random
+
+function GS(Service)
+	return game:GetService(Service)
+end
+
+function FFC(Parent, Name)
+	return Parent:FindFirstChild(Name)
+end
+
+function FFCI(Parent, Class)
+	return Parent:FindFirstChildWhichIsA(Class)
+end
+
+function WFC(Parent, Name)
+	return Parent:WaitForChild(Name)
+end
+
+function GC(Parent)
+	return Parent:GetChildren()
+end
+
+function GD(Parent)
+	return Parent:GetDescendants()
+end
+
+function HTTP(url)
+	return game:HttpGet(url)
+end
+
+function Random(list)
+	return list[MRANDOM(1,#list)]
+end
+
+function DisconnectEvents()
+	for _,scr in eventscr do
+		scr:Disconnect()
+	end
+end
+
+local plrs = GS("Players")
+local ws = GS("Workspace")
+local rs = GS("ReplicatedStorage")
+local rf = GS("ReplicatedFirst")
+local rsv = GS("RunService")
+local cgui = GS("CoreGui")
+local ln = GS("Lighting")
+
+local plr = plrs.LocalPlayer
+local plrn = plr.Name
+local pgui = plr.PlayerGui
+local bp = plr.Backpack
+local pscr = plr.PlayerScripts
 local mouse = plr:GetMouse()
 
-local Tabs = {}
+local char = plr.Character or plr.CharacterAdded:Wait()
+local humrp = char.HumanoidRootPart
+local hum = FFCI(char, "Humanoid")
 
---Refresh Character
-plr.CharacterAdded:Connect(function(newchar)
+eventscr.UpdateChar = plr.CharacterAdded:Connect(function(newchar)
 	char = newchar
+	humrp = newchar.HumanoidRootPart
+	hum = FFCI(newchar, "Humanoid")
 end)
+
+--Script Here
+
+local lib = lstr(HTTP("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt"))()
+
+local Tabs = {}
 
 --UI
 
@@ -23,7 +93,7 @@ Tabs.Main = win:Tab("Main")
 
 Tabs.Main:Label("Credits: SMAGARD")
 Tabs.Main:Button("Destroy UI", function()
-	game:GetService("CoreGui"):FindFirstChild("ui"):Destroy()
+	FFC(cgui, "ui"):Destroy()
 end)
 
 --UNIVERSAL
@@ -31,19 +101,19 @@ Tabs.Universal = win:Tab("Universal")
 
 --ClickTP
 Tabs.Universal:Button("Click TP", function()
-	local tool = Instance.new("Tool")
+	local tool = IT("Tool")
 	tool.RequiresHandle = false
 	tool.Name = "Click Teleport"
 	tool.Activated:connect(function()
-		local pos = mouse.Hit+Vector3.new(0,2.5,0)
-		pos = CFrame.new(pos.X,pos.Y,pos.Z)
-		char.HumanoidRootPart.CFrame = pos
+		local pos = mouse.Hit+VT(0,2.5,0)
+		pos = CF(pos.X,pos.Y,pos.Z)
+		humrp.CFrame = pos
 	end)
-	tool.Parent = plr.Backpack
+	tool.Parent = bp
 end)
 --AutoClicker
 Tabs.Universal:Button("Auto Clicker", function()
-	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/JustEzpi/ROBLOX-Scripts/main/ROBLOX_AutoClicker"))()
+	lstr(HTTP("https://raw.githubusercontent.com/JustEzpi/ROBLOX-Scripts/main/ROBLOX_AutoClicker"))()
 end)
 
 --Player
@@ -51,10 +121,10 @@ Tabs.Player = win:Tab("Player")
 
 --Respawn
 Tabs.Player:Button("Respawn", function()
-	if char:FindFirstChildOfClass("Humanoid") then char:FindFirstChildOfClass("Humanoid"):ChangeState(15) end
+	if hum then hum:ChangeState(15) end
 	char:ClearAllChildren()
-	local newChar = Instance.new("Model")
-	newChar.Parent = game:GetService("Workspace")
+	local newChar = IT("Model")
+	newChar.Parent = ws
 	plr.Character = newChar
 	wait()
 	plr.Character = char
@@ -66,15 +136,15 @@ Tabs.Player:Button("MaxCameraZoom", function()
 end)
 --WalkSpeed
 Tabs.Player:Slider("Speed", 16,1000,16, function(s)
-	char.Humanoid.WalkSpeed = s
+	hum.WalkSpeed = s
 end)
 --JumpPower
 Tabs.Player:Slider("JumpPower", 50,500,50, function(s)
-	char.Humanoid.JumpPower = s
+	hum.JumpPower = s
 end)
 --R6
 Tabs.Player:Button("R6", function()
-	loadstring(game:HttpGet("https://pastebin.com/raw/E9LkqrVb"))()
+	lstr(HTTP("https://pastebin.com/raw/E9LkqrVb"))()
 end)
 
 --Scripts
@@ -83,31 +153,31 @@ Tabs.Scripts = win:Tab("Scripts")
 
 --InfiniteYield
 Tabs.Scripts:Button("InfiniteYield", function()
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+	lstr(HTTP('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
 --Fates Admin
 Tabs.Scripts:Button("Fates Admin", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/fatesc/fates-admin/main/main.lua"))();
+	lstr(HTTP("https://raw.githubusercontent.com/fatesc/fates-admin/main/main.lua"))();
 end)
 --CMD-X
 Tabs.Scripts:Button("CMD-X", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))()
+	lstr(HTTP("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))()
 end)
 --RemoteSpy
 Tabs.Scripts:Button("Remote Spy", function()
-	loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
+	lstr(HTTP("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
 end)
 --FE Server Admin
 Tabs.Scripts:Button("Server Admin", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ONEReverseCard/My-Scripts/main/Netless%20Server%20Admin.md"))()
+	lstr(HTTP("https://raw.githubusercontent.com/ONEReverseCard/My-Scripts/main/Netless%20Server%20Admin.md"))()
 end)
 --Sonic
 Tabs.Scripts:Button("Sonic", function()
-	loadstring(game:HttpGetAsync("https://pastebin.com/raw/SyF5t70A"))()
+	lstr(HTTP("https://pastebin.com/raw/SyF5t70A"))()
 end)
 --Memeus
 Tabs.Scripts:Button("Memeus", function()
-	loadstring(game:HttpGetAsync("https://pastebin.com/raw/2MSTmKBa"))()
+	lstr(HTTP("https://pastebin.com/raw/2MSTmKBa"))()
 end)
 
 --Script Hubs
@@ -115,11 +185,11 @@ Tabs.ScriptHubs = win:Tab("Script Hubs")
 
 --VG Hub
 Tabs.ScriptHubs:Button("VG Hub", function()
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/V.Ghub'))()
+	loadstring(HTTP('https://raw.githubusercontent.com/1201for/V.G-Hub/main/V.Ghub'))()
 end)
 --Pendulum Hub
 Tabs.ScriptHubs:Button("Pendulum Hub", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Tescalus/Pendulum-Hubs-Source/main/Pendulum%20Hub%20V5.lua"))()
+	loadstring(HTTP("https://raw.githubusercontent.com/Tescalus/Pendulum-Hubs-Source/main/Pendulum%20Hub%20V5.lua"))()
 end)
 --Eclipse Hub
 Tabs.ScriptHubs:Button("Eclipse Hub", function()
@@ -128,7 +198,7 @@ end)
 
 --BABFT Autobuild
 Tabs.ScriptHubs:Button("BABFT Autobuild", function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/max2007killer/auto-build-not-limit/main/autobuild.txt"))()
+	loadstring(HTTP("https://raw.githubusercontent.com/max2007killer/auto-build-not-limit/main/autobuild.txt"))()
 end)
 
 --Current Game
@@ -137,14 +207,14 @@ if game.PlaceId == 537413528 then --Build a Boat
 
 	--AutoFarm
 	function Farm()
-		game:GetService("Workspace").Gravity = 0
-		char:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(-51.1823959, 80.6168747, -536.437805)
+		ws.Gravity = 0
+		humrp.CFrame = CF(-51.1823959, 80.6168747, -536.437805)
 		local tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(30, Enum.EasingStyle.Linear)
 		local tween =
 			tweenService:Create(
 				char:WaitForChild("HumanoidRootPart"),
 				tweenInfo,
-				{CFrame = CFrame.new(-60.5737877, 53.9498825, 8666.35059)}
+				{CFrame = CF(-60.5737877, 53.9498825, 8666.35059)}
 			)
 		tween:Play()
 		wait(30)
@@ -153,10 +223,10 @@ if game.PlaceId == 537413528 then --Build a Boat
 			tweenService:Create(
 				char:WaitForChild("HumanoidRootPart"),
 				tweenInfo,
-				{CFrame = CFrame.new(-55.5486526, -360.063782, 9489.0498)}
+				{CFrame = CF(-55.5486526, -360.063782, 9489.0498)}
 			)
 		tween:Play()
-		game:GetService("Workspace").Gravity = 196.2
+		ws.Gravity = 196.2
 	end
 
 	Tabs.currgame:Button("Farm Once", function()
@@ -165,31 +235,31 @@ if game.PlaceId == 537413528 then --Build a Boat
 
 	--Teleports
 	Tabs.currgame:Button("White Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace").WhiteZone.CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws.WhiteZone.CFrame * CF(0,5,0)
 	end)
 
 	Tabs.currgame:Button("Black Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace").BlackZone.CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws.BlackZone.CFrame * CF(0,5,0)
 	end)
 
 	Tabs.currgame:Button("Red Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["Really redZone"].CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws["Really redZone"].CFrame * CF(0,5,0)
 	end)
 
 	Tabs.currgame:Button("Blue Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["Really blueZone"].CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws["Really blueZone"].CFrame * CF(0,5,0)
 	end)
 
 	Tabs.currgame:Button("Green Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace").CamoZone.CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws.CamoZone.CFrame * CF(0,5,0)
 	end)
 
 	Tabs.currgame:Button("Yellow Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace")["New YellerZone"].CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws["New YellerZone"].CFrame * CF(0,5,0)
 	end)
 
 	Tabs.currgame:Button("Magenta Team", function()
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace").MagentaZone.CFrame * CFrame.new(0,5,0)
+		humrp.CFrame = ws.MagentaZone.CFrame * CF(0,5,0)
 	end)
 
 	--Water Godmode
@@ -199,26 +269,26 @@ if game.PlaceId == 537413528 then --Build a Boat
 
 	--Bypass Isolation
 	Tabs.currgame:Button("Bypass Isolation", function()
-		if game:GetService("Workspace").WhiteZone:FindFirstChild("Lock") then
-			game:GetService("Workspace").WhiteZone:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws.WhiteZone, "Lock") then
+			FFC(ws.WhiteZone, "Lock").Part:Destroy()
 		end
-		if game:GetService("Workspace").BlackZone:FindFirstChild("Lock") then
-			game:GetService("Workspace").BlackZone:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws.BlackZone, "Lock") then
+			FFC(ws.BlackZone, "Lock").Part:Destroy()
 		end
-		if game:GetService("Workspace")["Really redZone"]:FindFirstChild("Lock") then
-			game:GetService("Workspace")["Really redZone"]:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws["Really redZone"], "Lock") then
+			FFC(ws["Really redZone"], "Lock").Part:Destroy()
 		end
-		if game:GetService("Workspace")["Really blueZone"]:FindFirstChild("Lock") then
-			game:GetService("Workspace")["Really blueZone"]:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws["Really blueZone"],"Lock") then
+			FFC(ws["Really blueZone"],"Lock").Part:Destroy()
 		end
-		if game:GetService("Workspace").CamoZone:FindFirstChild("Lock") then
-			game:GetService("Workspace").CamoZone:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws.CamoZone,"Lock") then
+			FFC(ws.CamoZone,"Lock").Part:Destroy()
 		end
-		if game:GetService("Workspace")["New YellerZone"]:FindFirstChild("Lock") then
-			game:GetService("Workspace")["New YellerZone"]:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws["New YellerZone"],"Lock") then
+			FFC(ws["New YellerZone"],"Lock").Part:Destroy()
 		end
-		if game:GetService("Workspace").MagentaZone:FindFirstChild("Lock") then
-			game:GetService("Workspace").MagentaZone:FindFirstChild("Lock").Part:Destroy()
+		if FFC(ws.MagentaZone,"Lock") then
+			FFC(ws.MagentaZone,"Lock").Part:Destroy()
 		end
 	end)
 
@@ -230,9 +300,9 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		getgenv().autoswing = state
 		while wait(.1) and getgenv().autoswing do
 			if not getgenv().autoswing then return end
-			for _,v in pairs(plr.Backpack:GetChildren()) do
-				if v:FindFirstChild("ninjitsuGain") then
-					char.Humanoid:EquipTool(v)
+			for _,v in pairs(GC(bp)) do
+				if FFC(v,"ninjitsuGain") then
+					hum:EquipTool(v)
 					break
 				end
 			end
@@ -244,9 +314,9 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		getgenv().autosell = state
 		while wait(.1) and getgenv().autosell do
 			if getgenv().autosell == false then return end
-			game:GetService("Workspace").sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = char.HumanoidRootPart.CFrame
+			ws.sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = humrp.CFrame
 			wait(0.1)
-			game:GetService("Workspace").sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = CFrame.new(0,0,0)
+			ws.sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = CF(0,0,0)
 		end
 	end)
 	--AutoBuySwords
@@ -302,13 +372,13 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		getgenv().autohoops = state
 		while wait() and getgenv().autohoops do
 			if not getgenv().autohoops then return end
-			for _,v in pairs(game:GetService("Workspace").Hoops:GetChildren()) do
+			for _,v in pairs(GC(ws.Hoops)) do
 				local args = {
 					[1] = "useHoop",
 					[2] = v
 				}
 
-				game:GetService("ReplicatedStorage").rEvents.hoopEvent:FireServer(unpack(args))
+				rs.rEvents.hoopEvent:FireServer(unpack(args))
 			end
 		end
 	end)
@@ -317,20 +387,20 @@ elseif game.PlaceId == 3956818381 then --Ninja Legends
 		getgenv().autocoins = state
 		while wait(.1) and getgenv().autocoins do
 			if not getgenv().autocoins then return end
-			for _, v in pairs(game:GetService("Workspace").spawnedCoins.Valley:GetChildren()) do
-				char.HumanoidRootPart.CFrame = v.CFrame
+			for _, v in pairs(GC(ws.spawnedCoins.Valley)) do
+				humrp.CFrame = v.CFrame
 			end
 		end
 	end)
 	--UnlockAllIslands
 	Tabs.currgame:Button("Unlock all islands", function()
-		local oldcframe = char.HumanoidRootPart.CFrame
-		for _,v in pairs(game:GetService("Workspace").islandUnlockParts:GetChildren()) do
-			char.HumanoidRootPart.CFrame = v.CFrame
+		local oldcframe = humrp.CFrame
+		for _,v in pairs(GC(ws.islandUnlockParts)) do
+			humrp.CFrame = v.CFrame
 			wait(0.1)
 		end
 		wait(0.1)
-		char.HumanoidRootPart.CFrame = oldcframe
+		humrp.CFrame = oldcframe
 	end)
 
 elseif game.PlaceId == 155615604 then --Prison Life
@@ -339,17 +409,17 @@ elseif game.PlaceId == 155615604 then --Prison Life
 	--Give Gun
 	Tabs.currgame:Dropdown("Give Gun", {"M9", "Remington 870", "AK-47"}, function(currentOption)
 		local args = {
-			[1] = game:GetService("Workspace").Prison_ITEMS.giver:FindFirstChild(currentOption).ITEMPICKUP
+			[1] = FFC(ws.Prison_ITEMS.giver, currentOption).ITEMPICKUP
 		}
 
-		game:GetService("Workspace").Remote.ItemHandler:InvokeServer(unpack(args))
+		ws.Remote.ItemHandler:InvokeServer(unpack(args))
 	end)
 	--Gun Mod
 	Tabs.currgame:Dropdown("Gun Mod", {"M9", "Remington 870", "AK-47"}, function(currentOption)
 		local module = nil
-		if plr.Backpack:FindFirstChild(currentOption) then
-			module = require(plr.Backpack[currentOption].GunStates)
-		elseif char:FindFirstChild(currentOption) then
+		if FFC(bp, currentOption) then
+			module = require(bp[currentOption].GunStates)
+		elseif FFC(char, currentOption) then
 			module = require(char[currentOption].GunStates)
 		end
 		if module ~= nil then
@@ -375,12 +445,12 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 		while autokill and task.wait(.05) do
 			if not autokill then return end
 
-			for _,model in pairs(game:GetService("Workspace"):WaitForChild("World"):GetChildren()) do
+			for _,model in pairs(GC(WFC(ws, "World"))) do
 				if not autokill then return end
 
 				if not model:IsA("Model") or not tonumber(model.Name) then continue end
 
-				for _, part in pairs(model:GetChildren()) do
+				for _, part in pairs(GC(model)) do
 					if not autokill then return end
 
 					if not part:IsA("Part") then continue end
@@ -390,7 +460,7 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 						[2] = true,
 						[3] = part.CFrame
 					}
-					game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Player"):WaitForChild("DmgHandle"):FireServer(unpack(args))
+					rs.Events.Player.DmgHandle:FireServer(unpack(args))
 				end
 			end
 		end
@@ -402,12 +472,12 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 
 		while autocollect and task.wait(.05) do
 			if not autocollect then return end
-			for _,object in pairs(game:GetService("Workspace"):GetChildren()) do
+			for _,object in pairs(GC(ws)) do
 				if not autocollect then return end
 
 				if not object:IsA("MeshPart") or not string.find(object.Name, "draw") then continue end
 
-				firetouchinterest(plr.Character.Head, object, 0)
+				firetouchinterest(char.Head, object, 0)
 
 			end
 		end
@@ -418,13 +488,13 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 		getgenv().autorebirth = s
 		while autorebirth and task.wait(.5) do
 			if not autorebirth then return end
-			game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Player"):WaitForChild("RebirthEvent"):FireServer()
+			rs.Events.Player.RebirthEvent:FireServer()
 		end
 	end)
 	
 	--Hide Collections
 	Tabs.currgame:Button("Hide Collections", function()
-		plr.PlayerGui.EffectRefersh:Destroy()
+		pgui.EffectRefersh:Destroy()
 	end)
 
 elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
@@ -433,28 +503,28 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 
 	Tabs.currgame:Textbox("Amount Of Coins", true, function(v)
 		local args = {
-    		[1] = game:GetService("Players").LocalPlayer,
+    		[1] = plr,
     		[2] = tonumber(v)
 		}
 
-		game:GetService("ReplicatedStorage"):WaitForChild("NL"):FireServer(unpack(args))
+		rs.NL:FireServer(unpack(args))
 	end)
 
 	Tabs.currgame:Textbox("Amount Of Power", true, function(v)
 		local args = {
-    		[1] = game:GetService("Players").LocalPlayer,
+    		[1] = plr,
     		[2] = tonumber(v)
 		}
 
-		game:GetService("ReplicatedStorage"):WaitForChild("GP"):FireServer(unpack(args))
+		rs.GP:FireServer(unpack(args))
 	end)
 
 	Tabs.currgame:Textbox("Extra Multiplier", true, function(v)
-		game:GetService("Players").LocalPlayer.ExtraMultiplier.Value = tonumber(v)		
+		plrr.ExtraMultiplier.Value = tonumber(v)		
 	end)
 
 	Tabs.currgame:Toggle("Autoclick", false, function(v)
-		game:GetService("Players").LocalPlayer.AutoClick.Value = v
+		plr.AutoClick.Value = v
 	end)
 
 elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
@@ -467,50 +537,50 @@ elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
 
 	Tabs.currgame:Button("Spawn Default", function()
 		for i=1,getgenv().blockamount,1 do
-			game:GetService("ReplicatedStorage"):WaitForChild("SpawnLuckyBlock"):FireServer()
+			rs.SpawnLuckyBlock:FireServer()
 		end
 	end)
 
 	Tabs.currgame:Button("Spawn Super", function()
 		for i=1,getgenv().blockamount,1 do
-			game:GetService("ReplicatedStorage"):WaitForChild("SpawnSuperBlock"):FireServer()
+			rs.SpawnSuperBlock:FireServer()
 		end
 	end)
 
 	Tabs.currgame:Button("Spawn Diamond", function()
 		for i=1,getgenv().blockamount,1 do
-			game:GetService("ReplicatedStorage"):WaitForChild("SpawnDiamondBlock"):FireServer()
+			rs.SpawnDiamondBlock:FireServer()
 		end
 	end)
 
 	Tabs.currgame:Button("Spawn Rainbow", function()
 		for i=1,getgenv().blockamount,1 do
-			game:GetService("ReplicatedStorage"):WaitForChild("SpawnRainbowBlock"):FireServer()
+			rs.SpawnRainbowBlock:FireServer()
 		end
 	end)
 
 	Tabs.currgame:Button("Spawn Galaxy", function()
 		for i=1,getgenv().blockamount,1 do
-			game:GetService("ReplicatedStorage"):WaitForChild("SpawnGalaxyBlock"):FireServer()
+			rs.SpawnGalaxyBlock:FireServer()
 		end
 	end)
 
 	Tabs.currgame:Button("Droppable Items", function()
-		for i,v in pairs(plr.Backpack:GetChildren()) do
+		for i,v in pairs(GD(bp)) do
 			if v:IsA("BackpackItem") then v.CanBeDropped = true end
 		end
-		for i,v in pairs(char:GetChildren()) do
+		for i,v in pairs(GD(char)) do
 			if v:IsA("BackpackItem") then v.CanBeDropped = true end
 		end
 	end)
 
 	Tabs.currgame:Button("Drop Items", function()
-		for i,v in pairs(plr.Backpack:GetChildren()) do
+		for i,v in pairs(GD(bp)) do
 			if v:IsA("BackpackItem") then v.Parent = char end
 		end
 		task.wait()
-		for i,v in pairs(char:GetChildren()) do
-			if v:IsA("BackpackItem") then v.Parent = game:GetService("Workspace") end
+		for i,v in pairs(GD(char)) do
+			if v:IsA("BackpackItem") then v.Parent = ws end
 		end
 	end)
 
@@ -518,39 +588,17 @@ elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
 
 	Tabs.currgame = win:Tab("Undertale Multiversal Killer")
 
-	Tabs.currgame:Button("Give OOf", function()
-		local pos = char.HumanoidRootPart.CFrame
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[491].CFrame
-		task.wait(.2)
-		char.HumanoidRootPart.CFrame = pos
-	end)
-
-	Tabs.currgame:Button("Give Sans Stick", function()
-		local pos = char.HumanoidRootPart.CFrame
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[371].CFrame
-		task.wait(.2)
-		char.HumanoidRootPart.CFrame = pos
-	end)
-
-	Tabs.currgame:Button("Give Boombox", function()
-		local pos = char.HumanoidRootPart.CFrame
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[66].Giver.CFrame
-		task.wait(.2)
-		char.HumanoidRootPart.CFrame = pos
-	end)
-
-	Tabs.currgame:Button("Give Light", function()
-		local pos = char.HumanoidRootPart.CFrame
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[64].Giver.CFrame
-		task.wait(.2)
-		char.HumanoidRootPart.CFrame = pos
-	end)
-
-	Tabs.currgame:Button("Give Fire", function()
-		local pos = char.HumanoidRootPart.CFrame
-		char.HumanoidRootPart.CFrame = game:GetService("Workspace"):GetChildren()[69].Giver.CFrame
-		task.wait(.2)
-		char.HumanoidRootPart.CFrame = pos
+	Tabs.currgame:Button("Give Admin Items", function()
+		for _, v in pairs(GC(ws)) do
+			if not v.Name == "Model" or not FFC(v, "Giver") then continue end
+			local g = v.Giver
+			local pos = g.CFrame
+			g.CanCollide = false
+			task.wait()
+			g.CFrame = humrp.CFrame
+			task.wait(.05)
+			g.CFrame = pos
+		end
 	end)
 
 end
