@@ -657,4 +657,43 @@ elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
 	Tabs.currgame:Button("TP Grillby's", function()
 		humrp.CFrame = CF(204, -17, 42)
 	end)
+
+elseif game.PlaceId == 14086581572 then
+	Tabs.currgame = win:Tab("Altitorture")
+
+	Tabs.currgame:Button("Remove Anticheat", function()
+		pscr.AntiCheat:Destroy()
+		char.AntiCheat:Destroy()
+		GS("StarterPlayer").StarterCharacterScripts.AntiCheat:Destroy()
+		GS("StarterPlayer").StarterPlayerScripts.AntiCheat:Destroy()
+		local old = hookmetamethod(game,"__namecall",function(self, ...)
+			local method = getnamecallmethod()
+			if method:lower() == "kick" then
+				return warn("Blocked Kick")
+			end
+			return old(self,...)
+		end)
+	end)
+	Tabs.currgame:Button("Remove Jump-Cooldown", function()
+		if char:FindFirstChild("JumpCooldown") then
+			char.JumpCooldown:Destroy()
+		end
+	end)
+	Tabs.currgame:Button("Anti Ragdoll", function()
+		local remote = rs:WaitForChild("ServerRequests"):WaitForChild("RagdollRequest")
+		local old = hookmetamethod(game,"__namecall",function(self, ...)
+			local method = getnamecallmethod()
+			local args = {...}
+			if self == remote and method == "FireServer" then
+				args[1] = false
+				return old(self,unpack(args))
+			end
+			return old(self, ...)
+		end)
+	end)
+	for _,v in pairs(ws:WaitForChild("CHECKPOINTS"):GetChildren()) do
+		Tabs.currgame:Button("Checkpoint: "..v.Name, function()
+			humrp.CFrame = v.SpawnPart.CFrame
+		end)
+	end
 end
