@@ -805,10 +805,33 @@ elseif game.PlaceId == 2248408710 then --Destruction Simulator
 			end
 		end
 	end)
+	Tabs.currgame:TextBox("Custom Bomb Sound (CLIENT)", false, function(t)
+		local bomb = bp:FindFirstChild("Bomb") or char:FindFirstChild("Bomb")
+		if bomb then
+			bomb.Handle.Boom.SoundId = "rbxassetid://"..t
+		end
+	end)
+	Tabs.currgame:Button("Sus Rocket", function()
+		local rocket = bp:FindFirstChild("Launcher") or char:FindFirstChild("Launcher")
+		if rocket then
+			hum:UnequipTools()
+			task.wait()
+			rocket.Grip = CFrame.new(-1.5, 1.25, 1) * CFrame.Angles(math.rad(15), math.rad(180), 0)
+			task.wait()
+			hum:EquipTool(rocket)
+		end
+	end)
 	Tabs.currgame:Button("No Cooldown", function()
 		for i,v in next,getgc(true)do
 			if type(v)=='table'and rawget(v,'Cooldown')then
 				v.Cooldown = 0
+			end
+		end
+	end)
+	Tabs.currgame:Button("Shotgun Rocket", function()
+		for i,v in next,getgc(true)do
+			if type(v)=='table'and rawget(v,'ShotgunAmount')then
+				v.ShotgunAmount = 100
 			end
 		end
 	end)
