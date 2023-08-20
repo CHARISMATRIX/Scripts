@@ -61,6 +61,7 @@ local rsv = GS("RunService")
 local cgui = GS("CoreGui")
 local ln = GS("Lighting")
 local uis = GS("UserInputService")
+local RSV = GS("RunService")
 
 local plr = plrs.LocalPlayer
 local plrn = plr.Name
@@ -534,7 +535,7 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 	
 	Tabs.currgame = win:Tab("Wall Punch Simulator")
 
-	Tabs.currgame:Textbox("Amount Of Coins", true, function(v)
+	Tabs.currgame:TextBox("Amount Of Coins", true, function(v)
 		local args = {
     		[1] = plr,
     		[2] = tonumber(v)
@@ -543,7 +544,7 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 		rs.NL:FireServer(unpack(args))
 	end)
 
-	Tabs.currgame:Textbox("Amount Of Power", true, function(v)
+	Tabs.currgame:TextBox("Amount Of Power", true, function(v)
 		local args = {
     		[1] = plr,
     		[2] = tonumber(v)
@@ -552,7 +553,7 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 		rs.GP:FireServer(unpack(args))
 	end)
 
-	Tabs.currgame:Textbox("Extra Multiplier", true, function(v)
+	Tabs.currgame:TextBox("Extra Multiplier", true, function(v)
 		plrr.ExtraMultiplier.Value = tonumber(v)		
 	end)
 
@@ -654,7 +655,7 @@ elseif game.PlaceId == 12723206073 then --Undertale Multiversal Killer
 		humrp.CFrame = CF(204, -17, 42)
 	end)
 
-elseif game.PlaceId == 14086581572 then
+elseif game.PlaceId == 14086581572 then --Altitorture
 	Tabs.currgame = win:Tab("Altitorture")
 
 	Tabs.currgame:Button("Remove Anticheat", function()
@@ -662,13 +663,6 @@ elseif game.PlaceId == 14086581572 then
 		char.AntiCheat:Destroy()
 		GS("StarterPlayer").StarterCharacterScripts.AntiCheat:Destroy()
 		GS("StarterPlayer").StarterPlayerScripts.AntiCheat:Destroy()
-		local old = hookmetamethod(game,"__namecall",function(self, ...)
-			local method = getnamecallmethod()
-			if method:lower() == "kick" then
-				return warn("Blocked Kick")
-			end
-			return old(self,...)
-		end)
 	end)
 	Tabs.currgame:Button("Remove Jump-Cooldown", function()
 		if char:FindFirstChild("JumpCooldown") then
@@ -676,20 +670,212 @@ elseif game.PlaceId == 14086581572 then
 		end
 	end)
 	Tabs.currgame:Button("Anti Ragdoll", function()
-		local remote = rs:WaitForChild("ServerRequests"):WaitForChild("RagdollRequest")
-		local old = hookmetamethod(game,"__namecall",function(self, ...)
-			local method = getnamecallmethod()
-			local args = {...}
-			if self == remote and method == "FireServer" then
-				args[1] = false
-				return old(self,unpack(args))
-			end
-			return old(self, ...)
-		end)
+		char.PlayerFallHandler:Destroy()
+		rs:WaitForChild("ServerRequests"):WaitForChild("RagdollRequest"):Destroy()
 	end)
 	for _,v in pairs(ws:WaitForChild("CHECKPOINTS"):GetChildren()) do
 		Tabs.currgame:Button("Checkpoint: "..v.Name, function()
 			humrp.CFrame = v.SpawnPart.CFrame
 		end)
 	end
+
+elseif game.PlaceId == 9049840490 then --Sonic Speed Simulator
+	Tabs.currgame = win:Tab("Sonic Speed Simulator")
+	
+	Tabs.currgame:Button("Collect All Currency", function()
+		for _,v in pairs(ws:FindFirstChild("World Currencies"):GetChildren()) do
+			local args = {
+				[1] = v.Name
+			}
+
+			rs:WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("WorldCurrencyService"):WaitForChild("RE"):WaitForChild("PickupCurrency"):FireServer(unpack(args))
+		end
+	end)
+	Tabs.currgame:Toggle("Autofarm Rings", false, function(t)
+		getgenv().farmrings=t
+		local loop
+		loop = RSV.RenderStepped:Connect(function()
+			if not getgenv().farmrings then
+				loop:Disconnect()
+				return
+			end
+			local args = {
+				[1] = "Emerald Hill",
+				[2] = "3rd",
+				[3] = "BestRank",
+				[4] = 3,
+				[5] = false
+			}
+
+			rs:WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("TrialService"):WaitForChild("RE"):WaitForChild("OnStatUpdate"):FireServer(unpack(args))
+		end)
+	end)
+	Tabs.currgame:Toggle("Autofarm Boss", false, function(t)
+		getgenv().farmboss=t
+		local loop
+		loop = RSV.RenderStepped:Connect(function()
+			if not getgenv().farmboss then
+				loop:Disconnect()
+				return
+			end
+			for i=1,10,1 do
+				local args = {
+					[1] = "GeneratorDamaged",
+					[2] = {
+						["Generator"] = i
+					}
+				}
+
+				rs:WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BossBattleService"):WaitForChild("RE"):WaitForChild("UpdateBattleState"):FireServer(unpack(args))
+			end
+			local args = {
+				[1] = "Damage",
+				[2] = {}
+			}
+
+			rs:WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BossBattleService"):WaitForChild("RE"):WaitForChild("UpdateBattleState"):FireServer(unpack(args))
+
+			local args = {
+				[1] = "Emerald Hill Boss Battle"
+			}
+
+			rs:WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("BossBattleService"):WaitForChild("RF"):WaitForChild("JoinQueue"):InvokeServer(unpack(args))
+		end)
+	end)
+	Tabs.currgame:Toggle("AutoRebirth", false, function(t)
+		getgenv().autorebirth = t
+		coroutine.resume(coroutine.create(function()
+			while task.wait(5) and getgenv().autorebirth do
+				local args = {
+					[1] = true
+				}
+
+				game:GetService("ReplicatedStorage").Knit.Services.SSLevelingService.RF.AttemptRebirth:InvokeServer(unpack(args))
+
+			end
+		end))
+	end)
+	Tabs.currgame:TextBox("Give AirTime", true, function(t)
+		local args = {
+			[1] = "FallTimeTotal",
+			[2] = tonumber(t)
+		}
+
+		rs.Knit.Services.ProgressService.RE.LogProgress:FireServer(unpack(args))
+	end)
+	Tabs.currgame:TextBox("Give BoostTime", true, function(t)
+		local args = {
+			[1] = "BoostTime",
+			[2] = tonumber(t)
+		}
+
+		rs.Knit.Services.ProgressService.RE.LogProgress:FireServer(unpack(args))
+	end)
+	Tabs.currgame:Button("ToraIsMe Rebirth Energy", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/0sonic11"))()
+	end)
+	Tabs.currgame:Button("ToraIsMe GUI", function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ToraIsMe2/ToraIsMe2/main/0sonic2", true))()
+	end)
+
+elseif game.PlaceId == 2248408710 then --Destruction Simulator
+	Tabs.currgame = win:Tab("Destruction Simulator")
+
+	Tabs.currgame:TextBox("Give Coins", true, function(t)
+		rs.Remotes.generateBoost:FireServer("Coins", 480, tonumber(t))
+	end)
+	Tabs.currgame:TextBox("Give XP", true, function(t)
+		rs.Remotes.generateBoost:FireServer("Levels", 480, tonumber(t))
+	end)
+	Tabs.currgame:TextBox("Coin Multiplier", true, function(t)
+		rs.Remotes.generateBoost:FireServer("CoinBoost",999999999,tonumber(t))
+	end)
+	Tabs.currgame:TextBox("XP Multiplier", true, function(t)
+		rs.Remotes.generateBoost:FireServer("XPBoost",999999999,tonumber(t))
+	end)
+	Tabs.currgame:TextBox("Brick Multiplier", true, function(t)
+		rs.Remotes.generateBoost:FireServer("BrickBoost",999999999,tonumber(t))
+	end)
+	Tabs.currgame:TextBox("Rocket Speed", true, function(t)
+		for _,obj in pairs(debug.getregistry()) do
+			if type(obj) == "table" then
+				if obj.RocketSpeed then
+					obj.RocketSpeed = tonumber(t)
+				end
+			end
+		end
+	end)
+	Tabs.currgame:Button("No Cooldown", function()
+		for i,v in next,getgc(true)do
+			if type(v)=='table'and rawget(v,'Cooldown')then
+				v.Cooldown = 0
+			end
+		end
+	end)
+	Tabs.currgame:Toggle("Auto Sell", false, function(t)
+		getgenv().autosell = t
+		coroutine.resume(coroutine.create(function()
+			while task.wait(.1) and getgenv().autosell do
+				rs.Remotes.sellBricks:FireServer()
+			end
+		end))
+	end)
+	Tabs.currgame:Button("Open Shop", function(t)
+		local pos = humrp.CFrame
+		humrp.CFrame = CFrame.new(-34, 6, -424)
+		task.wait()
+		humrp.CFrame = pos
+	end)
+	Tabs.currgame:Dropdown("Area Teleport", {"Race Track", "Construction Site", "Farm", "Houses", "Beach", "Space Station", "Prison", "Desert", "Castle", "City", "Volcano", "Doomspire"}, function(pick)
+		if pick == "Race Track" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area1.Spawns.Spawn1.Position)
+		end
+		if pick == "Construction Site" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area2.Spawns.Spawn1.Position)
+		end
+		if pick == "Farm" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area3.Spawns.Spawn1.Position)
+		end
+		if pick == "Houses" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area4.Spawns.Spawn1.Position)
+		end
+		if pick == "Beach" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area5.Spawns.Spawn1.Position)
+		end
+		if pick == "Space Station" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area6.Spawns.Spawn1.Position)
+		end
+		if pick == "Prison" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area7.Spawns.Spawn1.Position)
+		end
+		if pick == "Desert" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area8.Spawns.Spawn1.Position)
+		end
+		if pick == "Castle" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area9.Spawns.Spawn1.Position)
+		end
+		if pick == "City" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area10.Spawns.Spawn1.Position)
+		end
+		if pick == "Volcano" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area11.Spawns.Spawn1.Position)
+		end
+		if pick == "Doomspire" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area12.Spawns.Spawn1.Position)
+		end
+	end)
+	Tabs.currgame:Dropdown("Section Teleport", {"Emojis", "Characters", "Devices", "Rubiks Cube"}, function(pick)
+		if pick == "Emojis" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area13.Spawns.Spawn1.Position)
+		end
+		if pick == "Characters" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area14.Spawns.Spawn1.Position)
+		end
+		if pick == "Devices" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area15.Spawns.Spawn1.Position)
+		end
+		if pick == "Rubiks Cube" then
+			humrp.CFrame = CFrame.new(ws.Areas.Area16.Spawns.Spawn1.Position)
+		end
+	end)
 end
