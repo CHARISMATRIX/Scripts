@@ -1,249 +1,459 @@
-local library = {}
+local Library = {}
 
---NewWindow
-function library:NewWindow(WindowName)
-	local SMUILibrary = Instance.new("ScreenGui")
-	local TopMain = Instance.new("Frame")
-	local Container = Instance.new("Frame")
-	local TabList = Instance.new("ScrollingFrame")
-	local Tabs = Instance.new("Frame")
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local CGUI = game:GetService("CoreGui")
+local RSV = game:GetService("RunService")
+
+local TI = TweenInfo.new
+
+function snap(number, factor)
+	if factor == 0 then
+		return number
+	else
+		return math.floor(number/factor+0.5)*factor
+	end
+end
+
+function Library:Window(Name: string)
+	local WindowFuncs = {}
+	
+	local GUI = Instance.new("ScreenGui")
+	local TopBar = Instance.new("Frame")
 	local Title = Instance.new("TextLabel")
-	local CloseButton = Instance.new("TextButton")
+	local MainFrame = Instance.new("Frame")
+	local Navigation = Instance.new("ScrollingFrame")
 	local UIListLayout = Instance.new("UIListLayout")
+	local Tabs = Instance.new("Folder")
+	local DestroyButton = Instance.new("TextButton")
+	local MinimizeButton = Instance.new("TextButton")
+	
+	GUI.Name = "SMUILibrary"
+	GUI.Parent = CGUI
 
-	SMUILibrary.Name = "SMUILibrary"
-	SMUILibrary.Parent = game:GetService("CoreGui")
-	SMUILibrary.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	SMUILibrary.ResetOnSpawn = false
-
-	TopMain.Name = "TopMain"
-	TopMain.Parent = SMUILibrary
-	TopMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	TopMain.BorderSizePixel = 0
-	TopMain.Position = UDim2.new(0.248430148, 0, 0.302493781, 0)
-	TopMain.Size = UDim2.new(0, 600, 0, 20)
-	TopMain.Draggable = true
-	TopMain.Active = true
-	TopMain.Selectable = true
-
-	Container.Name = "Container"
-	Container.Parent = TopMain
-	Container.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-	Container.BorderSizePixel = 0
-	Container.Position = UDim2.new(-0.000478804111, 0, 0.98179549, 0)
-	Container.Size = UDim2.new(0, 600, 0, 350)
-
-	TabList.Name = "TabList"
-	TabList.Parent = Container
-	TabList.Active = true
-	TabList.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
-	TabList.BorderSizePixel = 0
-	TabList.Size = UDim2.new(0, 125, 0, 350)
-	TabList.ScrollBarThickness = 10
-
-	Tabs.Name = "Tabs"
-	Tabs.Parent = Container
-	Tabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Tabs.BackgroundTransparency = 1.000
-	Tabs.BorderSizePixel = 0
-	Tabs.Position = UDim2.new(0.208333328, 0, 0, 0)
-	Tabs.Size = UDim2.new(0, 475, 0, 350)
+	TopBar.Name = "TopBar"
+	TopBar.Parent = GUI
+	TopBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	TopBar.Position = UDim2.new(0.330259502, 0, 0.480479449, 0)
+	TopBar.Size = UDim2.new(0, 500, 0, 25)
 
 	Title.Name = "Title"
-	Title.Parent = TopMain
+	Title.Parent = TopBar
 	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Title.BackgroundTransparency = 1.000
-	Title.Size = UDim2.new(1, 0, 1, 0)
+	Title.Size = UDim2.new(0, 200, 0, 25)
 	Title.Font = Enum.Font.SourceSans
-	Title.Text = WindowName
+	Title.Text = Name
 	Title.TextColor3 = Color3.fromRGB(0, 255, 0)
 	Title.TextSize = 14.000
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 
-	CloseButton.Name = "CloseButton"
-	CloseButton.Parent = TopMain
-	CloseButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	CloseButton.Position = UDim2.new(1, 0, -1, 0)
-	CloseButton.Size = UDim2.new(0, 20, 0, 20)
-	CloseButton.Font = Enum.Font.Roboto
-	CloseButton.Text = "X"
-	CloseButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-	CloseButton.TextScaled = true
-	CloseButton.TextSize = 14.000
-	CloseButton.TextWrapped = true
+	MainFrame.Name = "MainFrame"
+	MainFrame.Parent = TopBar
+	MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	MainFrame.Position = UDim2.new(0, 0, 1, 0)
+	MainFrame.Size = UDim2.new(1, 0, 10, 0)
 
-	UIListLayout.Parent = TabList
+	Navigation.Name = "Navigation"
+	Navigation.Parent = MainFrame
+	Navigation.Active = true
+	Navigation.BackgroundColor3 = Color3.fromRGB(68, 68, 68)
+	Navigation.Size = UDim2.new(0.200000003, 0, 1, 0)
+	Navigation.CanvasSize = UDim2.new(0, 0, 1, 0)
+	Navigation.ScrollBarThickness = 5
+	
+	UIListLayout.Parent = Navigation
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-	CloseButton.MouseButton1Down:Connect(function()
-		SMUILibrary:Destroy()
+	Tabs.Name = "Tabs"
+	Tabs.Parent = MainFrame
+	
+	DestroyButton.Name = "DestroyButton"
+	DestroyButton.Parent = TopBar
+	DestroyButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	DestroyButton.BackgroundTransparency = 1.000
+	DestroyButton.Position = UDim2.new(0.953999996, 0, 0, 0)
+	DestroyButton.Size = UDim2.new(0, 25, 0, 25)
+	DestroyButton.Font = Enum.Font.SourceSans
+	DestroyButton.Text = "X"
+	DestroyButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+	DestroyButton.TextScaled = true
+	DestroyButton.TextWrapped = true
+
+	MinimizeButton.Name = "MinimizeButton"
+	MinimizeButton.Parent = TopBar
+	MinimizeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	MinimizeButton.BackgroundTransparency = 1.000
+	MinimizeButton.Position = UDim2.new(0.903999984, 0, 0, 0)
+	MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
+	MinimizeButton.Font = Enum.Font.SourceSans
+	MinimizeButton.Text = "-"
+	MinimizeButton.TextColor3 = Color3.fromRGB(255, 0, 0)
+	MinimizeButton.TextScaled = true
+	MinimizeButton.TextWrapped = true
+	
+	MinimizeButton.MouseButton1Down:Connect(function()
+		MainFrame.Visible = not MainFrame.Visible
+	end)
+	DestroyButton.MouseButton1Down:Connect(function()
+		GUI:Destroy()
+	end)
+	
+	
+	local dragToggle = nil
+	local dragSpeed = 0.25
+	local dragStart = nil
+	local startPos = nil
+
+	local function updateInput(input)
+		local delta = input.Position - dragStart
+		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		TS:Create(TopBar, TweenInfo.new(dragSpeed), {Position = position}):Play()
+	end
+
+	TopBar.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+			dragToggle = true
+			dragStart = input.Position
+			startPos = TopBar.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
 	end)
 
-	local WindowFuncs = {}
+	UIS.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			if dragToggle then
+				updateInput(input)
+			end
+		end
+	end)
 
-	--NewTab
-	function WindowFuncs:NewTab(TabName)
+	
+	function WindowFuncs:Tab(Name)
+		local TabFuncs = {}
+		
+		local NavigationButton = Instance.new("TextButton")
 		local Tab = Instance.new("ScrollingFrame")
-		local TabButton = Instance.new("TextButton")
-		local UIListLayout = Instance.new("UIListLayout")
-
-		Tab.Name = TabName
+		local UIListLayout_2 = Instance.new("UIListLayout")
+		
+		NavigationButton.Name = Name
+		NavigationButton.Parent = Navigation
+		NavigationButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+		NavigationButton.Size = UDim2.new(1, 0, 0.150000006, 0)
+		NavigationButton.Font = Enum.Font.SourceSans
+		NavigationButton.Text = Name
+		NavigationButton.TextColor3 = Color3.fromRGB(0, 255, 0)
+		NavigationButton.TextSize = 14.000
+		NavigationButton.TextWrapped = true
+		NavigationButton.TextXAlignment = Enum.TextXAlignment.Left
+		
+		Tab.Name = Name
 		Tab.Parent = Tabs
 		Tab.Active = true
+		if #Tabs:GetChildren() == 1 then
+			Tab.Visible = true
+		else
+			Tab.Visible = false
+		end
 		Tab.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		Tab.BackgroundTransparency = 1.000
-		Tab.BorderSizePixel = 0
-		Tab.Size = UDim2.new(1, 0, 1, 0)
-		Tab.ScrollBarThickness = 10
-
-		TabButton.Name = TabName
-		TabButton.Parent = TabList
-		TabButton.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
-		TabButton.Position = UDim2.new(-0.863999963, 0, 0.15285714, 0)
-		TabButton.Size = UDim2.new(1, 0, 0, 50)
-		TabButton.Font = Enum.Font.SourceSans
-		TabButton.Text = TabName
-		TabButton.TextColor3 = Color3.fromRGB(255, 0, 0)
-		TabButton.TextScaled = true
-		TabButton.TextSize = 14.000
-		TabButton.TextWrapped = true
-		TabButton.TextXAlignment = Enum.TextXAlignment.Left
-
-		UIListLayout.Parent = Tab
-		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-
-		TabButton.MouseButton1Down:Connect(function()
-			for i,v in pairs(Tabs:GetChildren()) do
-				if v ~= Tab then
-					v.Visible = false
-				end
-			end
-			for i,v in pairs(TabList:GetChildren()) do
-				if v ~= TabButton then
-					v.TextColor3 = Color3.fromRGB(255, 0, 0)
-				end
-			end
+		Tab.Position = UDim2.new(0.200000003, 0, 0, 0)
+		Tab.Size = UDim2.new(0.800000012, 0, 1, 0)
+		Tab.CanvasSize = UDim2.new(0, 0, 1, 0)
+		Tab.ScrollBarThickness = 5
+		
+		UIListLayout_2.Parent = Tab
+		UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+		
+		
+		NavigationButton.MouseButton1Down:Connect(function()
 			Tab.Visible = true
-			TabButton.TextColor3 = Color3.fromRGB(0, 255, 0)
+			for _,v in pairs(Tabs:GetChildren()) do
+				if v ~= Tab then v.Visible = false end
+			end
 		end)
+		
+		
+		function TabFuncs:Label(Name)
+			local PageLabel = Instance.new("TextLabel")
+			PageLabel.Name = Name
+			PageLabel.Parent = Tab
+			PageLabel.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+			PageLabel.Size = UDim2.new(1, 0, 0, 35)
+			PageLabel.Font = Enum.Font.SourceSans
+			PageLabel.Text = Name
+			PageLabel.TextColor3 = Color3.fromRGB(0, 200, 0)
+			PageLabel.TextSize = 30.000
+			PageLabel.TextXAlignment = Enum.TextXAlignment.Left
+		end
+		function TabFuncs:Button(Name, Callback)
+			local PageButton = Instance.new("TextButton")
+			PageButton.Name = Name
+			PageButton.Parent = Tab
+			PageButton.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+			PageButton.Size = UDim2.new(1, 0, 0, 35)
+			PageButton.Font = Enum.Font.SourceSans
+			PageButton.Text = Name
+			PageButton.TextColor3 = Color3.fromRGB(0, 255, 0)
+			PageButton.TextSize = 30.000
+			PageButton.TextXAlignment = Enum.TextXAlignment.Left
+			
+			PageButton.MouseButton1Down:Connect(function()
+				pcall(Callback)
+			end)
+		end
+		function TabFuncs:Toggle(Name, Default, Callback)
+			local toggle = Default
+			
+			local PageToggle = Instance.new("TextButton")
+			local ToggleButton = Instance.new("ImageLabel")
+			
+			PageToggle.Name = Name
+			PageToggle.Parent = Tab
+			PageToggle.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+			PageToggle.Size = UDim2.new(1, 0, 0, 35)
+			PageToggle.Font = Enum.Font.SourceSans
+			PageToggle.Text = Name
+			PageToggle.TextColor3 = Color3.fromRGB(0, 255, 0)
+			PageToggle.TextSize = 30.000
+			PageToggle.TextXAlignment = Enum.TextXAlignment.Left
 
-		local TabFuncs = {}
+			ToggleButton.Name = "ToggleButton"
+			ToggleButton.Parent = PageToggle
+			ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			ToggleButton.BackgroundTransparency = 1.000
+			ToggleButton.Position = UDim2.new(0.850000024, 0, 0.100000001, 0)
+			ToggleButton.Size = UDim2.new(0, 60, 0.75, 0)
+			ToggleButton.Image = "rbxassetid://3570695787"
+			if Default then
+				ToggleButton.ImageColor3 = Color3.fromRGB(0, 255)
+			else
+				ToggleButton.ImageColor3 = Color3.fromRGB(255)
+			end
+			ToggleButton.ScaleType = Enum.ScaleType.Slice
+			ToggleButton.SliceCenter = Rect.new(100, 100, 100, 100)
+			ToggleButton.SliceScale = 0.120
+			
+			PageToggle.MouseButton1Down:Connect(function()
+				toggle = not toggle
+				if toggle then
+					TS:Create(ToggleButton, TI(.5,Enum.EasingStyle.Sine), {ImageColor3 = Color3.new(0,1)}):Play()
+				else
+					TS:Create(ToggleButton, TI(.5,Enum.EasingStyle.Sine), {ImageColor3 = Color3.new(1)}):Play()
+				end
+				pcall(Callback, toggle)
+			end)
+		end
+		function TabFuncs:Dropdown(Name, List, Callback)
+			local PageDropdown = Instance.new("TextButton")
+			local DropdownFrame = Instance.new("Frame")
+			local UIListLayout_3 = Instance.new("UIListLayout")
+			local DropdownImage = Instance.new("ImageLabel")
+			
+			PageDropdown.Name = Name
+			PageDropdown.Parent = Tab
+			PageDropdown.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+			PageDropdown.Size = UDim2.new(1, 0, 0, 35)
+			PageDropdown.Font = Enum.Font.SourceSans
+			PageDropdown.Text = Name
+			PageDropdown.TextColor3 = Color3.fromRGB(0, 255, 0)
+			PageDropdown.TextSize = 30.000
+			PageDropdown.TextXAlignment = Enum.TextXAlignment.Left
 
-		--NewSection
-		function TabFuncs:NewSection(SectionName)
-			local Section = Instance.new("TextLabel")
+			DropdownFrame.Name = "DropdownFrame"
+			DropdownFrame.Parent = PageDropdown
+			DropdownFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			DropdownFrame.Position = UDim2.new(0, 0, 1, 0)
+			DropdownFrame.Size = UDim2.new(1, 0, 0, 0)
+			DropdownFrame.Visible = false
+			DropdownFrame.ZIndex = 100
+			DropdownFrame.AutomaticSize = Enum.AutomaticSize.Y
 
-			Section.Name = "Label"
-			Section.Parent = Tab
-			Section.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-			Section.Position = UDim2.new(0.0357894748, 0, 0.619047642, 0)
-			Section.Size = UDim2.new(1, 0, 0, 35)
-			Section.Font = Enum.Font.SourceSans
-			Section.Text = SectionName
-			Section.TextColor3 = Color3.fromRGB(255, 0, 4)
-			Section.TextSize = 25.000
-			Section.TextXAlignment = Enum.TextXAlignment.Left
+			UIListLayout_3.Parent = DropdownFrame
+			UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
 
-			local SectionFuncs = {}
 
-			--NewButton
-			function SectionFuncs:NewButton(ButtonName, callback)
-				local callback = callback or function() end
 
-				local Button = Instance.new("TextButton")
-
-				Button.Name = ButtonName
-				Button.Parent = Tab
-				Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-				Button.BorderSizePixel = 0
-				Button.Position = UDim2.new(-0.00631579757, 0, -0.00571417809, 0)
-				Button.Size = UDim2.new(1, 0, 0, 35)
-				Button.Font = Enum.Font.SourceSans
-				Button.Text = ButtonName
-				Button.TextColor3 = Color3.fromRGB(0, 255, 0)
-				Button.TextSize = 25.000
-				Button.TextXAlignment = Enum.TextXAlignment.Left
-
-				Button.MouseButton1Down:Connect(function()
-					pcall(callback)
+			DropdownImage.Name = "DropdownImage"
+			DropdownImage.Parent = PageDropdown
+			DropdownImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			DropdownImage.BackgroundTransparency = 1.000
+			DropdownImage.Position = UDim2.new(0.912500024, 0, 0, 0)
+			DropdownImage.Size = UDim2.new(0, 35, 1, 0)
+			DropdownImage.Image = "rbxassetid://6034818375"
+			
+			for _,v in List do
+				local DropdownButton = Instance.new("TextButton")
+				DropdownButton.Name = v
+				DropdownButton.Parent = DropdownFrame
+				DropdownButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				DropdownButton.BackgroundTransparency = 1.000
+				DropdownButton.Size = UDim2.new(1, 0, 0, 20)
+				DropdownButton.ZIndex = 150
+				DropdownButton.Font = Enum.Font.SourceSans
+				DropdownButton.Text = v
+				DropdownButton.TextColor3 = Color3.fromRGB(0, 255, 0)
+				DropdownButton.TextSize = 20.000
+				DropdownButton.TextWrapped = true
+				DropdownButton.TextXAlignment = Enum.TextXAlignment.Left
+				
+				DropdownButton.MouseButton1Down:Connect(function()
+					DropdownFrame.Visible = false
+					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = 0}):Play()
+					PageDropdown.Text = Name.." - "..v
+					
+					pcall(Callback, v)
 				end)
 			end
+			
+			PageDropdown.MouseButton1Down:Connect(function()
+				DropdownFrame.Visible = not DropdownFrame.Visible
+				
+				if DropdownFrame.Visible then
+					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = -90}):Play()
+				else
+					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = 0}):Play()
+				end
+				
+			end)
+		end
+		function TabFuncs:Slider(Name, min,max, start, Callback)
+			local d = false
+			local percentage = 0
+			
+			local PageSlider = Instance.new("Frame")
+			local SliderTitle = Instance.new("TextLabel")
+			local SliderBar = Instance.new("ImageLabel")
+			local SliderButton = Instance.new("ImageButton")
+			local SliderValue = Instance.new("TextLabel")
 
-			--NewToggle
-			function SectionFuncs:NewToggle(ToggleName, callback)
-				local callback = callback or function() end
+			PageSlider.Name = Name
+			PageSlider.Parent = Tab
+			PageSlider.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+			PageSlider.ClipsDescendants = true
+			PageSlider.Size = UDim2.new(1, 0, 0, 35)
 
-				local Toggle = Instance.new("TextButton")
-				local state = false
+			SliderTitle.Name = "SliderTitle"
+			SliderTitle.Parent = PageSlider
+			SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderTitle.BackgroundTransparency = 1.000
+			SliderTitle.Size = UDim2.new(1, 0, 0.5, 0)
+			SliderTitle.Font = Enum.Font.SourceSans
+			SliderTitle.Text = Name
+			SliderTitle.TextColor3 = Color3.fromRGB(0, 255, 0)
+			SliderTitle.TextSize = 25.000
+			SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
 
-				Toggle.Name = ToggleName
-				Toggle.Parent = Tab
-				Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-				Toggle.BorderSizePixel = 0
-				Toggle.Position = UDim2.new(-0.00631579757, 0, -0.00571417809, 0)
-				Toggle.Size = UDim2.new(1, 0, 0, 35)
-				Toggle.Font = Enum.Font.SourceSans
-				Toggle.Text = ToggleName..": OFF"
-				Toggle.TextColor3 = Color3.fromRGB(255, 0, 0)
-				Toggle.TextSize = 25.000
-				Toggle.TextXAlignment = Enum.TextXAlignment.Left
+			SliderBar.Name = "SliderBar"
+			SliderBar.Parent = PageSlider
+			SliderBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderBar.BackgroundTransparency = 1.000
+			SliderBar.Position = UDim2.new(0.0500000007, 0, 0.600000024, 0)
+			SliderBar.Size = UDim2.new(0.899999976, 0, 0.400000006, 0)
+			SliderBar.Image = "rbxassetid://3570695787"
+			SliderBar.ImageColor3 = Color3.fromRGB(0, 255, 255)
+			SliderBar.ScaleType = Enum.ScaleType.Slice
+			SliderBar.SliceCenter = Rect.new(100, 100, 100, 100)
+			SliderBar.SliceScale = 0.120
 
-				Toggle.MouseButton1Down:Connect(function()
-					state = not state
-					pcall(callback, state)
-					if state then
-						Toggle.TextColor3 = Color3.fromRGB(0, 255, 0)
-						Toggle.Text = ToggleName..": ON"
-					else
-						Toggle.TextColor3 = Color3.fromRGB(255, 0, 0)
-						Toggle.Text = ToggleName..": OFF"
+			SliderButton.Name = "SliderButton"
+			SliderButton.Parent = SliderBar
+			SliderButton.AnchorPoint = Vector2.new(0.5, 0.5)
+			SliderButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderButton.BackgroundTransparency = 1.000
+			SliderButton.Position = UDim2.new((start or 0) / max, 0, 0.5, 0)
+			SliderButton.Size = UDim2.new(0.0388888903, 0, 1, 0)
+			SliderButton.Image = "rbxassetid://3570695787"
+			SliderButton.ScaleType = Enum.ScaleType.Slice
+			SliderButton.SliceCenter = Rect.new(100, 100, 100, 100)
+			SliderButton.SliceScale = 0.120
+
+			SliderValue.Name = "SliderValue"
+			SliderValue.Parent = PageSlider
+			SliderValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+			SliderValue.BackgroundTransparency = 1.000
+			SliderValue.Position = UDim2.new(0.949999988, 0, 0, 0)
+			SliderValue.Size = UDim2.new(0.0500000007, 0, 0.5, 0)
+			SliderValue.Font = Enum.Font.SourceSans
+			SliderValue.Text = tostring(start and math.floor((start / max) * (max - min) + min) or 0)
+			SliderValue.TextColor3 = Color3.fromRGB(0, 255, 0)
+			SliderValue.TextScaled = true
+			SliderValue.TextSize = 25.000
+			SliderValue.TextWrapped = true
+			SliderValue.TextXAlignment = Enum.TextXAlignment.Left
+			
+			local function move(input)
+				local pos =
+					UDim2.new(
+						math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1),
+						0,
+						0.5,
+						0
+					)
+				local pos1 =
+					UDim2.new(
+						math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1),
+						0,
+						0,
+						3
+					)
+				SliderButton:TweenPosition(pos, Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 0.1, true)
+				local value = math.floor(((pos.X.Scale * max) / max) * (max - min) + min)
+				SliderValue.Text = tostring(value)
+				pcall(Callback, value)
+			end
+			
+			SliderButton.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					d = true
+				end
+			end)
+			SliderButton.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					d = false
+				end
+			end)
+			UIS.InputChanged:Connect(function(input)
+				if d and input.UserInputType == Enum.UserInputType.MouseMovement then
+					move(input)
+				end
+			end)
+		end
+		function TabFuncs:TextBox(Name, Disappear, Callback)
+			local PageTextBox = Instance.new("TextBox")
+
+			PageTextBox.Name = Name
+			PageTextBox.Parent = Tab
+			PageTextBox.BackgroundColor3 = Color3.fromRGB(50, 65, 65)
+			PageTextBox.ClipsDescendants = true
+			PageTextBox.Size = UDim2.new(1, 0, 0, 35)
+			PageTextBox.ClearTextOnFocus = false
+			PageTextBox.Font = Enum.Font.SourceSans
+			PageTextBox.PlaceholderText = Name
+			PageTextBox.Text = ""
+			PageTextBox.TextColor3 = Color3.fromRGB(0, 255, 0)
+			PageTextBox.TextSize = 30.000
+			PageTextBox.TextXAlignment = Enum.TextXAlignment.Left
+			
+			PageTextBox.FocusLost:Connect(function(ep)
+				if ep then
+					if #PageTextBox.Text > 0 then
+						pcall(Callback, PageTextBox.Text)
+						if Disappear then
+							PageTextBox.Text = ""
+						end
 					end
-				end)
-
-			end
-
-			--NewInput
-			function SectionFuncs:NewInput(InputName, callback)
-				local callback = callback or function() end
-
-				local state = ""
-				local Input = Instance.new("TextBox")
-
-				Input.Name = "Input"
-				Input.Parent = Tab
-				Input.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-				Input.Position = UDim2.new(0.134736836, 0, 0.734331787, 0)
-				Input.Size = UDim2.new(1, 0, 0, 35)
-				Input.Font = Enum.Font.SourceSans
-				Input.Text = ""
-				Input.TextColor3 = Color3.fromRGB(0, 0, 0)
-				Input.TextSize = 14.000
-
-				Input:GetPropertyChangedSignal("Text"):Connect(function()
-					state = Input.Text
-					pcall(callback, state)
-				end)
-			end
-
-			--NewLabel
-			function SectionFuncs:NewLabel(LabelName)
-				local Label = Instance.new("TextLabel")
-
-				Label.Name = "Label"
-				Label.Parent = Tab
-				Label.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-				Label.Position = UDim2.new(0.0357894748, 0, 0.619047642, 0)
-				Label.Size = UDim2.new(1, 0, 0, 35)
-				Label.Font = Enum.Font.SourceSans
-				Label.Text = LabelName
-				Label.TextColor3 = Color3.fromRGB(255, 0, 4)
-				Label.TextSize = 25.000
-				Label.TextXAlignment = Enum.TextXAlignment.Left
-			end
-			return SectionFuncs
+				end
+			end)
 		end
 		return TabFuncs
 	end
 	return WindowFuncs
 end
-return library
+
+return Library
