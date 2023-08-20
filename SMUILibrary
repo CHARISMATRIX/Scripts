@@ -61,7 +61,7 @@ function Library:Window(Name: string)
 	Navigation.Size = UDim2.new(0.200000003, 0, 1, 0)
 	Navigation.CanvasSize = UDim2.new(0, 0, 1, 0)
 	Navigation.ScrollBarThickness = 5
-	Navigation.AutomaticSize = Enum.AutomaticSize.Y
+	Navigation.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 	UIListLayout.Parent = Navigation
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -167,7 +167,7 @@ function Library:Window(Name: string)
 		Tab.Size = UDim2.new(0.800000012, 0, 1, 0)
 		Tab.CanvasSize = UDim2.new(0, 0, 1, 0)
 		Tab.ScrollBarThickness = 5
-		Tab.AutomaticSize = Enum.AutomaticSize.Y
+		Tab.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 		UIListLayout_2.Parent = Tab
 		UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
