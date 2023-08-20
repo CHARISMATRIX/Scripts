@@ -253,7 +253,7 @@ function Library:Window(Name: string)
 		end
 		function TabFuncs:Dropdown(Name, List, Callback)
 			local PageDropdown = Instance.new("TextButton")
-			local DropdownFrame = Instance.new("Frame")
+			local DropdownFrame = Instance.new("ScrollingFrame")
 			local UIListLayout_3 = Instance.new("UIListLayout")
 			local DropdownImage = Instance.new("ImageLabel")
 
@@ -274,7 +274,7 @@ function Library:Window(Name: string)
 			DropdownFrame.Size = UDim2.new(1, 0, 0, 0)
 			DropdownFrame.Visible = false
 			DropdownFrame.ZIndex = 100
-			DropdownFrame.AutomaticSize = Enum.AutomaticSize.Y
+			DropdownFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 			UIListLayout_3.Parent = DropdownFrame
 			UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
