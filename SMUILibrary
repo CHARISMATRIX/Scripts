@@ -275,6 +275,7 @@ function Library:Window(Name: string)
 			DropdownFrame.Visible = false
 			DropdownFrame.ZIndex = 100
 			DropdownFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+			DropdownFrame.ScrollBarThickness = 8
 
 			UIListLayout_3.Parent = DropdownFrame
 			UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
@@ -315,7 +316,7 @@ function Library:Window(Name: string)
 				DropdownFrame.Visible = not DropdownFrame.Visible
 
 				if DropdownFrame.Visible then
-					DropdownFrame = DropdownFrame.CanvasSize/2
+					print("DROPLOL")
 					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = UDim2.new(1,0,0,22*#List)}):Play()
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = -90}):Play()
 				else
