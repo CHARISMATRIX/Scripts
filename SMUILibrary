@@ -279,8 +279,6 @@ function Library:Window(Name: string)
 			UIListLayout_3.Parent = DropdownFrame
 			UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
 
-
-
 			DropdownImage.Name = "DropdownImage"
 			DropdownImage.Parent = PageDropdown
 			DropdownImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -317,8 +315,10 @@ function Library:Window(Name: string)
 				DropdownFrame.Visible = not DropdownFrame.Visible
 
 				if DropdownFrame.Visible then
+					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = DropdownFrame.CanvasSize})
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = -90}):Play()
 				else
+					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = UDim2.new(0,0,1,0)})
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = 0}):Play()
 				end
 
