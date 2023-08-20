@@ -17,7 +17,7 @@ end
 
 function Library:Window(Name: string)
 	local WindowFuncs = {}
-	
+
 	local GUI = Instance.new("ScreenGui")
 	local TopBar = Instance.new("Frame")
 	local Title = Instance.new("TextLabel")
@@ -27,7 +27,7 @@ function Library:Window(Name: string)
 	local Tabs = Instance.new("Folder")
 	local DestroyButton = Instance.new("TextButton")
 	local MinimizeButton = Instance.new("TextButton")
-	
+
 	GUI.Name = "SMUILibrary"
 	GUI.Parent = CGUI
 
@@ -61,13 +61,14 @@ function Library:Window(Name: string)
 	Navigation.Size = UDim2.new(0.200000003, 0, 1, 0)
 	Navigation.CanvasSize = UDim2.new(0, 0, 1, 0)
 	Navigation.ScrollBarThickness = 5
-	
+	Navigation.AutomaticSize = Enum.AutomaticSize.Y
+
 	UIListLayout.Parent = Navigation
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 	Tabs.Name = "Tabs"
 	Tabs.Parent = MainFrame
-	
+
 	DestroyButton.Name = "DestroyButton"
 	DestroyButton.Parent = TopBar
 	DestroyButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -91,15 +92,15 @@ function Library:Window(Name: string)
 	MinimizeButton.TextColor3 = Color3.fromRGB(255, 0, 0)
 	MinimizeButton.TextScaled = true
 	MinimizeButton.TextWrapped = true
-	
+
 	MinimizeButton.MouseButton1Down:Connect(function()
 		MainFrame.Visible = not MainFrame.Visible
 	end)
 	DestroyButton.MouseButton1Down:Connect(function()
 		GUI:Destroy()
 	end)
-	
-	
+
+
 	local dragToggle = nil
 	local dragSpeed = 0.25
 	local dragStart = nil
@@ -133,14 +134,14 @@ function Library:Window(Name: string)
 		end
 	end)
 
-	
+
 	function WindowFuncs:Tab(Name)
 		local TabFuncs = {}
-		
+
 		local NavigationButton = Instance.new("TextButton")
 		local Tab = Instance.new("ScrollingFrame")
 		local UIListLayout_2 = Instance.new("UIListLayout")
-		
+
 		NavigationButton.Name = Name
 		NavigationButton.Parent = Navigation
 		NavigationButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -151,7 +152,7 @@ function Library:Window(Name: string)
 		NavigationButton.TextSize = 14.000
 		NavigationButton.TextWrapped = true
 		NavigationButton.TextXAlignment = Enum.TextXAlignment.Left
-		
+
 		Tab.Name = Name
 		Tab.Parent = Tabs
 		Tab.Active = true
@@ -166,19 +167,20 @@ function Library:Window(Name: string)
 		Tab.Size = UDim2.new(0.800000012, 0, 1, 0)
 		Tab.CanvasSize = UDim2.new(0, 0, 1, 0)
 		Tab.ScrollBarThickness = 5
-		
+		Tab.AutomaticSize = Enum.AutomaticSize.Y
+
 		UIListLayout_2.Parent = Tab
 		UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
-		
-		
+
+
 		NavigationButton.MouseButton1Down:Connect(function()
 			Tab.Visible = true
 			for _,v in pairs(Tabs:GetChildren()) do
 				if v ~= Tab then v.Visible = false end
 			end
 		end)
-		
-		
+
+
 		function TabFuncs:Label(Name)
 			local PageLabel = Instance.new("TextLabel")
 			PageLabel.Name = Name
@@ -202,17 +204,17 @@ function Library:Window(Name: string)
 			PageButton.TextColor3 = Color3.fromRGB(0, 255, 0)
 			PageButton.TextSize = 30.000
 			PageButton.TextXAlignment = Enum.TextXAlignment.Left
-			
+
 			PageButton.MouseButton1Down:Connect(function()
 				pcall(Callback)
 			end)
 		end
 		function TabFuncs:Toggle(Name, Default, Callback)
 			local toggle = Default
-			
+
 			local PageToggle = Instance.new("TextButton")
 			local ToggleButton = Instance.new("ImageLabel")
-			
+
 			PageToggle.Name = Name
 			PageToggle.Parent = Tab
 			PageToggle.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
@@ -238,7 +240,7 @@ function Library:Window(Name: string)
 			ToggleButton.ScaleType = Enum.ScaleType.Slice
 			ToggleButton.SliceCenter = Rect.new(100, 100, 100, 100)
 			ToggleButton.SliceScale = 0.120
-			
+
 			PageToggle.MouseButton1Down:Connect(function()
 				toggle = not toggle
 				if toggle then
@@ -254,7 +256,7 @@ function Library:Window(Name: string)
 			local DropdownFrame = Instance.new("Frame")
 			local UIListLayout_3 = Instance.new("UIListLayout")
 			local DropdownImage = Instance.new("ImageLabel")
-			
+
 			PageDropdown.Name = Name
 			PageDropdown.Parent = Tab
 			PageDropdown.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
@@ -286,7 +288,7 @@ function Library:Window(Name: string)
 			DropdownImage.Position = UDim2.new(0.912500024, 0, 0, 0)
 			DropdownImage.Size = UDim2.new(0, 35, 1, 0)
 			DropdownImage.Image = "rbxassetid://6034818375"
-			
+
 			for _,v in List do
 				local DropdownButton = Instance.new("TextButton")
 				DropdownButton.Name = v
@@ -301,31 +303,31 @@ function Library:Window(Name: string)
 				DropdownButton.TextSize = 20.000
 				DropdownButton.TextWrapped = true
 				DropdownButton.TextXAlignment = Enum.TextXAlignment.Left
-				
+
 				DropdownButton.MouseButton1Down:Connect(function()
 					DropdownFrame.Visible = false
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = 0}):Play()
 					PageDropdown.Text = Name.." - "..v
-					
+
 					pcall(Callback, v)
 				end)
 			end
-			
+
 			PageDropdown.MouseButton1Down:Connect(function()
 				DropdownFrame.Visible = not DropdownFrame.Visible
-				
+
 				if DropdownFrame.Visible then
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = -90}):Play()
 				else
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = 0}):Play()
 				end
-				
+
 			end)
 		end
 		function TabFuncs:Slider(Name, min,max, start, Callback)
 			local d = false
 			local percentage = 0
-			
+
 			local PageSlider = Instance.new("Frame")
 			local SliderTitle = Instance.new("TextLabel")
 			local SliderBar = Instance.new("ImageLabel")
@@ -386,7 +388,7 @@ function Library:Window(Name: string)
 			SliderValue.TextSize = 25.000
 			SliderValue.TextWrapped = true
 			SliderValue.TextXAlignment = Enum.TextXAlignment.Left
-			
+
 			local function move(input)
 				local pos =
 					UDim2.new(
@@ -407,7 +409,7 @@ function Library:Window(Name: string)
 				SliderValue.Text = tostring(value)
 				pcall(Callback, value)
 			end
-			
+
 			SliderButton.InputBegan:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 then
 					d = true
@@ -439,7 +441,7 @@ function Library:Window(Name: string)
 			PageTextBox.TextColor3 = Color3.fromRGB(0, 255, 0)
 			PageTextBox.TextSize = 30.000
 			PageTextBox.TextXAlignment = Enum.TextXAlignment.Left
-			
+
 			PageTextBox.FocusLost:Connect(function(ep)
 				if ep then
 					if #PageTextBox.Text > 0 then
