@@ -87,22 +87,18 @@ end)
 
 --Script Here
 
-local lib = lstr(HTTP("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt"))()
+local lib = lstr(HTTP("https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMUILibrary"))()
 
 local Tabs = {}
 
 --UI
 
-local win = lib:Window("SMAGARD-Hub", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+local win = lib:Window("SMAGARD-Hub")
 
 --MAIN
 Tabs.Main = win:Tab("Main")
 
 Tabs.Main:Label("Credits: SMAGARD")
-Tabs.Main:Button("Destroy UI", function()
-	DisconnectEvents()
-	FFC(cgui, "ui"):Destroy()
-end)
 
 --UNIVERSAL
 Tabs.Universal = win:Tab("Universal")
