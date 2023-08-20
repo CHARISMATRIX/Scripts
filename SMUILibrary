@@ -316,10 +316,10 @@ function Library:Window(Name: string)
 
 				if DropdownFrame.Visible then
 					DropdownFrame = DropdownFrame.CanvasSize/2
-					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = DropdownFrame.CanvasSize}):Play()
+					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = UDim2.new(1,0,0,22*#List)}):Play()
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = -90}):Play()
 				else
-					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = UDim2.new(0,0,1,0)}):Play()
+					TS:Create(DropdownFrame, TI(.5, Enum.EasingStyle.Sine), {Size = UDim2.new(1,0,0,0)}):Play()
 					TS:Create(DropdownImage, TI(.5,Enum.EasingStyle.Sine), {Rotation = 0}):Play()
 				end
 
