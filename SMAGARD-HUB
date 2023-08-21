@@ -97,6 +97,28 @@ end)
 eventscr.PlayerRemoving = plrs.PlayerRemoving:Connect(function(p)
 	table.remove(plrlist, table.find(plrlist, p.Name))
 end)
+
+function attach(target)
+	local tchar = target.Character
+	local thumrp = tchar.HumanoidRootPart
+	hum.Name = "1"
+	local newHum = hum:Clone()
+	newHum.Parent = char
+	newHum.Name = "Humanoid"
+	wait()
+	hum:Destroy()
+	ws.CurrentCamera.CameraSubject = newhum
+	newHum.DisplayDistanceType = "None"
+	local tool = bp:FindFirstChildWhichIsA("Tool") or char:FindFirstChildWhichIsA("Tool")
+	tool.Parent = char
+	humrp.CFrame = thumrp.CFrame * CFrame.new(0, 0, 0) * CFrame.new(math.random(-100, 100)/200,math.random(-100, 100)/200,math.random(-100, 100)/200)
+	local n = 0
+	repeat
+		wait(.1)
+		n = n + 1
+		humrp.CFrame = thumrp.CFrame
+	until (tool.Parent ~= char or not humrp or not thumrp or not humrp.Parent or not thumrp.Parent or n > 250) and n > 2
+end
 --Script Here
 
 local lib = lstr(HTTP("https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMUILibrary"))()
@@ -130,6 +152,21 @@ end)
 --AutoClicker
 Tabs.Universal:Button("Auto Clicker", function()
 	lstr(HTTP("https://raw.githubusercontent.com/JustEzpi/ROBLOX-Scripts/main/ROBLOX_AutoClicker"))()
+end)
+Tabs.Universal:Dropdown("Bring (TOOL)", plrlist, function(sel)
+	local pos = humrp.CFrame
+	attach(plrs[sel])
+	repeat
+		task.wait()
+		humrp.CFrame = pos
+	until not plrs[sel].Character or not char
+end)
+Tabs.Universal:Dropdown("Kill (TOOL)", plrlist, function(sel)
+	attach(plrs[sel])
+	repeat
+		task.wait()
+		humrp.CFrame = CFrame.new(999999, ws.FallenPartsDestroyHeight + 5,999999)
+	until not plrs[sel].Character or not char
 end)
 
 --Player
@@ -536,20 +573,20 @@ elseif game.PlaceId == 12524383962 then --Every Second +1 Ki in DBZ
 			rs.Events.Player.RebirthEvent:FireServer()
 		end
 	end)
-	
+
 	--Hide Collections
 	Tabs.currgame:Button("Hide Collections", function()
 		pgui.EffectRefersh:Destroy()
 	end)
 
 elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
-	
+
 	Tabs.currgame = win:Tab("Wall Punch Simulator")
 
 	Tabs.currgame:TextBox("Amount Of Coins", true, function(v)
 		local args = {
-    		[1] = plr,
-    		[2] = tonumber(v)
+			[1] = plr,
+			[2] = tonumber(v)
 		}
 
 		rs.NL:FireServer(unpack(args))
@@ -557,8 +594,8 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 
 	Tabs.currgame:TextBox("Amount Of Power", true, function(v)
 		local args = {
-    		[1] = plr,
-    		[2] = tonumber(v)
+			[1] = plr,
+			[2] = tonumber(v)
 		}
 
 		rs.GP:FireServer(unpack(args))
@@ -573,7 +610,7 @@ elseif game.PlaceId == 12888107609 then --Wall Punch Simulator
 	end)
 
 elseif game.PlaceId == 662417684 then --Lucky Block Battlegrounds
-	
+
 	Tabs.currgame = win:Tab("Lucky Block Battlegrounds")
 
 	Tabs.currgame:Slider("Amount Of Blocks", 1,30,1, function(v)
@@ -692,7 +729,7 @@ elseif game.PlaceId == 14086581572 then --Altitorture
 
 elseif game.PlaceId == 9049840490 then --Sonic Speed Simulator
 	Tabs.currgame = win:Tab("Sonic Speed Simulator")
-	
+
 	Tabs.currgame:Button("Collect All Currency", function()
 		for _,v in pairs(ws:FindFirstChild("World Currencies"):GetChildren()) do
 			local args = {
@@ -940,11 +977,26 @@ elseif game.PlaceId == 4924922222 then --Brookhaven
 			end
 			task.wait(.2)
 			humrp.CFrame = targetcframe
-			task.wait(.25)
+			task.wait(.3)
 			hum:UnequipTools()
 			task.wait(.1)
 			humrp.CFrame = pos
 		end))
+	end
+	local function dupeitem(name, amount)
+		local pos = humrp.CFrame
+		local giver = ws.WorkspaceCom["001_GiveTools"]:FindFirstChild(name)
+		local cd = giver:FindFirstChildWhichIsA("ClickDetector")
+		humrp.CFrame = giver.CFrame
+		task.wait(.25)
+		for i=1,tonumber(amount)+1 do
+			fireclickdetector(cd)
+			task.wait(.15)
+		end
+		task.wait(.25)
+		hum:UnequipTools()
+		task.wait()
+		humrp.CFrame = pos
 	end
 
 	Tabs.currgame:Button("Sus", function()
@@ -967,28 +1019,26 @@ elseif game.PlaceId == 4924922222 then --Brookhaven
 		t2.Parent = char
 	end)
 	Tabs.currgame:TextBox("FireX Sus", true, function(t)
-		local pos = humrp.CFrame
 		local args = {[1] = "ClearAllTools"}
 		rs.JK.TR:FindFirstChild("1Clea1rTool1s"):FireServer(unpack(args))
 		task.wait(.25)
-		local giver = ws.WorkspaceCom["001_GiveTools"]:FindFirstChild("FireX")
-		local cd = giver:FindFirstChildWhichIsA("ClickDetector")
-		humrp.CFrame = giver.CFrame
-		task.wait(.25)
-		for i=1,tonumber(t)+1 do
-			fireclickdetector(cd)
-			task.wait(.15)
-		end
-		task.wait(.25)
-		hum:UnequipTools()
-		task.wait()
-		humrp.CFrame = pos
+		dupeitem("FireX", t)
 		local offsety = 0
 		for _,fx in pairs(bp:GetChildren()) do
 			fx.Grip = CFrame.new(1.5,2.25+offsety,-.25) * CFrame.Angles(math.rad(45),0,0)
 			fx.Parent = char
 			offsety -= 1.5
 			task.wait(.1)
+		end
+	end)
+	Tabs.currgame:TextBox("Dupe FireX", true, function(t)
+		local args = {[1] = "ClearAllTools"}
+		rs.JK.TR:FindFirstChild("1Clea1rTool1s"):FireServer(unpack(args))
+		task.wait(.25)
+		dupeitem("FireX", t)
+		task.wait(.1)
+		for _,fx in pairs(bp:GetChildren()) do
+			fx.Parent = char
 		end
 	end)
 	Tabs.currgame:Toggle("Rainbow Skin", false, function(t)
@@ -1009,5 +1059,111 @@ elseif game.PlaceId == 4924922222 then --Brookhaven
 	end)
 	Tabs.currgame:Dropdown("Kill", plrlist, function(sel)
 		bringplrto(sel, CFrame.new(10000,600,10000))
+	end)
+
+elseif game.PlaceId == 3082002798 then --T-Titans Battlegrounds
+	Tabs.currgame = win:Tab("T-Titans Battlegrounds")
+
+	Tabs.currgame:Toggle("Autofarm", false, function(t)
+		getgenv().autofarm = t
+		if t then
+			local args = {[1] = "001"}
+			rs.Remotes.OnCharacterSelectTouchedRF:InvokeServer(unpack(args))
+			task.wait()
+			bp.BoStaff.Parent = char
+			coroutine.resume(coroutine.create(function()
+				while getgenv().autofarm and task.wait() do
+					for _,v in pairs(plrs:GetPlayers()) do
+						if v == plr or not v or not v.Character or v.Character:FindFirstChildWhichIsA("ForceField") then continue end
+						pcall(function()
+							repeat task.wait()
+								if not getgenv().autofarm then return end
+								if hum.Health == 0 then
+									plr.CharacterAdded:Wait()
+									task.wait(.5)
+									local args = {[1] = "001"}
+									rs.Remotes.OnCharacterSelectTouchedRF:InvokeServer(unpack(args))
+									task.wait()
+									bp.BoStaff.Parent = char
+								end
+
+								ws.CurrentCamera.CameraSubject = v.Character.Humanoid
+
+								humrp.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(math.random(-2, 2),-10,math.random(-2, 2))
+
+								local args = {
+									[1] = v.Character.Humanoid
+								}
+
+								rs.Remotes.OnBoStaffDamage:FireServer(unpack(args))
+
+							until v.Character.Humanoid.Health == 0 or v.Character:FindFirstChildWhichIsA("ForceField")
+						end)
+					end
+				end
+			end))
+		else
+			char:BreakJoints()
+		end
+	end)
+
+elseif game.PlaceId == 5256165620 then --3-2-1 Blast Off
+	Tabs.currgame = win:Tab("3-2-1 Blast Off")
+	
+	local Values = plr.Values
+	local Launchpad
+	local LPValues
+	
+	coroutine.resume(coroutine.create(function()
+		while not Launchpad and task.wait(.5) do
+			for _,v in pairs(ws:GetChildren()) do
+				if v.Name == "Launchpad" then
+					if v.Values.Owner.Value == plr  then
+						Launchpad = v
+						LPValues = v.Values
+						break
+					end
+				end
+			end
+		end
+	end))
+
+	
+	Tabs.currgame:Button("Remove Anticheat", function()
+		rs.Tell:Destroy()
+	end)
+	Tabs.currgame:Toggle("Autofarm Fuel", false, function(t)
+		getgenv().autofuel = t
+		
+		coroutine.resume(coroutine.create(function()
+			while getgenv().autofuel and task.wait(.25) do
+				if Values.FuelCarried.Value == Values.FuelCapacity.Value then
+					humrp.CFrame = Launchpad.FuelCollector.CollectorPad.CFrame
+					task.wait(.1)
+				end
+				local tool = bp:FindFirstChild("FuelScoop") or char:FindFirstChild("FuelScoop")
+				humrp.CFrame = CFrame.new(23, 3, 11)
+				
+				if tool.Parent ~= char then
+					tool.Parent = char
+				end
+				tool:Activate()
+			end
+		end))
+	end)
+	Tabs.currgame:Toggle("Autobuy Scoop", false, function(t)
+		getgenv().autobuyscoop = t
+
+		coroutine.resume(coroutine.create(function()
+			while getgenv().autobuyscoop and task.wait(1) do
+				local args = {
+					[1] = "FuelScoop",
+					[2] = 2
+				}
+
+				game:GetService("ReplicatedStorage").BuyFuelScoop:InvokeServer(unpack(args))
+
+			end
+		end))
 	end)
 end
