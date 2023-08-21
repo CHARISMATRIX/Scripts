@@ -74,6 +74,8 @@ local char = plr.Character or plr.CharacterAdded:Wait()
 local humrp = char.HumanoidRootPart
 local hum = FFCI(char, "Humanoid")
 
+local plrlist = {}
+
 eventscr.UpdateChar = plr.CharacterAdded:Connect(function(newchar)
 	repeat
 		task.wait(.1)
@@ -86,6 +88,15 @@ eventscr.UpdateChar = plr.CharacterAdded:Connect(function(newchar)
 	pscr = plr.PlayerScripts
 end)
 
+for _,v in pairs(plrs:GetPlayers()) do
+	table.insert(plrlist, v.Name)
+end
+eventscr.PlayerAdded = plrs.PlayerAdded:Connect(function(p)
+	table.insert(plrlist, p.Name)
+end)
+eventscr.PlayerRemoving = plrs.PlayerRemoving:Connect(function(p)
+	table.remove(plrlist, table.find(plrlist, p.Name))
+end)
 --Script Here
 
 local lib = lstr(HTTP("https://raw.githubusercontent.com/CHARISMATRIX/Scripts/main/SMUILibrary"))()
@@ -907,6 +918,35 @@ elseif game.PlaceId == 4924922222 then --Brookhaven
 
 	local rainbowcolors = {"Pastel brown", "Really black", "Institutional white", "Magenta", "Really blue", "Toothpaste", "Lime green", "New Yeller", "Really red", "Carnation pink"}
 
+	local function bringplrto(target, targetcframe)
+		coroutine.resume(coroutine.create(function()
+			local args = {[1] = "ClearAllTools"}
+			rs.JK.TR:FindFirstChild("1Clea1rTool1s"):FireServer(unpack(args))
+			task.wait(.1)
+			local args = {[1] = "PickingTools",[2] = "ShoppingCart"}
+			rs.JK.TR:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+			task.wait(.25)
+			local thumrp = plrs[target].Character.HumanoidRootPart
+
+			local pos = humrp.CFrame
+			local cart = bp["ShoppingCart"]
+			local seat = cart["Seat"]
+			local seat2 = cart["Seat1"]
+			cart.Parent = char
+
+			task.wait(.1)
+			while not seat.Occupant and not seat2.Occupant and task.wait(.05) and char:FindFirstChild("ShoppingCart") do
+				humrp.CFrame = thumrp.CFrame * CFrame.new(0,0,2)
+			end
+			task.wait(.2)
+			humrp.CFrame = targetcframe
+			task.wait(.25)
+			hum:UnequipTools()
+			task.wait(.1)
+			humrp.CFrame = pos
+		end))
+	end
+
 	Tabs.currgame:Button("Sus", function()
 		local args = {[1] = "ClearAllTools"}
 		rs.JK.TR:FindFirstChild("1Clea1rTool1s"):FireServer(unpack(args))
@@ -963,5 +1003,11 @@ elseif game.PlaceId == 4924922222 then --Brookhaven
 				game:GetService("ReplicatedStorage").JK.TR:FindFirstChild("1Updat1eAvata1r"):FireServer(unpack(args))
 			end
 		end))
+	end)
+	Tabs.currgame:Dropdown("Bring", plrlist, function(sel)
+		bringplrto(sel, humrp.CFrame)
+	end)
+	Tabs.currgame:Dropdown("Kill", plrlist, function(sel)
+		bringplrto(sel, CFrame.new(10000,600,10000))
 	end)
 end
