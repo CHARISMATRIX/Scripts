@@ -316,32 +316,8 @@ if game.PlaceId == 537413528 then --Build a Boat
 	end)
 
 	--Teleports
-	Tabs.currgame:Button("White Team", function()
-		humrp.CFrame = ws.WhiteZone.CFrame * CF(0,5,0)
-	end)
-
-	Tabs.currgame:Button("Black Team", function()
-		humrp.CFrame = ws.BlackZone.CFrame * CF(0,5,0)
-	end)
-
-	Tabs.currgame:Button("Red Team", function()
-		humrp.CFrame = ws["Really redZone"].CFrame * CF(0,5,0)
-	end)
-
-	Tabs.currgame:Button("Blue Team", function()
-		humrp.CFrame = ws["Really blueZone"].CFrame * CF(0,5,0)
-	end)
-
-	Tabs.currgame:Button("Green Team", function()
-		humrp.CFrame = ws.CamoZone.CFrame * CF(0,5,0)
-	end)
-
-	Tabs.currgame:Button("Yellow Team", function()
-		humrp.CFrame = ws["New YellerZone"].CFrame * CF(0,5,0)
-	end)
-
-	Tabs.currgame:Button("Magenta Team", function()
-		humrp.CFrame = ws.MagentaZone.CFrame * CF(0,5,0)
+	Tabs.currgame:Dropdown("Teleport", {"WhiteZone", "BlackZone", "Really redZone", "Really blueZone", "CamoZone", "New YellerZone", "MagentaZone"}, function(sel)
+		humrp.CFrame = ws[sel].CFrame * CF(0,5,0)
 	end)
 
 	--Water Godmode
@@ -372,6 +348,14 @@ if game.PlaceId == 537413528 then --Build a Boat
 		if FFC(ws.MagentaZone,"Lock") then
 			FFC(ws.MagentaZone,"Lock").Part:Destroy()
 		end
+	end)
+	Tabs.currgame:Button("Sus (TOOL)", function()
+		local tool = char:FindFirstChildWhichIsA("Tool") or bp:FindFirstChildWhichIsA("Tool")
+		hum:UnequipTools()
+		task.wait(.1)
+		tool.Grip = CFrame.new(-1.75,1.3,1.5) * CFrame.Angles(math.rad(90),math.rad(90),0)
+		task.wait(.1)
+		tool.Parent = char
 	end)
 
 elseif game.PlaceId == 3956818381 then --Ninja Legends
