@@ -1113,6 +1113,8 @@ elseif game.PlaceId == 5256165620 then --3-2-1 Blast Off
 	local Values = plr.Values
 	local Launchpad
 	local LPValues
+
+	local pauseautofarm = false
 	
 	coroutine.resume(coroutine.create(function()
 		while not Launchpad and task.wait(.5) do
@@ -1141,27 +1143,81 @@ elseif game.PlaceId == 5256165620 then --3-2-1 Blast Off
 					humrp.CFrame = Launchpad.FuelCollector.CollectorPad.CFrame
 					task.wait(.1)
 				end
-				local tool = bp:FindFirstChild("FuelScoop") or char:FindFirstChild("FuelScoop")
-				humrp.CFrame = CFrame.new(23, 3, 11)
-				
-				if tool.Parent ~= char then
-					tool.Parent = char
+				if not pauseautofarm then
+					local tool = bp:FindFirstChild("FuelScoop") or char:FindFirstChild("FuelScoop")
+					humrp.CFrame = CFrame.new(23, 3, 11)
+					
+					if tool.Parent ~= char then
+						tool.Parent = char
+					end
+					tool:Activate()
 				end
-				tool:Activate()
 			end
 		end))
+	end)
+	Tabs.currgame:Toggle("Autofuel Rocket", false, function(t)
+		if t then
+			getgenv().autofuelrocket = LPValues.Fuel.Changed:Connect(function()
+				pauseautofarm = true
+				local pos = humrp.CFrame
+				task.wait(.1)
+				humrp.CFrame = Launchpad.FuelCollector.TransferToRocket["AddAll"].CFrame
+				task.wait(.1)
+				fireproximityprompt(Launchpad.FuelCollector.TransferToRocket["AddAll"]:FindFirstChildWhichIsA("ProximityPrompt"))
+				task.wait(.1)
+				humrp.CFrame = pos
+				pauseautofarm = false
+			end)
+		else
+			getgenv().autofuelrocket:Disconnect()
+		end
+	end)
+	Tabs.currgame:Toggle("Auto Launch", false, function(t)
+		if t then
+			getgenv().autolaunch = LPValues.RocketFuel.Changed:Connect(function()
+				if LPValues.RocketFuel.Value >= ((Values.Launches.Value * 1000)+500) then
+					task.wait(.45)
+					pauseautofarm = true
+					local pos = humrp.CFrame
+					task.wait(.1)
+					humrp.CFrame = Launchpad.LaunchStation.LaunchButton.CFrame
+					task.wait(.5)
+					fireproximityprompt(Launchpad.LaunchStation.LaunchButton.Attachment:FindFirstChildWhichIsA("ProximityPrompt"))
+					task.wait(1)
+					fireproximityprompt(Launchpad.LaunchStation.LaunchButton.Attachment:FindFirstChildWhichIsA("ProximityPrompt"))
+					task.wait(.1)
+					humrp.CFrame = pos
+					pauseautofarm = false
+				end
+			end)
+		else
+			getgenv().autolaunch:Disconnect()
+		end
 	end)
 	Tabs.currgame:Toggle("Autobuy Scoop", false, function(t)
 		getgenv().autobuyscoop = t
 
 		coroutine.resume(coroutine.create(function()
-			while getgenv().autobuyscoop and task.wait(1) do
+			while getgenv().autobuyscoop and task.wait(3) do
 				local args = {
 					[1] = "FuelScoop",
-					[2] = 2
+					[2] = tonumber(plr.FuelScoops.EquippedFuelScoop.Value:sub(10,#plr.FuelScoops.EquippedFuelScoop.Value))+1
 				}
-
 				game:GetService("ReplicatedStorage").BuyFuelScoop:InvokeServer(unpack(args))
+
+			end
+		end))
+	end)
+		Tabs.currgame:Toggle("Autobuy Rocket", false, function(t)
+		getgenv().autobuyrocket = t
+
+		coroutine.resume(coroutine.create(function()
+			while getgenv().autobuyrocket and task.wait(3) do
+				local args = {
+					[1] = "Rocket",
+					[2] = tonumber(plr.Rockets.EquippedRocket.Value:sub(7,#plr.Rockets.EquippedRocket.Value))+1
+				}
+				game:GetService("ReplicatedStorage").BuyRocket:InvokeServer(unpack(args))
 
 			end
 		end))
